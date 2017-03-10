@@ -12,10 +12,10 @@ namespace TeamControlium.Framework
     /// </summary>
     static public class Logger
     {
-        static private Stopwatch testTimer;      // Used to keep track of time since first call to Logger class made.
-        static private string TestToolString;    // Used to build string as logger Write calls made.
-        static private bool WriteStart;          // Indicates if last write was an end-of line or start.  Used to indicate if a Line pre-amble required
-        static private object padLock;           // Used for locking during a DoWriteLine to ensure thread safety
+        static private Stopwatch testTimer;         // Used to keep track of time since first call to Logger class made.
+        static private string TestToolString;       // Used to build string as logger Write calls made.
+        static private bool WriteStart;             // Indicates if last write was an end-of line or start.  Used to indicate if a Line pre-amble required
+        static private object padLock=new object(); // Used for locking during a DoWriteLine to ensure thread safety
 
         /// <summary>
         /// Instantiates an instant of the Logger static class.  Starts the Stopwatch running for timing information in debug data.
