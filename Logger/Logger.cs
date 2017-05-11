@@ -34,35 +34,31 @@ namespace TeamControlium.Framework
         public enum LogLevels
         {
             /// <summary>
-            /// Only written to results if Level set to Maximum (Verbose) Output
+            /// Data written to log if level is FrameworkDebug and Write is FrameworkDebug or higher
             /// </summary>
-            Verbose = 0,
+            FrameworkDebug = 0,
             /// <summary>
-            /// Data written to results if level is Framework Debug or Maximum Output
+            /// Data written to log if level is FrameworkInformation and Write is FrameworkInformation or higher
             /// </summary>
-            FrameworkDebug = 1,
+            FrameworkInformation = 1,
             /// <summary>
-            /// Data written to results if level is Framework Information/Debug or Maximum Output
+            /// Data written to log if level is TestDebug and Write is TestDebug or higher
             /// </summary>
-            FrameworkInformation = 2,
+            TestDebug = 2,
             /// <summary>
-            /// Data written to results if level is Test Debug, Framework Information/Debug or Maximum Output
+            /// Data written to log if level is TestInformation and Write is TestInformation or Error
             /// </summary>
-            TestDebug = 3,
-            /// <summary>
-            /// Data written to results if level is Test Information/Debug, Framework Information/Debug or Maximum Output
-            /// </summary>
-            TestInformation = 4,
+            TestInformation = 3,
             /// <summary>
             /// Data always written to results
             /// </summary>
-            Information = 5
+            Error = 4
         };
 
         /// <summary>
-        /// Level of logging.  Lowest is Information (least amount of log data written), Highest is Verbose (lots of log data written)
+        /// Logging level. Lowest is Error (least amount of log data written), Highest is FrameworkDebug (lots of log data written)
         /// </summary>
-        static public LogLevels LoggingLevel { get; private set; }
+        static public LogLevels LoggingLevel { get; set; } = LogLevels.FrameworkDebug;
 
         /// <summary>
         /// Where and how debug data is recorded.
@@ -76,27 +72,6 @@ namespace TeamControlium.Framework
         /// </summary>
         /// <seealso cref="WriteToConsole"/>
         static public Action<string> TestToolLog { get; set; }
-
-        /// <summary>
-        /// Set logging level. Lowest is Information (least amount of log data written), Highest is MaximumOutput (lots of log data written)
-        /// </summary>
-        /// <param name="Level">Minimum Output (Least output), Test Information, Test Debug, Framework Information Framework Debug or Maximum Output (Most output)</param>
-        static public void SetLoggingLevel(string Level)
-        {
-            switch (Level.Replace(" ", "").ToLower())
-            {
-                case "exceptions":
-                case "exception":
-                case "minimumoutput":
-                case "information": LoggingLevel = LogLevels.Information; break;
-                case "testinformation": LoggingLevel = LogLevels.TestInformation; break;
-                case "testdebug": LoggingLevel = LogLevels.TestDebug; break;
-                case "frameworkinformarion": LoggingLevel = LogLevels.FrameworkInformation; break;
-                case "frameworkdebug": LoggingLevel = LogLevels.FrameworkDebug; break;
-                case "maximumoutput": LoggingLevel = LogLevels.Verbose; break;
-                default: throw new ArgumentException("Invalid logging level; must be Minimum Output, Test Information, Test Debug, Framework Information Framework Debug or Maximum Output", "Level");
-            }
-        }
 
         /// <summary>
         /// Resets the logger elapsed timer
@@ -125,7 +100,7 @@ namespace TeamControlium.Framework
         static public void LogException(Exception ex)
         {
             StackFrame stackFrame = new StackFrame(1, true);
-            DoWriteLine((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Information,
+            DoWriteLine((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Error,
                 string.Format("Exception being thrown: {0}", ex.ToString()));
         }
         /// <summary>
@@ -148,8 +123,8 @@ namespace TeamControlium.Framework
         static public void LogException(Exception ex, string text, params Object[] args)
         {
             StackFrame stackFrame = new StackFrame(1, true);
-            DoWrite((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Information, string.Format(text, args));
-            DoWriteLine((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Information,
+            DoWrite((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Error, string.Format(text, args));
+            DoWriteLine((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Error,
                 string.Format("Exception being thrown: {0}", ex.ToString()));
         }
 
@@ -224,8 +199,7 @@ namespace TeamControlium.Framework
             }
             catch (Exception ex)
             {
-                WriteLine(LogLevels.Information, "Error writing data to file [{0}] (AutoVersion={1}):{2}", Filename,
-                    AutoVersion ? "Yes" : "No", ex.Message);
+                LogException(ex, $"Cannot write data to file [{Filename ?? "Null Filename!"}] (AutoVersion={(AutoVersion ? "Yes" : "No")})");
             }
         }
 
@@ -346,18 +320,18 @@ namespace TeamControlium.Framework
         {
             switch (TypeOfWrite)
             {
-                case LogLevels.Verbose:
-                    return "LOG-LV";
+                case LogLevels.Error:
+                    return "LOG-E";
                 case LogLevels.FrameworkDebug:
-                    return "LOG-FD";
+                    return "LOG-F";
                 case LogLevels.FrameworkInformation:
-                    return "LOG-FI";
+                    return "LOG-R";
                 case LogLevels.TestDebug:
-                    return "LOG-TD";
+                    return "LOG-D";
                 case LogLevels.TestInformation:
-                    return "LOG-TI";
+                    return "LOG-I";
                 default:
-                    return "LOG-IN";
+                    return "LOG-?";
             }
         }
     }
