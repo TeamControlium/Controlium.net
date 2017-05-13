@@ -15,6 +15,7 @@ namespace TeamControlium.Framework
         private StringWriter consoleOut = new StringWriter();
  
         [Given(@"I have configured Logger WriteToConsole to (false|true)")]
+        [When(@"I change Logger WriteToConsole to (false|true)")]
         public void GivenIHaveConfiguredLoggerToWriteToConsole(bool writeToConsole)
         {
             Console.SetOut(consoleOut);
@@ -34,6 +35,7 @@ namespace TeamControlium.Framework
             Logger.LoggingLevel = logLevel;
         }
 
+        [Given(@"I call Logger with level (.*) and string ""(.*)""")]
         [When(@"I call Logger with level (.*) and string ""(.*)""")]
         public void WhenICallLoggerWithLevelAndString(Logger.LogLevels logLevel, string stringToWrite)
         {

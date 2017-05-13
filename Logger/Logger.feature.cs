@@ -435,372 +435,113 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
         }
         
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog(string loggerLevel, string writeLevel, string testString, string output, string[] exampleTags)
+        public virtual void LoggerOutputCanBeDirectedToConsoleOrACustomOutputStream(string writeToConsole, string testString, string testLogOutput, string consoleOutput, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Logger output can be congigured to use a TestLog", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Logger output can be directed to Console or a custom output stream", exampleTags);
 #line 40
 this.ScenarioSetup(scenarioInfo);
 #line 41
- testRunner.Given("I have configured Logger WriteToConsole to false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have configured Logger WriteToConsole to {0}", writeToConsole), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 42
-testRunner.Given("I have configured Logger TestToolLog to write to my string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.And("I have configured Logger TestToolLog to write to my string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
- testRunner.And(string.Format("I set Logger to level {0}", loggerLevel), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I set Logger to level FrameworkDebug", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
- testRunner.When(string.Format("I call Logger with level {0} and string {1}", writeLevel, testString), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I call Logger with level FrameworkDebug and string {0}", testString), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 45
- testRunner.Then(string.Format("my string contains a Logger line ending with \"{0}\"", output), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("my string contains a Logger line ending with {0}", testLogOutput), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 46
+ testRunner.And(string.Format("the console output contains a Logger line ending with {0}", consoleOutput), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be directed to Console or a custom output stream: true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write To Console", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:TestLogOutput", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ConsoleOutput", "\"Test Framework Debug\"")]
+        public virtual void LoggerOutputCanBeDirectedToConsoleOrACustomOutputStream_True()
+        {
+            this.LoggerOutputCanBeDirectedToConsoleOrACustomOutputStream("true", "\"Test Framework Debug\"", "\"\"", "\"Test Framework Debug\"", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be directed to Console or a custom output stream: false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write To Console", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:TestLogOutput", "\"Test Framework Debug\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ConsoleOutput", "\"\"")]
+        public virtual void LoggerOutputCanBeDirectedToConsoleOrACustomOutputStream_False()
+        {
+            this.LoggerOutputCanBeDirectedToConsoleOrACustomOutputStream("false", "\"Test Framework Debug\"", "\"Test Framework Debug\"", "\"\"", ((string[])(null)));
+#line hidden
+        }
+        
+        public virtual void LoggerOutputCanBeChangedInFlight(string initialWriteToConsole, string secondWriteToConsole, string loggerLevel, string writeLevel, string firstTestString, string secondTestString, string testLogOutput, string consoleOutput, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Logger output can be changed in flight", exampleTags);
+#line 52
+this.ScenarioSetup(scenarioInfo);
+#line 53
+ testRunner.Given(string.Format("I have configured Logger WriteToConsole to {0}", initialWriteToConsole), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 54
+    testRunner.And("I have configured Logger TestToolLog to write to my string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 55
+ testRunner.And("I set Logger to level FrameworkDebug", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 56
+ testRunner.And(string.Format("I call Logger with level FrameworkDebug and string {0}", firstTestString), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 57
+ testRunner.When(string.Format("I change Logger WriteToConsole to {0}", secondWriteToConsole), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 58
+ testRunner.And(string.Format("I call Logger with level FrameworkDebug and string {0}", secondTestString), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
+ testRunner.Then(string.Format("my string contains a Logger line ending with {0}", testLogOutput), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 60
+ testRunner.And(string.Format("the console output contains a Logger line ending with {0}", consoleOutput), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be changed in flight: false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Initial Write To Console", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Second Write To Console", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "FrameworkDebug")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "FrameworkDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Framework Debug\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant0()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:First Test String", "\"My First string\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Second Test String", "\"My Second string\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:TestLogOutput", "\"My First string\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ConsoleOutput", "\"My Second string\"")]
+        public virtual void LoggerOutputCanBeChangedInFlight_False()
         {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("FrameworkDebug", "FrameworkDebug", "\"Test Framework Debug\"", "\"Test Framework Debug\"", ((string[])(null)));
+            this.LoggerOutputCanBeChangedInFlight("false", "true", "FrameworkDebug", "FrameworkDebug", "\"My First string\"", "\"My Second string\"", "\"My First string\"", "\"My Second string\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be changed in flight: true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Initial Write To Console", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Second Write To Console", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "FrameworkDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "FrameworkInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Framework Debug\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant1()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("FrameworkDebug", "FrameworkInformation", "\"Test Framework Debug\"", "\"Test Framework Debug\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "FrameworkDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "TestDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Test Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Test Debug\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant2()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("FrameworkDebug", "TestDebug", "\"Test Test Debug\"", "\"Test Test Debug\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "FrameworkDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "TestInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Test Information\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Test Information\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant3()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("FrameworkDebug", "TestInformation", "\"Test Test Information\"", "\"Test Test Information\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "FrameworkDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Error\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Error\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant4()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("FrameworkDebug", "Error", "\"Test Error\"", "\"Test Error\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "FrameworkInformation")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "FrameworkDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant5()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:First Test String", "\"My First string\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Second Test String", "\"My Second string\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:TestLogOutput", "\"My Second string\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ConsoleOutput", "\"My First string\"")]
+        public virtual void LoggerOutputCanBeChangedInFlight_True()
         {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("FrameworkInformation", "FrameworkDebug", "\"Test Framework Debug\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "FrameworkInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "FrameworkInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Framework Debug\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant6()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("FrameworkInformation", "FrameworkInformation", "\"Test Framework Debug\"", "\"Test Framework Debug\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "FrameworkInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "TestDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Test Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Test Debug\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant7()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("FrameworkInformation", "TestDebug", "\"Test Test Debug\"", "\"Test Test Debug\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "FrameworkInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "TestInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Test Information\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Test Information\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant8()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("FrameworkInformation", "TestInformation", "\"Test Test Information\"", "\"Test Test Information\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "FrameworkInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Error\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Error\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant9()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("FrameworkInformation", "Error", "\"Test Error\"", "\"Test Error\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "TestDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "FrameworkDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant10()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("TestDebug", "FrameworkDebug", "\"Test Framework Debug\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "TestDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "FrameworkInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant11()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("TestDebug", "FrameworkInformation", "\"Test Framework Debug\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 12")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 12")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "TestDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "TestDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Test Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Test Debug\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant12()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("TestDebug", "TestDebug", "\"Test Test Debug\"", "\"Test Test Debug\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 13")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 13")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "TestDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "TestInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Test Information\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Test Information\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant13()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("TestDebug", "TestInformation", "\"Test Test Information\"", "\"Test Test Information\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 14")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 14")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "TestDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Error\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Error\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant14()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("TestDebug", "Error", "\"Test Error\"", "\"Test Error\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "TestInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "FrameworkDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant15()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("TestInformation", "FrameworkDebug", "\"Test Framework Debug\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 16")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 16")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "TestInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "FrameworkInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant16()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("TestInformation", "FrameworkInformation", "\"Test Framework Debug\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 17")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 17")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "TestInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "TestDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Test Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant17()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("TestInformation", "TestDebug", "\"Test Test Debug\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 18")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 18")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "TestInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "TestInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Test Information\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Test Information\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant18()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("TestInformation", "TestInformation", "\"Test Test Information\"", "\"Test Test Information\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 19")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 19")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "TestInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Error\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Error\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant19()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("TestInformation", "Error", "\"Test Error\"", "\"Test Error\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 20")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 20")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "FrameworkDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant20()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("Error", "FrameworkDebug", "\"Test Framework Debug\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 21")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 21")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "FrameworkInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Framework Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant21()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("Error", "FrameworkInformation", "\"Test Framework Debug\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 22")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 22")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "TestDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Test Debug\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant22()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("Error", "TestDebug", "\"Test Test Debug\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 23")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 23")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "TestInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Test Information\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant23()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("Error", "TestInformation", "\"Test Test Information\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Logger output can be congigured to use a TestLog: Variant 24")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Logger features")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 24")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Logger Level", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Write Level", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Test String", "\"Test Error\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "\"Test Error\"")]
-        public virtual void LoggerOutputCanBeCongiguredToUseATestLog_Variant24()
-        {
-            this.LoggerOutputCanBeCongiguredToUseATestLog("Error", "Error", "\"Test Error\"", "\"Test Error\"", ((string[])(null)));
+            this.LoggerOutputCanBeChangedInFlight("true", "false", "FrameworkDebug", "FrameworkDebug", "\"My First string\"", "\"My Second string\"", "\"My Second string\"", "\"My First string\"", ((string[])(null)));
 #line hidden
         }
     }
