@@ -2,51 +2,62 @@
 using System.Reflection;
 using System.IO;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace TeamControlium.Framework
 {
     /// <summary>
     /// Enables test scripts to log data that assists in debugging of test scripts and/or framework.  Library and
-    /// helper classes write to the debug log to ensure detailed analysis is possible.
-    /// Debug text redirection is possible if underlying tool supplies its own logging and/or debug output.
+    /// helper classes write to the debug log using log levels <see cref="LogLevels.FrameworkInformation">Framework
+    /// Information</see> and <see cref="LogLevels.FrameworkDebug">Framework Debug</see> to ensure detailed analysis
+    /// is possible.<br/>
+    /// Debug text redirection is possible if underlying tool supplies its own logging and/or debug output, wired up
+    /// to <see cref="Logger.TestToolLog"/> and <see cref="Logger.WriteToConsole"/> is set to false.<br/>
+    /// The timestamp, shown on every line of the log output, is reset on the first call to the Logger.
     /// </summary>
-    static public class Logger
+    /// <threadsafety static="true" instance="false"/>
+    static public partial class Logger
     {
+        static private bool errorWrittenToEventLog;
         static private Stopwatch testTimer;         // Used to keep track of time since first call to Logger class made.
-        static private string TestToolString;       // Used to build string as logger Write calls made.
-        static private bool WriteStart;             // Indicates if last write was an end-of line or start.  Used to indicate if a Line pre-amble required
-        static private object padLock=new object(); // Used for locking during a DoWriteLine to ensure thread safety
+        static private Dictionary<int,string> testToolStrings;       // Used to build string-per-thread as logger Write calls made.
+        static private object lockWriteLine=new object(); // Used for locking during a DoWriteLine to ensure thread safety
+        static private object lockWrite = new object(); // Used for locking during a DoWrite to ensure thread safety
 
         /// <summary>
         /// Instantiates an instant of the Logger static class.  Starts the Stopwatch running for timing information in debug data.
         /// </summary>
         static Logger()
         {
+            errorWrittenToEventLog = false;
+            testToolStrings = new Dictionary<int, string>();
             LoggingLevel = LogLevels.TestInformation; // Default logging level
-            WriteStart = true;
             ResetTimer();
         }
 
         /// <summary>
         /// Levels of logging - Verbose (Maximum) to Exception (Minimum).  If level of text being written to
-        /// logging is equal to, or higher than the current LoggingLevel the text is written.
+        /// logging is equal to, or higher than the current LoggingLevel the text is written.<br/>
+        /// This is used to filter logging so that only entries to log are made if the level of the write is equal
+        /// or greater than the logging level set by <see cref="LoggingLevel">LoggingLevel</see>.
         /// </summary>
         public enum LogLevels
         {
             /// <summary>
-            /// Data written to log if level is FrameworkDebug and Write is FrameworkDebug or higher
+            /// Data written to log if LoggingLevel is FrameworkDebug and Write is FrameworkDebug or higher
             /// </summary>
             FrameworkDebug = 0,
             /// <summary>
-            /// Data written to log if level is FrameworkInformation and Write is FrameworkInformation or higher
+            /// Data written to log if LoggingLevel is FrameworkInformation and Write is FrameworkInformation or higher
             /// </summary>
             FrameworkInformation = 1,
             /// <summary>
-            /// Data written to log if level is TestDebug and Write is TestDebug or higher
+            /// Data written to log if LoggingLevel is TestDebug and Write is TestDebug or higher
             /// </summary>
             TestDebug = 2,
             /// <summary>
-            /// Data written to log if level is TestInformation and Write is TestInformation or Error
+            /// Data written to log if LoggingLevel is TestInformation and Write is TestInformation or Error
             /// </summary>
             TestInformation = 3,
             /// <summary>
@@ -56,15 +67,20 @@ namespace TeamControlium.Framework
         };
 
         /// <summary>
-        /// Logging level. Lowest is Error (least amount of log data written), Highest is FrameworkDebug (lots of log data written)
+        /// Logging level. Lowest is Error (least amount of log data written - only writes at
+        /// level <see cref="LogLevels.Error">Error</see> are written to the log). Most data is written to
+        /// the log if level set is <see cref="LogLevels.FrameworkDebug">FrameworkDebug</see>.
         /// </summary>
         static public LogLevels LoggingLevel { get; set; } = LogLevels.FrameworkDebug;
 
         /// <summary>
-        /// Where and how debug data is recorded.
-        /// If true, debug data is written to the Console (stdout)
-        /// If false, debug data logging is written to the the TestToolLog delegate
+        /// Defines where log lines are written to.<br/>
+        /// If true (or <see cref="Logger.TestToolLog"/> has not been defined), debug data is written to the Console (stdout)<br/>
+        /// If false, debug data logging is written to the <see cref="Logger.TestToolLog"/> delegate (if wired up)<br/>
         /// </summary>
+        /// <remarks>
+        /// The default is for log data to be written to the console
+        /// </remarks>
         static public bool WriteToConsole { get; set; }
 
         /// <summary>
@@ -74,7 +90,7 @@ namespace TeamControlium.Framework
         static public Action<string> TestToolLog { get; set; }
 
         /// <summary>
-        /// Resets the logger elapsed timer
+        /// Resets the logger elapsed timer to zero
         /// </summary>
         static public void ResetTimer()
         {
@@ -83,32 +99,49 @@ namespace TeamControlium.Framework
         }
 
         /// <summary>
-        /// Writes details of a caught exception to the active debug log.  All calls must include Class and Method (or property if a Get/Set property)
-        /// information. Exception message is written to debug log (with no stack or inner exception information).  If an exception is thrown during write, Logger
-        /// attempts to write the error details if able.
+        /// Writes details of a caught exception to the active debug log at level <see cref="LogLevels.Error">Error</see>
         /// </summary>
-        /// <param name="ex">Exception caught and being reported</param>
+        /// <remarks>
+        /// If current error logging level is <see cref="LogLevels.FrameworkDebug">FrameworkDebug</see> the full
+        /// exception is written, including stacktrace etc.<br/>
+        /// With any other <see cref="LogLevels">Log Level</see> only the exception message is writteIf an exception is thrown during write, Logger
+        /// attempts to write the error details if able.
+        /// </remarks>
+        /// <param name="ex">Exception being logged</param>
         /// <example>
-        /// <code lang="C#">
+        /// <code language="cs">
         /// catch (InvalidHostURI ex)
         /// {
         ///   // Log exception and abort the test - we cant talk to the remote Selenium server
         ///   Logger.LogException(ex);
         ///   toolWrapper.AbortTest("Cannot connect to remote Selenium host");
         /// }
-        /// </code></example>
+        /// </code>
+        /// </example>
         static public void LogException(Exception ex)
         {
             StackFrame stackFrame = new StackFrame(1, true);
-            DoWriteLine((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Error,
-                string.Format("Exception being thrown: {0}", ex.ToString()));
+            if (LoggingLevel == LogLevels.FrameworkDebug)
+            {
+                DoWriteLine((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Error,
+                string.Format("Exception thrown: {0}", ex.ToString()));
+            }
+            else
+            {
+                DoWriteLine((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Error,
+                string.Format("Exception thrown: {0}", ex.Message));
+            }
         }
         /// <summary>
-        /// Writes details of a caught exception to the active debug log.  All calls must include Class and Method (or property if a Get/Set property)
-        /// information. Exception message is written to debug log (with no stack or inner exception information).  If an exception is thrown during write, Logger
-        /// attempts to write the error details if able.
+        /// Writes details of a caught exception to the active debug log at level <see cref="LogLevels.Error">Error</see>
         /// </summary>
-        /// <param name="ex">Exception caught and being reported</param>
+        /// <remarks>
+        /// If current error logging level is <see cref="LogLevels.FrameworkDebug">FrameworkDebug</see> the full
+        /// exception is written, including stacktrace etc.<br/>
+        /// With any other <see cref="LogLevels">Log Level</see> only the exception message is writteIf an exception is thrown during write, Logger
+        /// attempts to write the error details if able.
+        /// </remarks>
+        /// <param name="ex">Exception being logged</param>
         /// <param name="text">Additional string format text to show when logging exception</param>
         /// <param name="args">Arguments shown in string format text</param>
         /// <example>
@@ -119,20 +152,30 @@ namespace TeamControlium.Framework
         ///   Logger.LogException(ex,"Given up trying to connect to [{0}]",Wherever);
         ///   toolWrapper.AbortTest("Cannot connect to remote Selenium host");
         /// }
-        /// </code></example>
+        /// </code>
+        ///</example>
         static public void LogException(Exception ex, string text, params Object[] args)
         {
             StackFrame stackFrame = new StackFrame(1, true);
             DoWrite((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Error, string.Format(text, args));
-            DoWriteLine((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Error,
-                string.Format("Exception being thrown: {0}", ex.ToString()));
+            if (LoggingLevel == LogLevels.FrameworkDebug)
+            {
+                DoWriteLine((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Error,
+                string.Format("Exception thrown: {0}", ex.ToString()));
+            }
+            else
+            {
+                DoWriteLine((stackFrame == null) ? null : stackFrame.GetMethod(), LogLevels.Error,
+                string.Format("Exception thrown: {0}", ex.Message));
+            }
         }
 
         /// <summary>
-        /// Writes a line of data to the active debug log.
-        /// Data can be formatted in the standard string.format syntax.  If an exception is thrown during write, Logger
-        /// attempts to write the error deatils if able.
+        /// Writes a line of data to the active debug log with no line termination
         /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
         /// <param name="textString">Text to be written</param>
         /// <param name="args">String formatting arguments (if any)</param>
         /// <param name="logLevel">Level of text being written (See <see cref="Logger.LogLevels"/> for usage of the Log Level)</param>
@@ -233,10 +276,22 @@ namespace TeamControlium.Framework
         /// <remarks>Text is written if TypeOfWrite is equal to, or higher the current Logging Level</remarks>
         static private void DoWrite(MethodBase methodBase, LogLevels TypeOfWrite, string textString)
         {
+            // Only do write if level of this write is equal to or greater than the current logging level
             if (TypeOfWrite >= LoggingLevel)
             {
-                TestToolString += (WriteStart ? GetPreAmble(methodBase, TypeOfWrite) : string.Empty) + textString ?? string.Empty;
-                WriteStart = false;
+                // Ensure thread safety by locking code around the write
+                lock (lockWrite)
+                {
+                    //
+                    // Get the id of the current thread and append text to end of the dictionary item for that
+                    // thread (create new item if doesnt already exist).  If this is
+                    // first time this thread is doing a write, prepend the PreAmble text first.
+                    //
+                    int threadID = Thread.CurrentThread.ManagedThreadId;
+                    bool writeStart = !testToolStrings.ContainsKey(threadID);
+                    if (writeStart) testToolStrings[threadID] = GetPreAmble(methodBase, TypeOfWrite);
+                    testToolStrings[threadID] += textString ?? string.Empty;
+                }
             }
         }
 
@@ -251,44 +306,58 @@ namespace TeamControlium.Framework
         {
             if (TypeOfWrite >= LoggingLevel)
             {
-                lock (padLock)
+                var textToWrite = textString;
+                lock (lockWriteLine)
                 {
-                    if (WriteStart)
+                    int threadID = Thread.CurrentThread.ManagedThreadId;
+                    if (testToolStrings.ContainsKey(threadID))
                     {
-                        TestToolString += GetPreAmble(methodBase, TypeOfWrite) + textString ?? string.Empty;
+                        try
+                        {
+                            textToWrite = testToolStrings[threadID] += testToolStrings[threadID].EndsWith(" ") ? "" : " " + textToWrite;
+                        }
+                        finally
+                        {
+                            testToolStrings.Remove(threadID);
+                        }
                     }
                     else
                     {
-                        WriteStart = true;
-                        TestToolString += textString;
+                        textToWrite = GetPreAmble(methodBase, TypeOfWrite) + textString ?? string.Empty;
                     }
+
                     try
                     {
-                        if (WriteToConsole)
-                            Console.WriteLine(TestToolString);
+                        if (WriteToConsole || TestToolLog==null)
+                            Console.WriteLine(textToWrite);
                         else
-                            TestToolLog(TestToolString);
+                            TestToolLog(textToWrite);
                     }
                     catch (Exception ex)
                     {
                         string details;
-                        using (EventLog appLog = new EventLog("Application"))
+                        if (!errorWrittenToEventLog)
                         {
-                            if (WriteToConsole)
+                            using (EventLog appLog = new EventLog("Application"))
                             {
-                                details = "console (STDOUT)";
+                                if (WriteToConsole)
+                                {
+                                    details = "console (STDOUT)";
+                                }
+                                else
+                                {
+                                    details = string.Format("delegate provide by tool{0}.", (TestToolLog == null) ?
+                                                                                                 " (Is null! - Has not been implemented!)" :
+                                                                                                 "");
+                                }
+                                appLog.Source = "Application";
+                                appLog.WriteEntry(string.Format("AppServiceInterfaceMock - Logger error writing to {0}.\r\n\r\n" +
+                                                                "Attempt to write line;\r\n" +
+                                                                "{1}\r\n\r\n" +
+                                                                "No further log writes to event log will happen in this session", details, textToWrite, ex), EventLogEntryType.Warning, 12791, 1);
                             }
-                            else
-                            {
-                                details = string.Format("delegate provide by tool ({0}).", (TestToolLog == null) ? "Is null - Has not been implemented!" : "Not null - Has been implemented");
-                            }
-                            appLog.Source = "Application";
-                            appLog.WriteEntry(string.Format("AppServiceInterfaceMock - Logger error writing to {0}.\r\n\r\nAttempt to write line;\r\n{1}", details, TestToolString, ex), EventLogEntryType.Warning, 12791, 1);
+                            errorWrittenToEventLog = true;
                         }
-                    }
-                    finally
-                    {
-                        TestToolString = string.Empty;
                     }
                 }
             }
