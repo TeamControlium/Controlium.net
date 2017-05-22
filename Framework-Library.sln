@@ -5,16 +5,15 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumDriver", "Selenium-Interface\SeleniumDriver.csproj", "{04356433-0C59-45EF-8561-AF425C4195B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Settings", "Settings\Settings.csproj", "{8C61D9A2-6E5F-4A02-94C9-76E59CB5D4E0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{5F7980C4-EF2C-405C-947F-05409B1588DD}"
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Help", "Help\Help.shfbproj", "{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}"
 	ProjectSection(ProjectDependencies) = postProject
 		{04356433-0C59-45EF-8561-AF425C4195B1} = {04356433-0C59-45EF-8561-AF425C4195B1}
-		{8C61D9A2-6E5F-4A02-94C9-76E59CB5D4E0} = {8C61D9A2-6E5F-4A02-94C9-76E59CB5D4E0}
 		{5F7980C4-EF2C-405C-947F-05409B1588DD} = {5F7980C4-EF2C-405C-947F-05409B1588DD}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{F389015E-7DAA-4607-A5BE-6285B971968D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,18 +25,17 @@ Global
 		{04356433-0C59-45EF-8561-AF425C4195B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04356433-0C59-45EF-8561-AF425C4195B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04356433-0C59-45EF-8561-AF425C4195B1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C61D9A2-6E5F-4A02-94C9-76E59CB5D4E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C61D9A2-6E5F-4A02-94C9-76E59CB5D4E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C61D9A2-6E5F-4A02-94C9-76E59CB5D4E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C61D9A2-6E5F-4A02-94C9-76E59CB5D4E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5F7980C4-EF2C-405C-947F-05409B1588DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F7980C4-EF2C-405C-947F-05409B1588DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F7980C4-EF2C-405C-947F-05409B1588DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F7980C4-EF2C-405C-947F-05409B1588DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F389015E-7DAA-4607-A5BE-6285B971968D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F389015E-7DAA-4607-A5BE-6285B971968D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F389015E-7DAA-4607-A5BE-6285B971968D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F389015E-7DAA-4607-A5BE-6285B971968D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

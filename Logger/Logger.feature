@@ -1,4 +1,4 @@
-﻿Feature: Logger features
+﻿Feature: Logger
 	In order to test log events in the Controlium solution
 	As a test automator
 	I want to be able to log events
