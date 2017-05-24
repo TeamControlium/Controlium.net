@@ -28,6 +28,7 @@
     </TransformComponentArguments>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\Logger\Logger.csproj" xmlns="" />
+      <DocumentationSource sourceFile="..\Utilities\Utilities.csproj" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="TeamControlium.Framework" isDocumented="True" xmlns="">Contains all libraries in the Functional/Regression Test Automation framework</NamespaceSummaryItem>

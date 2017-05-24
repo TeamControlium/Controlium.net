@@ -68,7 +68,7 @@ namespace TeamControlium.Framework
             /// Names of items can be duplicated if in seperate categories but must be unique in a single category<br/>
             /// It is the responsibility of the calling software to ensure correct type-casting on a Get
             /// </remarks>
-            /// <param name="category">Category or test data item</param>
+            /// <param name="category">Category for test data item</param>
             /// <param name="name">Name of item within Category</param>
             /// <returns>Item named from defined category</returns>
             /// <exception cref="System.ArgumentException">Thrown if category and/or name are null/empty when getting</exception>
@@ -137,6 +137,13 @@ namespace TeamControlium.Framework
                 }
             }
 
+            /// <summary>
+            /// Gets all items in category
+            /// </summary>
+            /// <param name="category">Category to return</param>
+            /// <returns>Dictionary of all items in named category</returns>
+            /// <exception cref="System.ArgumentException">Thrown if category argument is null/empty</exception>
+            /// <exception cref="System.ArgumentOutOfRangeException">Thrown if category does not exist</exception>
             public new Dictionary<string, dynamic> this[string category]
             {
                 get
@@ -154,21 +161,21 @@ namespace TeamControlium.Framework
             /// <summary>Returns named item from named category</summary>
             /// <param name="category">Category to obtain option from</param>
             /// <param name="name">Name of option to get</param>
-            /// <typeparam name="Y">Expected return Type of object being obtained</typeparam>
+            /// <typeparam name="U">Expected return Type of object being obtained</typeparam>
             /// <returns>Object of Category and Name</returns>
-            public Y GetItem<Y>(string category, string name)
+            public U GetItem<U>(string category, string name)
             {
                 try
                 {
                     dynamic obtainedObject = this[category,name];
 
-                    if (obtainedObject is Y)
+                    if (obtainedObject is U)
                     {
-                        return (Y)obtainedObject;
+                        return (U)obtainedObject;
                     }
                     else
                     {
-                        throw new Exception(string.Format("Expected type [{0}] but got type [{1}].", typeof(Y).Name, obtainedObject.GetType()));
+                        throw new Exception(string.Format("Expected type [{0}] but got type [{1}].", typeof(U).Name, obtainedObject.GetType()));
                     }
                 }
                 catch (Exception ex)
@@ -182,19 +189,19 @@ namespace TeamControlium.Framework
             /// <param name="category">Category to obtain option from</param>
             /// <param name="name">Name of option to get</param>
             /// <param name="value">Object of Category and Name if successful</param>
-            /// <typeparam name="Y">Expected return Type of object being obtained</typeparam>
+            /// <typeparam name="U">Expected return Type of object being obtained</typeparam>
             /// <returns>true if object obtained successfullt otherwise false (use TryExeception to exception thrown)</returns>
-            public bool TryGetItem<Y>(string category, string name, out Y value)
+            public bool TryGetItem<U>(string category, string name, out U value)
             {
                 try
                 {
-                    value = GetItem<Y>(category, name);
+                    value = GetItem<U>(category, name);
                     return true;
                 }
                 catch (Exception ex)
                 {
                     TryException = new Exception(string.Format("Exception getting Category.Name ([{0}].[{1}])", category, name), ex);
-                    value = default(Y);
+                    value = default(U);
                     return false;
                 }
             }
@@ -202,9 +209,9 @@ namespace TeamControlium.Framework
             /// <summary>Returns named option from named category.  Returns null if object not set</summary>
             /// <param name="category">Category to obtain option from</param>
             /// <param name="name">Name of option to get</param>
-            /// <typeparam name="Y">Expected return Type of object being obtained</typeparam>
+            /// <typeparam name="U">Expected return Type of object being obtained</typeparam>
             /// <returns>Object of Category and Name.  If object does not exist returns default value (Null if a reference type)</returns>
-            public Y GetItemOrDefault<Y>(string category, string name)
+            public U GetItemOrDefault<U>(string category, string name)
             {
                 dynamic obtainedObject;
                 try
@@ -213,14 +220,14 @@ namespace TeamControlium.Framework
                 }
                 catch
                 {
-                    Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "No data found for [{0}.{1}] - returning [Type ({2})] default value.", category, name, typeof(Y).Name);
-                    obtainedObject = default(Y);
+                    Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "No data found for [{0}.{1}] - returning [Type ({2})] default value.", category, name, typeof(U).Name);
+                    obtainedObject = default(U);
                 }
 
-                if (obtainedObject is Y)
-                    return (Y)obtainedObject;
+                if (obtainedObject is U)
+                    return (U)obtainedObject;
                 else
-                    throw new InvalidCastException(string.Format("Expected type [{0}] but got type [{1}].", typeof(Y).Name, obtainedObject.GetType().Name));
+                    throw new InvalidCastException(string.Format("Expected type [{0}] but got type [{1}].", typeof(U).Name, obtainedObject.GetType().Name));
             }
 
             /// <summary>Returns all options defined in passed Category</summary>
