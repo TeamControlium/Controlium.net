@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Utilities
+namespace Utilities.TestData
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Utilities
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "Utilities_TestData")))
             {
-                Utilities.Utilities_TestDataFeature.FeatureSetup(null);
+                Utilities.TestData.Utilities_TestDataFeature.FeatureSetup(null);
             }
         }
         

@@ -34,6 +34,7 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,17 +45,28 @@
       <HintPath>..\packages\SpecFlow.2.1.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WebDriver, Version=3.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selenium.WebDriver.3.4.0\lib\net40\WebDriver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestData.cs" />
+    <Compile Include="Detokenizer\Detokenizer.cs" />
+    <Compile Include="Detokenizer\Detokenizer.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Detokenizer.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Detokenizer\DetokenizerTestSteps.cs" />
+    <Compile Include="TestData\TestData.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestData.feature.cs">
+    <Compile Include="TestData\TestData.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestData.feature</DependentUpon>
     </Compile>
-    <Compile Include="TestDataTestSteps.cs" />
+    <Compile Include="TestData\TestDataTestSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Logger\Logger.csproj">
@@ -66,8 +78,12 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Detokenizer\Detokenizer.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Detokenizer.feature.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
-    <None Include="TestData.feature">
+    <None Include="TestData\TestData.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>TestData.feature.cs</LastGenOutput>
     </None>
