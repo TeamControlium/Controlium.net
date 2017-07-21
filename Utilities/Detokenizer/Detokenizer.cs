@@ -93,7 +93,7 @@ namespace TeamControlium.Framework
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception($"Error processing token [{token}] (position {startIndex})", ex);
+                        throw new Exception($"Error processing token {{{token}}} ({ex.Message})", ex);
                     }
                     detokenizedString.Append(stringWithTokens.Substring(endIndex, stringWithTokens.Length - endIndex));
                 }
@@ -343,8 +343,8 @@ namespace TeamControlium.Framework
         }
         static public DateTime DoRandomDate(DateTime MinDate, DateTime MaxDate)
         {
-            if (MinDate >= MaxDate)
-                throw new Exception($"Maximum date earlier than Maximum date! Expect {{random;date(dd-MM-yyyy,dd-MM-yyyy);<format>}} Mindate = {MinDate.ToString()}, Maxdate = {MaxDate.ToString()}");
+            if (MinDate > MaxDate)
+                throw new Exception($"Maximum date earlier than Maximum date! Expect {{random;date(dd-MM-yyyy,dd-MM-yyyy);<format>}} Mindate = {MinDate.ToString("dd/MM/yyyy")}, Maxdate = {MaxDate.ToString("dd/MM/yyyy")}");
             return MinDate.AddDays(RandomGenerator.Next((MaxDate - MinDate).Days));
         }
     }

@@ -11,7 +11,7 @@ namespace TeamControlium.Framework
         /// <summary>
         /// Delegate for processing Tokens.
         /// </summary>
-        static public Func<string, string> TokenProcessor;
+        public static Func<string, string> TokenProcessor;
 
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace TeamControlium.Framework
         /// <typeparam name="T">Returns same object type as submitted</typeparam>
         /// <param name="ObjectToProcess">Object to process</param>
         /// <returns>Processed object</returns>
-        static public T DetokeniseString<T>(T ObjectToProcess)
+        public static T DetokeniseString<T>(T ObjectToProcess)
         {
             //
             // Make sure we are thread-safe. There is a possibility that the framework is in a multi-threaded apartment (MTA) and it is possible
@@ -66,9 +66,19 @@ namespace TeamControlium.Framework
             }
         }
 
-
-
-
+        /// <summary>
+        /// Returns true if string does not start with 0 or starts with t(rue), y(es) or o(n)
+        /// </summary>
+        /// <param name="Value">value to check</param>
+        /// <returns>true if string first digit is not 0 or is true, yes or on</returns>
+        public static bool IsValueTrue(string Value)
+        {
+            if (string.IsNullOrEmpty(Value)) return false;
+            int i;
+            if (int.TryParse(Value, out i))
+                if (i > 0) return true; else return false;
+            return Value.ToLower().StartsWith("t") || Value.ToLower().StartsWith("y") || Value.ToLower().StartsWith("o");
+        }
 
 
 

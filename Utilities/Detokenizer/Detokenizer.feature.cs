@@ -76,13 +76,13 @@ namespace Utilities.Detokenizer
         public virtual void ConvertTodaySDateTokenToTheDateWeRunThisTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert today\'s date token to the date we run this test", ((string[])(null)));
-#line 11
+#line 17
     this.ScenarioSetup(scenarioInfo);
-#line 12
+#line 18
  testRunner.Given("I have a string \"{date;today;dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 13
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 14
+#line 19
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 20
  testRunner.Then("the string is today\'s date in the format \"dd/MM/yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -95,13 +95,13 @@ namespace Utilities.Detokenizer
         public virtual void ConvertYesterdaySDateTokenToTheDayBeforeWeRunThisTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert yesterday\'s date token to the day before we run this test", ((string[])(null)));
-#line 16
+#line 22
  this.ScenarioSetup(scenarioInfo);
-#line 17
+#line 23
  testRunner.Given("I have a string \"{date;yesterday;dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 18
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 19
+#line 24
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 25
  testRunner.Then("the string is yesterday\'s date in the format \"dd/MM/yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -114,13 +114,13 @@ namespace Utilities.Detokenizer
         public virtual void ConvertTomorrowsSDateTokenToTheDayAfterWeRunThisTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert tomorrows\'s date token to the day after we run this test", ((string[])(null)));
-#line 21
+#line 27
  this.ScenarioSetup(scenarioInfo);
-#line 22
+#line 28
  testRunner.Given("I have a string \"{date;tomorrow;dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 23
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 24
+#line 29
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 30
  testRunner.Then("the string is tomorrows\'s date in the format \"dd/MM/yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -133,13 +133,13 @@ namespace Utilities.Detokenizer
         public virtual void DateCommandAndVerbNotCaseSensitive()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Date command and verb not case sensitive", ((string[])(null)));
-#line 26
+#line 32
  this.ScenarioSetup(scenarioInfo);
-#line 27
+#line 33
  testRunner.Given("I have a string \"{Date;Today;dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 28
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 29
+#line 34
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 35
  testRunner.Then("the string is today\'s date in the format \"dd/MM/yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -152,13 +152,13 @@ namespace Utilities.Detokenizer
         public virtual void GetTheDayOfTheWeekWhenTestIsRun()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get the day of the week when test is run", ((string[])(null)));
-#line 38
- this.ScenarioSetup(scenarioInfo);
-#line 39
- testRunner.Given("I have a string \"{date;today;dddd}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 40
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 41
+ this.ScenarioSetup(scenarioInfo);
+#line 42
+ testRunner.Given("I have a string \"{date;today;dddd}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 43
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 44
  testRunner.Then("the string is today\'s date in the format \"dddd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -171,13 +171,13 @@ namespace Utilities.Detokenizer
         public virtual void ConvertDateForADaysOffsetInThePast()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert date for a days offset in the past", ((string[])(null)));
-#line 46
-    this.ScenarioSetup(scenarioInfo);
-#line 47
- testRunner.Given("I have a string \"{date;AddDays(-10);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 48
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 49
+    this.ScenarioSetup(scenarioInfo);
+#line 50
+ testRunner.Given("I have a string \"{date;AddDays(-10);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 51
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 52
  testRunner.Then("the string is the date -10 \"days\" in the format \"dd/MM/yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -190,13 +190,13 @@ namespace Utilities.Detokenizer
         public virtual void ConvertDateForADaysOffsetInTheFuture()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert date for a days offset in the future", ((string[])(null)));
-#line 51
- this.ScenarioSetup(scenarioInfo);
-#line 52
- testRunner.Given("I have a string \"{date;AddDays(10);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 53
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 54
+ this.ScenarioSetup(scenarioInfo);
+#line 55
+ testRunner.Given("I have a string \"{date;AddDays(10);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 56
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 57
  testRunner.Then("the string is the date 10 \"days\" in the format \"dd/MM/yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -209,13 +209,13 @@ namespace Utilities.Detokenizer
         public virtual void ConvertDateForADaysOffsetInTheFutureWithAPlusSign()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert date for a days offset in the future (with a plus sign)", ((string[])(null)));
-#line 56
-    this.ScenarioSetup(scenarioInfo);
-#line 57
- testRunner.Given("I have a string \"{date;AddDays(+10);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 58
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 59
+    this.ScenarioSetup(scenarioInfo);
+#line 60
+ testRunner.Given("I have a string \"{date;AddDays(+10);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 61
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 62
  testRunner.Then("the string is the date 10 \"days\" in the format \"dd/MM/yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -228,13 +228,13 @@ namespace Utilities.Detokenizer
         public virtual void ConvertDateForAMonthsOffsetInThePast()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert date for a months offset in the past", ((string[])(null)));
-#line 61
-    this.ScenarioSetup(scenarioInfo);
-#line 62
- testRunner.Given("I have a string \"{date;AddMonths(-19);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 63
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 64
+    this.ScenarioSetup(scenarioInfo);
+#line 65
+ testRunner.Given("I have a string \"{date;AddMonths(-19);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 66
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 67
  testRunner.Then("the string is the date -19 \"months\" in the format \"dd/MM/yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -247,13 +247,13 @@ namespace Utilities.Detokenizer
         public virtual void ConvertDateForAMonthsOffsetInTheFuture()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert date for a months offset in the future", ((string[])(null)));
-#line 66
- this.ScenarioSetup(scenarioInfo);
-#line 67
- testRunner.Given("I have a string \"{date;AddMonths(17);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 68
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 69
+ this.ScenarioSetup(scenarioInfo);
+#line 70
+ testRunner.Given("I have a string \"{date;AddMonths(17);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 71
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 72
  testRunner.Then("the string is the date 17 \"months\" in the format \"dd/MM/yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -266,13 +266,13 @@ namespace Utilities.Detokenizer
         public virtual void ConvertDateForAYearsOffsetInThePast()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert date for a years offset in the past", ((string[])(null)));
-#line 71
- this.ScenarioSetup(scenarioInfo);
-#line 72
- testRunner.Given("I have a string \"{date;AddYears(-25);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 73
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 74
+ this.ScenarioSetup(scenarioInfo);
+#line 75
+ testRunner.Given("I have a string \"{date;AddYears(-25);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 76
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 77
  testRunner.Then("the string is the date -25 \"years\" in the format \"dd/MM/yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -285,14 +285,199 @@ namespace Utilities.Detokenizer
         public virtual void ConvertDateForAYearsOffsetInTheFuture()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert date for a years offset in the future", ((string[])(null)));
-#line 76
- this.ScenarioSetup(scenarioInfo);
-#line 77
- testRunner.Given("I have a string \"{date;AddYears(25);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 78
- testRunner.When("I process the token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 79
+ this.ScenarioSetup(scenarioInfo);
+#line 80
+ testRunner.Given("I have a string \"{date;AddYears(25);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 81
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 82
  testRunner.Then("the string is the date 25 \"years\" in the format \"dd/MM/yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("I can get a random date from a single date")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_Detokenizer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_Detokenizer")]
+        public virtual void ICanGetARandomDateFromASingleDate()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can get a random date from a single date", ((string[])(null)));
+#line 94
+ this.ScenarioSetup(scenarioInfo);
+#line 95
+ testRunner.Given("I have a string \"{random;date(12-07-2001,12-07-2001);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 96
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 97
+ testRunner.Then("the string is a date between \"12/07/2001\" and \"12/07/2001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("I can get a random date from one of two consequtive dates")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_Detokenizer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_Detokenizer")]
+        public virtual void ICanGetARandomDateFromOneOfTwoConsequtiveDates()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can get a random date from one of two consequtive dates", ((string[])(null)));
+#line 99
+ this.ScenarioSetup(scenarioInfo);
+#line 100
+ testRunner.Given("I have a string \"{random;date(11-07-2001,12-07-2001);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 101
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 102
+ testRunner.Then("the string is a date between \"11/07/2001\" and \"12/07/2001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("I get correct error if min date after max date")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_Detokenizer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_Detokenizer")]
+        public virtual void IGetCorrectErrorIfMinDateAfterMaxDate()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I get correct error if min date after max date", ((string[])(null)));
+#line 104
+ this.ScenarioSetup(scenarioInfo);
+#line 105
+ testRunner.Given("I have a string \"{random;date(12-07-2001,11-07-2001);dd/MM/yyyy}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 106
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 107
+ testRunner.Then("the string is \"Error processing token {random;date(12-07-2001,11-07-2001);dd/MM/y" +
+                    "yyy} (Maximum date earlier than Maximum date! Expect {random;date(dd-MM-yyyy,dd-" +
+                    "MM-yyyy);<format>} Mindate = 12/07/2001, Maxdate = 11/07/2001)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("I can get a random positive floating point number with no decimal places")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_Detokenizer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_Detokenizer")]
+        public virtual void ICanGetARandomPositiveFloatingPointNumberWithNoDecimalPlaces()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can get a random positive floating point number with no decimal places", ((string[])(null)));
+#line 112
+ this.ScenarioSetup(scenarioInfo);
+#line 113
+ testRunner.Given("I have a string \"{random;float(0,1);0}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 114
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 115
+ testRunner.Then("the string matches regular expression \"^[0-9]{1}$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 116
+ testRunner.And("the string is a number between 0 and 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("I can get a random positive floating point number with 1 decimal places")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_Detokenizer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_Detokenizer")]
+        public virtual void ICanGetARandomPositiveFloatingPointNumberWith1DecimalPlaces()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can get a random positive floating point number with 1 decimal places", ((string[])(null)));
+#line 118
+ this.ScenarioSetup(scenarioInfo);
+#line 119
+ testRunner.Given("I have a string \"{random;float(0,1);0.0}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 120
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 121
+ testRunner.Then("the string matches regular expression \"^[0-1]{1}\\.[0-9]{1}$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 122
+ testRunner.And("the string is a number between 0 and 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("I can get a random negative floating point number with 1 decimal places")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_Detokenizer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_Detokenizer")]
+        public virtual void ICanGetARandomNegativeFloatingPointNumberWith1DecimalPlaces()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can get a random negative floating point number with 1 decimal places", ((string[])(null)));
+#line 124
+ this.ScenarioSetup(scenarioInfo);
+#line 125
+ testRunner.Given("I have a string \"{random;float(-1,0);0.0}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 126
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 127
+ testRunner.Then("the string matches regular expression \"^-[0-9]{1}\\.[0-9]{1}$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 128
+ testRunner.And("the string is a number between -1 and 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("I can get a random positive floating point number between tiny numbers")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_Detokenizer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_Detokenizer")]
+        public virtual void ICanGetARandomPositiveFloatingPointNumberBetweenTinyNumbers()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can get a random positive floating point number between tiny numbers", ((string[])(null)));
+#line 130
+ this.ScenarioSetup(scenarioInfo);
+#line 131
+ testRunner.Given("I have a string \"{random;float(0.0003,0.0004);0.000000}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 132
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 133
+ testRunner.Then("the string matches regular expression \"^0{1}\\.0{3}[0-9]{3}$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 134
+ testRunner.And("the string is a number between 0.0003 and 0.0004", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("I can get a random positive floating point number with leading zeros")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_Detokenizer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_Detokenizer")]
+        public virtual void ICanGetARandomPositiveFloatingPointNumberWithLeadingZeros()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can get a random positive floating point number with leading zeros", ((string[])(null)));
+#line 136
+ this.ScenarioSetup(scenarioInfo);
+#line 137
+ testRunner.Given("I have a string \"{random;float(3,4);000}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 138
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 139
+ testRunner.Then("the string matches regular expression \"^0{2}[3-4]{1}$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 140
+ testRunner.And("the string is a number between 3 and 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("I can get a single random character from a given set")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_Detokenizer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_Detokenizer")]
+        public virtual void ICanGetASingleRandomCharacterFromAGivenSet()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can get a single random character from a given set", ((string[])(null)));
+#line 145
+ this.ScenarioSetup(scenarioInfo);
+#line 146
+ testRunner.Given("I have a string \"{random;from(abc);1}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 147
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 148
+ testRunner.Then("the string matches regular expression \"^[a-c]{1}$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 149
+ testRunner.And("the string is 1 characters from \"abc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

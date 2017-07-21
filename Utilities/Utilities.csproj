@@ -58,6 +58,7 @@
       <DependentUpon>Detokenizer.feature</DependentUpon>
     </Compile>
     <Compile Include="Detokenizer\DetokenizerTestSteps.cs" />
+    <Compile Include="TestArguments.cs" />
     <Compile Include="TestData\TestData.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
