@@ -77,7 +77,7 @@ namespace TeamControlium.Framework
             int i;
             if (int.TryParse(Value, out i))
                 if (i > 0) return true; else return false;
-            return Value.ToLower().StartsWith("t") || Value.ToLower().StartsWith("y") || Value.ToLower().StartsWith("o");
+            return Value.ToLower().StartsWith("t") || Value.ToLower().StartsWith("y") || Value.ToLower().StartsWith("on");
         }
 
 
