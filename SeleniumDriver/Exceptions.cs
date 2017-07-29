@@ -425,20 +425,20 @@ namespace TeamControlium.Framework.SeleniumExceptions
         }
     }
 
-    /// <summary>Trying to set text caused Selenium to throw an exception</summary>
-    public class UnableToSetText : Exception
+    /// <summary>Trying to set/get text caused Selenium to throw an exception</summary>
+    public class UnableToSetOrGetText : Exception
     {
         static private string FormatMessage(ObjectMappingDetails mappingDetails, string Text)
         {
-            return string.Format("Setting text on element [{0}] ([{1}]) (Text: [{2}]) caused an exception from Selenium! See inner exception", mappingDetails?.FriendlyName ?? mappingDetails?.FindLogic ?? "", mappingDetails?.FindLogicUsed ?? "No find logic!", Text);
+            return string.Format("Setting or Getting text on element [{0}] ([{1}]) (Text: [{2}]) caused an exception from Selenium! See inner exception", mappingDetails?.FriendlyName ?? mappingDetails?.FindLogic ?? "", mappingDetails?.FindLogicUsed ?? "No find logic!", Text);
         }
 
-        /// <summaryTrying to set text caused Selenium to throw an exception</summary>
+        /// <summaryTrying to set/get text caused Selenium to throw an exception</summary>
         /// <param name="ElementName">Element text was being entered into</param>
         /// <param name="Text">Text being entered</param>
         /// <param name="ex">Inner Exception</param>
-        public UnableToSetText(ObjectMappingDetails mappingDetails, string Text, Exception ex)
-            : base(UnableToSetText.FormatMessage(mappingDetails, Text), ex)
+        public UnableToSetOrGetText(ObjectMappingDetails mappingDetails, string Text, Exception ex)
+            : base(UnableToSetOrGetText.FormatMessage(mappingDetails, Text), ex)
         {
         }
     }

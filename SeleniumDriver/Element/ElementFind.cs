@@ -46,6 +46,23 @@ namespace TeamControlium.Framework
                 throw new Exception("Cannot find child WebElements without being bound to a Selenium WebElement to search from");
             return seleniumDriver.FindElement(this, MappingDetails, FirstMatching, true);
         }
+
+        public bool TryFindElement(ObjectMappingDetails MappingDetails, bool FirstMatching, out Element foundElement)
+        {
+            try
+            {
+                foundElement = FindElement(MappingDetails, FirstMatching);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                TryException = ex;
+                foundElement = null;
+                return false;
+            }
+        }
+
+
         public Element FindElement(ObjectMappingDetails MappingDetails, bool FirstMatching, bool WaitUntilStable)
         {
             // We can only do this if this element has a Parent (so we can get a reference to the Selenium Driver) and it is bound to an IWebElement so that we can search from it....
@@ -55,6 +72,22 @@ namespace TeamControlium.Framework
                 throw new Exception("Cannot find child WebElements without being bound to a Selenium WebElement to search from");
             return seleniumDriver.FindElement(this, MappingDetails, FirstMatching, WaitUntilStable);
         }
+
+        public bool TryFindElement(ObjectMappingDetails MappingDetails, bool FirstMatching, bool WaitUntilStable, out Element foundElement)
+        {
+            try
+            {
+                foundElement = FindElement(MappingDetails, FirstMatching,WaitUntilStable);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                TryException = ex;
+                foundElement = null;
+                return false;
+            }
+        }
+
 
         /// <summary>Locates an element using find logic applied to the current element returning
         /// a child Element.
@@ -76,6 +109,24 @@ namespace TeamControlium.Framework
             return seleniumDriver.FindElement(this, true, MappingDetails);
         }
 
+        public bool TryFindElement(ObjectMappingDetails MappingDetails, out Element foundElement)
+        {
+            try
+            {
+                foundElement = FindElement(MappingDetails);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                TryException = ex;
+                foundElement = null;
+                return false;
+            }
+        }
+
+
+
+
         public Element FindElement(bool WaitUntilStable, ObjectMappingDetails MappingDetails)
         {
             // We can only do this if this element has a Parent (so we can get a reference to the Selenium Driver) and it is bound to an IWebElement so that we can search from it....
@@ -85,6 +136,23 @@ namespace TeamControlium.Framework
                 throw new Exception("Cannot find child WebElements without being bound to a Selenium WebElement to search from");
             return seleniumDriver.FindElement(this, WaitUntilStable, MappingDetails);
         }
+
+        public bool TryFindElement(bool WaitUntilStable, ObjectMappingDetails MappingDetails, out Element foundElement)
+        {
+            try
+            {
+                foundElement = FindElement(WaitUntilStable, MappingDetails);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                TryException = ex;
+                foundElement = null;
+                return false;
+            }
+        }
+
+
 
 
         /// <summary>Locates an element using find logic applied to the current element returning
@@ -107,6 +175,24 @@ namespace TeamControlium.Framework
                 throw new Exception("Cannot find child WebElements without being bound to a Selenium WebElement to search from");
             return seleniumDriver.FindElement(this, Mapping, FirstMatching, Timeout, PollInterval, true);
         }
+
+        public bool TryFindElement(ObjectMappingDetails Mapping, bool FirstMatching, TimeSpan Timeout, TimeSpan PollInterval, out Element foundElement)
+        {
+            try
+            {
+                foundElement = FindElement(Mapping,FirstMatching,Timeout,PollInterval);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                TryException = ex;
+                foundElement = null;
+                return false;
+            }
+        }
+
+
+
         public Element FindElement(ObjectMappingDetails Mapping, bool FirstMatching, TimeSpan Timeout, TimeSpan PollInterval, bool WaitUntilStable)
         {
             // We can only do this if this element has a Parent (so we can get a reference to the Selenium Driver) and it is bound to an IWebElement so that we can search from it....
@@ -116,6 +202,23 @@ namespace TeamControlium.Framework
                 throw new Exception("Cannot find child WebElements without being bound to a Selenium WebElement to search from");
             return seleniumDriver.FindElement(this, Mapping, FirstMatching, Timeout, PollInterval, WaitUntilStable);
         }
+
+        public bool TryFindElement(ObjectMappingDetails Mapping, bool FirstMatching, TimeSpan Timeout, TimeSpan PollInterval, bool WaitUntilStable, out Element foundElement)
+        {
+            try
+            {
+                foundElement = FindElement(Mapping, FirstMatching, Timeout, PollInterval,WaitUntilStable);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                TryException = ex;
+                foundElement = null;
+                return false;
+            }
+        }
+
+
 
 
         /// <summary>Locates an element using find logic applied to the current element returning
@@ -138,6 +241,21 @@ namespace TeamControlium.Framework
             return seleniumDriver.FindElement(this, Mapping, Timeout, PollInterval, true);
         }
 
+        public bool TryFindElement(ObjectMappingDetails Mapping, TimeSpan Timeout, TimeSpan PollInterval, out Element foundElement)
+        {
+            try
+            {
+                foundElement = FindElement(Mapping, Timeout, PollInterval);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                TryException = ex;
+                foundElement = null;
+                return false;
+            }
+        }
+
         public Element FindElement(ObjectMappingDetails Mapping, TimeSpan Timeout, TimeSpan PollInterval, bool WaitUntilStable)
         {
             // We can only do this if this element has a Parent (so we can get a reference to the Selenium Driver) and it is bound to an IWebElement so that we can search from it....
@@ -148,5 +266,19 @@ namespace TeamControlium.Framework
             return seleniumDriver.FindElement(this, Mapping, Timeout, PollInterval, WaitUntilStable);
         }
 
+        public bool TryFindElement(ObjectMappingDetails Mapping, TimeSpan Timeout, TimeSpan PollInterval, bool WaitUntilStable, out Element foundElement)
+        {
+            try
+            {
+                foundElement = FindElement(Mapping, Timeout, PollInterval,WaitUntilStable);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                TryException = ex;
+                foundElement = null;
+                return false;
+            }
+        }
     }
 }

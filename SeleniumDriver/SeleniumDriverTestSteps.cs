@@ -12,18 +12,7 @@ namespace TeamControlium.Framework
     [Binding]
     public sealed class SeleniumDriverTestSteps
     {
-        [Given(@"wibble")]
-        public void GivenWibble()
-        {
-            Utilities.TestData["Selenium", "Browser"] = "IE11";
-            Utilities.TestData["Selenium", "Host"] = "localhost";
-            Utilities.TestData["Selenium", "SeleniumServerFolder"] = @"./../../TestSeleniumServer";
-            Utilities.TestData["Selenium", "DebugMode"] = "no";
-            Utilities.TestData["Selenium", "DebugLogFile"] = "mylog.log";
-            SeleniumDriver sDriver = new SeleniumDriver();
-            sDriver.GotoURL(@"www.google.com");
-        }
-
+ 
         [Given(@"There are no processes running named ""(.*)""")]
         public void GivenThereAreNoProcessesRunningNamed(string processNameToKill)
         {

@@ -67,6 +67,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Browsers.cs" />
+    <Compile Include="ControlBase\ControlBase.cs" />
+    <Compile Include="ControlBase\ControlBaseFeature.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ControlBaseFeature.feature</DependentUpon>
+    </Compile>
+    <Compile Include="ControlBase\ControlBaseTester\ControlBaseTester.cs" />
+    <Compile Include="ControlBase\ControlBaseTestSteps.cs" />
+    <Compile Include="ControlBase\ControlCache.cs" />
     <Compile Include="CredentialsDialog.cs">
       <SubType>Dialogs</SubType>
     </Compile>
@@ -94,6 +103,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ControlBase\ControlBaseFeature.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ControlBaseFeature.feature.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <None Include="SeleniumDriver.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -120,6 +133,7 @@
   <ItemGroup>
     <None Include="TestSeleniumServer\IEDriverServer.exe" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

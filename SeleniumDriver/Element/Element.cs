@@ -187,10 +187,11 @@ namespace TeamControlium.Framework
 
 
         /// <summary>Performs a clear action on the element</summary>
-        public void Clear()
+        public Element Clear()
         {
             ThrowIfUnbound();
             seleniumDriver.Clear(WebElement);
+            return this;
         }
 
         /// <summary>
@@ -259,7 +260,7 @@ namespace TeamControlium.Framework
             }
             catch (Exception ex)
             {
-                throw new SeleniumExceptions.UnableToSetText(MappingDetails, Text, ex);
+                throw new SeleniumExceptions.UnableToSetOrGetText(MappingDetails, Text, ex);
             }
         }
 
@@ -275,7 +276,7 @@ namespace TeamControlium.Framework
             }
             catch (Exception ex)
             {
-                throw new SeleniumExceptions.UnableToSetText(MappingDetails, Text, ex);
+                throw new SeleniumExceptions.UnableToSetOrGetText(MappingDetails, Text, ex);
             }
         }
 

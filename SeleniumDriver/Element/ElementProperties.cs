@@ -26,14 +26,16 @@ namespace TeamControlium.Framework
                 {
                     _ParentOfThisElement = (Element)null;  //  If it is null, force the issue....
                 }
-                Type parentType = value.GetType();
-                if ((parentType != typeof(SeleniumDriver)) &&
-                    (parentType != typeof(Element)))
-                    throw new Exception(string.Format("An element can only have another Element or the SeleniumDriver as a parent. Type [{0}] is invalid!", parentType.Name));
-                _ParentOfThisElement = value;
+                else
+                {
+                    Type parentType = value.GetType();
+                    if ((parentType != typeof(SeleniumDriver)) &&
+                        (parentType != typeof(Element)))
+                        throw new Exception(string.Format("An element can only have another Element or the SeleniumDriver as a parent. Type [{0}] is invalid!", parentType.Name));
+                    _ParentOfThisElement = value;
+                }
             }
         }
-
 
 
         /// <summary>

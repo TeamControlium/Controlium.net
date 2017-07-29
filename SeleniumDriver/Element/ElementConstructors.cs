@@ -24,6 +24,21 @@ namespace TeamControlium.Framework
             this.MappingDetails = null;
         }
 
+
+        /// <summary>
+        /// Create an instance of an Element.
+        /// </summary>
+        /// <remarks>
+        /// Element has no parent set, is not bound to a Selemenium WebElement and has no mapping details.
+        /// </remarks>
+        public Element(ObjectMappingDetails mappingDetails)
+        {
+            WebElement = null;
+            ParentOfThisElement = null;
+            MappingDetails = mappingDetails;
+        }
+
+
         /// <summary>
         /// Create an instance of an Element. Element will be child of the DOM, and will have no parent element.  It has not yet been bound to a Selenium WebElement
         /// </summary>

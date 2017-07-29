@@ -294,6 +294,13 @@ namespace TeamControlium.Framework
             webDriver = null;
         }
 
+
+        public virtual T SetControl<T>(T NewControl) where T : ControlBase
+        {
+            return ControlBase.SetControl<T>(this, NewControl);
+
+        }
+
         /// <summary>
         /// Returns the title of the current browser window
         /// </summary>
