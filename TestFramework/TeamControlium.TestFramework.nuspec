@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>TeamControlium.TestFramework</id>
+    <version>$version$</version>
+    <title>TeamControlium Selenium Test Framework</title>
+    <authors>TeamControlium contributors</authors>
+    <owners>Mutley</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides a level of abstraction from Selenium and a Control-based web object identification approach.</description>
+    <releaseNotes>First release</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>TeamControlium Selenium</tags>
+  </metadata>
+</package>

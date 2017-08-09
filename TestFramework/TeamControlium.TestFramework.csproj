@@ -126,6 +126,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SeleniumDriver.feature.cs</LastGenOutput>
     </None>
+    <None Include="TeamControlium.TestFramework.nuspec" />
     <None Include="Utilities\DetokenizerClass\Detokenizer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Detokenizer.feature.cs</LastGenOutput>
