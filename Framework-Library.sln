@@ -3,21 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{5F7980C4-EF2C-405C-947F-05409B1588DD}"
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "TeamControlium.Framework.Help", "Help\TeamControlium.Framework.Help.shfbproj", "{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}"
 EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Help", "Help\Help.shfbproj", "{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}"
-	ProjectSection(ProjectDependencies) = postProject
-		{F389015E-7DAA-4607-A5BE-6285B971968D} = {F389015E-7DAA-4607-A5BE-6285B971968D}
-		{5F7980C4-EF2C-405C-947F-05409B1588DD} = {5F7980C4-EF2C-405C-947F-05409B1588DD}
-		{878175D0-D5AD-430F-A468-A508BE7F524F} = {878175D0-D5AD-430F-A468-A508BE7F524F}
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{CAE6415B-5C90-47A6-B79D-DF542A4711AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{F389015E-7DAA-4607-A5BE-6285B971968D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumDriver", "SeleniumDriver\SeleniumDriver.csproj", "{878175D0-D5AD-430F-A468-A508BE7F524F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5F7980C4-EF2C-405C-947F-05409B1588DD} = {5F7980C4-EF2C-405C-947F-05409B1588DD}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamControlium.TestFramework", "TestFramework\TeamControlium.TestFramework.csproj", "{D701BB49-742F-4068-BD72-7CC968B7673F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,21 +15,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5F7980C4-EF2C-405C-947F-05409B1588DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F7980C4-EF2C-405C-947F-05409B1588DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F7980C4-EF2C-405C-947F-05409B1588DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F7980C4-EF2C-405C-947F-05409B1588DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F389015E-7DAA-4607-A5BE-6285B971968D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F389015E-7DAA-4607-A5BE-6285B971968D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F389015E-7DAA-4607-A5BE-6285B971968D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F389015E-7DAA-4607-A5BE-6285B971968D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{878175D0-D5AD-430F-A468-A508BE7F524F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{878175D0-D5AD-430F-A468-A508BE7F524F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{878175D0-D5AD-430F-A468-A508BE7F524F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{878175D0-D5AD-430F-A468-A508BE7F524F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D701BB49-742F-4068-BD72-7CC968B7673F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D701BB49-742F-4068-BD72-7CC968B7673F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D701BB49-742F-4068-BD72-7CC968B7673F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D701BB49-742F-4068-BD72-7CC968B7673F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
