@@ -206,7 +206,7 @@ namespace TeamControlium.TestFramework
         /// </summary>
         public virtual void Click()
         {
-            Logger.WriteLine(Logger.LogLevels.TestDebug, "Clicking element [{0}]");
+            Logger.WriteLine(Logger.LogLevels.TestDebug, "Clicking element [{0}]",RootElement?.MappingDetails?.FriendlyName?? RootElement?.MappingDetails?.FindLogic??"Dunno!");
             RootElement.Click();
         }
 
