@@ -11,5 +11,6 @@
     <releaseNotes>First release</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>TeamControlium Selenium</tags>
+    <projectUrl>https://github.com/TeamControlium/Framework-Library</projectUrl>
   </metadata>
 </package>
