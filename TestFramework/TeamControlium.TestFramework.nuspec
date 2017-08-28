@@ -8,7 +8,7 @@
     <owners>Mutley</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides a level of abstraction from Selenium and a Control-based web object identification approach.</description>
-    <releaseNotes>First release</releaseNotes>
+    <releaseNotes>Added ability for Test Data category to be loaded as a whole</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>TeamControlium Selenium</tags>
     <projectUrl>https://github.com/TeamControlium/Framework-Library</projectUrl>
