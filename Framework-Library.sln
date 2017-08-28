@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "TeamControlium.Framework.Help", "Help\TeamControlium.Framework.Help.shfbproj", "{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}"
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "TeamControlium.TestFramework.Help", "Help\TeamControlium.TestFramework.Help.shfbproj", "{74FBCE55-7ADF-4C9F-885A-2AF4365F4289}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{CAE6415B-5C90-47A6-B79D-DF542A4711AE}"
 EndProject

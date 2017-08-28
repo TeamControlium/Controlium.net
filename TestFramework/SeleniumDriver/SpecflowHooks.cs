@@ -21,7 +21,11 @@ namespace TeamControlium.TestFramework
         [AfterScenario]
         public void AfterScenario()
         {
-            ((SeleniumDriver)ScenarioContext.Current["SeleniumDriver"]).CloseDriver();
+            try
+            {
+                ((SeleniumDriver)ScenarioContext.Current["SeleniumDriver"]).CloseDriver();
+            }
+            catch { }
 
         }
     }

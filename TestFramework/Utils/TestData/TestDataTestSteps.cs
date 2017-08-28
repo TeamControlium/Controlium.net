@@ -35,6 +35,32 @@ namespace TeamControlium.TestFramework
             Utilities.TestData[category, name] = item;
         }
 
+        [Given(@"I have a Test data item ""(.*)"" in item named ""(.*)""")]
+        public void GivenIHaveATestDataItemInItemNamed(string item, string name)
+        {
+            try
+            {
+                var dummy = ScenarioContext.Current[$"Dictionary"];
+            }
+            catch
+            {
+                ScenarioContext.Current[$"Dictionary"] = new Dictionary<string, dynamic>();
+            }
+            ((Dictionary<string, dynamic>)ScenarioContext.Current[$"Dictionary"]).Add(name,item);
+        }
+
+        [Given(@"I have saved items in category ""(.*)""")]
+        public void GivenIHaveSavedItemsInCategory(string category)
+        {
+            int index = 1;
+            foreach (KeyValuePair<string, dynamic> keyvalue in ((Dictionary<string, dynamic>)ScenarioContext.Current[$"Dictionary"]))
+            {
+                ScenarioContext.Current[$"Saved-{index++}"] = keyvalue.Value;
+            }
+            Utilities.TestData[category] = ((Dictionary<string, dynamic>)ScenarioContext.Current[$"Dictionary"]);
+        }
+
+
         [When(@"I recall the Test Data item (\d) named ""(.*)"" in category ""(.*)""")]
         public void WhenIRecallTheTestDataNamedInCategory(string itemIndex,string name, string category)
         {

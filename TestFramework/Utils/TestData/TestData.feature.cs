@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace TeamControlium.TestFramework.Utilities.TestData
+namespace TeamControlium.TestFramework.Utils.TestData
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace TeamControlium.TestFramework.Utilities.TestData
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "Utilities_TestData")))
             {
-                global::TeamControlium.TestFramework.Utilities.TestData.Utilities_TestDataFeature.FeatureSetup(null);
+                global::TeamControlium.TestFramework.Utils.TestData.Utilities_TestDataFeature.FeatureSetup(null);
             }
         }
         
@@ -117,27 +117,54 @@ namespace TeamControlium.TestFramework.Utilities.TestData
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Save two strings to a category then recall")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_TestData")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_TestData")]
+        public virtual void SaveTwoStringsToACategoryThenRecall()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Save two strings to a category then recall", ((string[])(null)));
+#line 20
+ this.ScenarioSetup(scenarioInfo);
+#line 21
+ testRunner.Given("I have a Test data item \"My Data one\" in item named \"MyName1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 22
+ testRunner.And("I have a Test data item \"My Data two\" in item named \"MyName2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
+ testRunner.And("I have saved items in category \"MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 24
+ testRunner.When("I recall the Test Data item 1 named \"MyName1\" in category \"MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 25
+ testRunner.And("I recall the Test Data item 2 named \"MyName2\" in category \"MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+ testRunner.Then("the recalled 1 value matches the saved 1 value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 27
+ testRunner.And("the recalled 2 value matches the saved 2 value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Save and recall two strings from different Categories")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_TestData")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_TestData")]
         public virtual void SaveAndRecallTwoStringsFromDifferentCategories()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Save and recall two strings from different Categories", ((string[])(null)));
-#line 20
+#line 29
     this.ScenarioSetup(scenarioInfo);
-#line 21
+#line 30
  testRunner.Given("I have saved Test Data item 1 \"My Data one\" in item named \"MyName\" in category \"M" +
                     "yCategory1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 22
+#line 31
  testRunner.And("I have saved Test Data item 2 \"My Data two\" in item named \"MyName\" in category \"M" +
                     "yCategory2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 32
  testRunner.When("I recall the Test Data item 1 named \"MyName\" in category \"MyCategory1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 24
+#line 33
  testRunner.And("I recall the Test Data item 2 named \"MyName\" in category \"MyCategory2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
+#line 34
  testRunner.Then("the recalled 1 value matches the saved 1 value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 26
+#line 35
  testRunner.And("the recalled 2 value matches the saved 2 value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -150,13 +177,13 @@ namespace TeamControlium.TestFramework.Utilities.TestData
         public virtual void SaveAndRecallAnIntegerToTestData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Save and recall an integer to test data", ((string[])(null)));
-#line 28
+#line 37
  this.ScenarioSetup(scenarioInfo);
-#line 29
+#line 38
  testRunner.Given("I have saved Test Data item 1 69 in item named \"MyName\" in category \"MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 30
+#line 39
  testRunner.When("I recall the Test Data item 1 named \"MyName\" in category \"MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 31
+#line 40
  testRunner.Then("the recalled 1 value matches the saved 1 value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -169,21 +196,21 @@ namespace TeamControlium.TestFramework.Utilities.TestData
         public virtual void SaveAndRecallOneStringAndOneIntFromSameCategory()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Save and recall one string and one int from same Category", ((string[])(null)));
-#line 33
+#line 42
     this.ScenarioSetup(scenarioInfo);
-#line 34
+#line 43
  testRunner.Given("I have saved Test Data item 1 \"My Data one\" in item named \"MyName1\" in category \"" +
                     "MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 35
+#line 44
  testRunner.And("I have saved Test Data item 2 222 in item named \"MyName2\" in category \"MyCategory" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 45
  testRunner.When("I recall the Test Data item 1 named \"MyName1\" in category \"MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 37
+#line 46
  testRunner.And("I recall the Test Data item 2 named \"MyName2\" in category \"MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 47
  testRunner.Then("the recalled 1 value matches the saved 1 value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 39
+#line 48
  testRunner.And("the recalled 2 value matches the saved 2 value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -196,16 +223,16 @@ namespace TeamControlium.TestFramework.Utilities.TestData
         public virtual void ChangeAStringValueInTestData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change a string value in test data", ((string[])(null)));
-#line 41
+#line 50
     this.ScenarioSetup(scenarioInfo);
-#line 42
+#line 51
  testRunner.Given("I have saved Test Data item 1 \"My Data\" in item named \"MyName\" in category \"MyCat" +
                     "egory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 43
+#line 52
  testRunner.When("I change Test Data item 1 named \"MyName\" in category \"MyCategory\" to \"New Value\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 44
+#line 53
  testRunner.And("I recall the Test Data item 1 named \"MyName\" in category \"MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
+#line 54
  testRunner.Then("the recalled 1 value matches the saved 1 value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -218,15 +245,15 @@ namespace TeamControlium.TestFramework.Utilities.TestData
         public virtual void ChangeAnIntegerValueToAStringValueInTestData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change an integer value to a string value in test data", ((string[])(null)));
-#line 47
+#line 56
     this.ScenarioSetup(scenarioInfo);
-#line 48
+#line 57
  testRunner.Given("I have saved Test Data item 1 69 in item named \"MyName\" in category \"MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 49
+#line 58
  testRunner.When("I change Test Data item 1 named \"MyName\" in category \"MyCategory\" to \"New Value\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 50
+#line 59
  testRunner.And("I recall the Test Data item 1 named \"MyName\" in category \"MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
+#line 60
  testRunner.Then("the recalled 1 value matches the saved 1 value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -239,15 +266,15 @@ namespace TeamControlium.TestFramework.Utilities.TestData
         public virtual void CorrectErrorIfITryToGetAStringAsAnInteger()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Correct error if I try to get a string as an integer", ((string[])(null)));
-#line 53
+#line 62
     this.ScenarioSetup(scenarioInfo);
-#line 54
+#line 63
  testRunner.Given("I have saved Test Data item 1 \"My Data\" in item named \"MyName\" in category \"MyCat" +
                     "egory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 55
+#line 64
  testRunner.When("I recall the Test Data item 1 named \"MyName\" in category \"MyCategory\" as an integ" +
                     "er", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 56
+#line 65
     testRunner.Then("the recalled 1 value is an exception with innermost exception message \"Expected t" +
                     "ype [Int32] but got type [System.String].\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -261,16 +288,16 @@ namespace TeamControlium.TestFramework.Utilities.TestData
         public virtual void SaveOneItemOfTestDataThenClear()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Save one item of test data then clear", ((string[])(null)));
-#line 58
+#line 67
     this.ScenarioSetup(scenarioInfo);
-#line 59
+#line 68
  testRunner.Given("I have saved Test Data item 1 \"My Data\" in item named \"MyName\" in category \"MyCat" +
                     "egory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
+#line 69
  testRunner.When("I clear the test data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 61
+#line 70
  testRunner.And("I recall the Test Data item 1 named \"MyName\" in category \"MyCategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 71
     testRunner.Then("the recalled 1 value is an exception with innermost exception message \"Category d" +
                     "oes not exist Parameter name: category Actual value was MyCategory.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -284,24 +311,24 @@ namespace TeamControlium.TestFramework.Utilities.TestData
         public virtual void SaveTwoItemsOfTestDataInDifferentCategoriesThenClear()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Save two items of test data in different categories then clear", ((string[])(null)));
-#line 64
+#line 73
  this.ScenarioSetup(scenarioInfo);
-#line 65
+#line 74
  testRunner.Given("I have saved Test Data item 1 \"My Data\" in item named \"MyName\" in category \"MyCat" +
                     "egory1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 66
+#line 75
  testRunner.Given("I have saved Test Data item 2 66 in item named \"MyName\" in category \"MyCategory2\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 67
+#line 76
  testRunner.When("I clear the test data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 68
+#line 77
  testRunner.And("I recall the Test Data item 1 named \"MyName\" in category \"MyCategory1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 78
     testRunner.Then("the recalled 1 value is an exception with innermost exception message \"Category d" +
                     "oes not exist Parameter name: category Actual value was MyCategory1.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 70
+#line 79
  testRunner.When("I recall the Test Data item 2 named \"MyName\" in category \"MyCategory2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 71
+#line 80
     testRunner.Then("the recalled 2 value is an exception with innermost exception message \"Category d" +
                     "oes not exist Parameter name: category Actual value was MyCategory2.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

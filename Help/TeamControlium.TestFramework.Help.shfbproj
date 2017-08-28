@@ -11,7 +11,7 @@
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual Studio adds them anyway -->
     <AssemblyName>Help</AssemblyName>
     <RootNamespace>Help</RootNamespace>
-    <Name>TeamControlium.Framework.Help</Name>
+    <Name>TeamControlium.TestFramework.Help</Name>
     <!-- SHFB properties -->
     <FrameworkVersion>.NET Framework 4.6.1</FrameworkVersion>
     <OutputPath>.\Help\</OutputPath>

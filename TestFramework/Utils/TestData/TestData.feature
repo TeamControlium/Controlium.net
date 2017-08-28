@@ -17,6 +17,15 @@ Feature: Utilities_TestData
 	Then the recalled 1 value matches the saved 1 value
 	And the recalled 2 value matches the saved 2 value
 
+	Scenario: Save two strings to a category then recall
+	Given I have a Test data item "My Data one" in item named "MyName1"
+	And I have a Test data item "My Data two" in item named "MyName2"
+	And I have saved items in category "MyCategory"
+	When I recall the Test Data item 1 named "MyName1" in category "MyCategory"
+	And I recall the Test Data item 2 named "MyName2" in category "MyCategory"
+	Then the recalled 1 value matches the saved 1 value
+	And the recalled 2 value matches the saved 2 value
+
     Scenario: Save and recall two strings from different Categories
 	Given I have saved Test Data item 1 "My Data one" in item named "MyName" in category "MyCategory1"
 	And I have saved Test Data item 2 "My Data two" in item named "MyName" in category "MyCategory2"

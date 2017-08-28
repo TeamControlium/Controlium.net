@@ -156,6 +156,16 @@ namespace TeamControlium.TestFramework
                     Logger.WriteLine(Logger.LogLevels.FrameworkDebug, "Got category [{0}] ({1} items)", category, wholeCategory.Count);
                     return wholeCategory;
                 }
+                set
+                {
+                    if (string.IsNullOrEmpty(category))
+                        throw new ArgumentException(string.Format("Cannot be null or empty ({0})", category == null ? "Is Null" : "Is empty"), "Category");
+                    // Add Category if we dont already have it
+                    if (!testData.ContainsKey(category))
+                        testData.Add(category, new Dictionary<string, dynamic>());
+                    Logger.WriteLine(Logger.LogLevels.FrameworkDebug, "Setting category [{0}] ({1} items)", category, value.Count);
+                    testData[category] = value;
+                }
             }
 
             /// <summary>Returns named item from named category</summary>

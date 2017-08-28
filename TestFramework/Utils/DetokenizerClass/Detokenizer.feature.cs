@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace TeamControlium.TestFramework.Utilities.DetokenizerClass
+namespace TeamControlium.TestFramework.Utils.DetokenizerClass
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace TeamControlium.TestFramework.Utilities.DetokenizerClass
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "Utilities_Detokenizer")))
             {
-                global::TeamControlium.TestFramework.Utilities.DetokenizerClass.Utilities_DetokenizerFeature.FeatureSetup(null);
+                global::TeamControlium.TestFramework.Utils.DetokenizerClass.Utilities_DetokenizerFeature.FeatureSetup(null);
             }
         }
         

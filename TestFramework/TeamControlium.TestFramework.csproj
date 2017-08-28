@@ -89,22 +89,22 @@
     <Compile Include="SeleniumDriver\SeleniumDriver.cs" />
     <Compile Include="SeleniumDriver\SeleniumDriverTestSteps.cs" />
     <Compile Include="SeleniumDriver\SpecflowHooks.cs" />
-    <Compile Include="Utilities\DetokenizerClass\Detokenizer.cs" />
-    <Compile Include="Utilities\DetokenizerClass\Detokenizer.feature.cs">
+    <Compile Include="Utils\DetokenizerClass\Detokenizer.cs" />
+    <Compile Include="Utils\DetokenizerClass\Detokenizer.feature.cs">
       <DependentUpon>Detokenizer.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Utilities\DetokenizerClass\DetokenizerTestSteps.cs" />
-    <Compile Include="Utilities\TestArguments.cs" />
-    <Compile Include="Utilities\TestData\TestData.cs" />
-    <Compile Include="Utilities\TestData\TestData.feature.cs">
-      <DependentUpon>TestData.feature</DependentUpon>
+    <Compile Include="Utils\DetokenizerClass\DetokenizerTestSteps.cs" />
+    <Compile Include="Utils\TestArguments.cs" />
+    <Compile Include="Utils\TestData\TestData.cs" />
+    <Compile Include="Utils\TestData\TestData.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>TestData.feature</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\TestData\TestDataTestSteps.cs" />
-    <Compile Include="Utilities\Utilities.cs" />
+    <Compile Include="Utils\TestData\TestDataTestSteps.cs" />
+    <Compile Include="Utils\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
@@ -127,11 +127,11 @@
       <LastGenOutput>SeleniumDriver.feature.cs</LastGenOutput>
     </None>
     <None Include="TeamControlium.TestFramework.nuspec" />
-    <None Include="Utilities\DetokenizerClass\Detokenizer.feature">
+    <None Include="Utils\DetokenizerClass\Detokenizer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Detokenizer.feature.cs</LastGenOutput>
     </None>
-    <None Include="Utilities\TestData\TestData.feature">
+    <None Include="Utils\TestData\TestData.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>TestData.feature.cs</LastGenOutput>
     </None>
