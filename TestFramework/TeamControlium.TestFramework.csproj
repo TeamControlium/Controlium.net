@@ -89,6 +89,7 @@
     <Compile Include="SeleniumDriver\SeleniumDriver.cs" />
     <Compile Include="SeleniumDriver\SeleniumDriverTestSteps.cs" />
     <Compile Include="SeleniumDriver\SpecflowHooks.cs" />
+    <Compile Include="Utils\DatabaseInterface.cs" />
     <Compile Include="Utils\DetokenizerClass\Detokenizer.cs" />
     <Compile Include="Utils\DetokenizerClass\Detokenizer.feature.cs">
       <DependentUpon>Detokenizer.feature</DependentUpon>

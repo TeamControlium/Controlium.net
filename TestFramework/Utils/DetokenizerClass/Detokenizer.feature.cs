@@ -481,6 +481,23 @@ namespace TeamControlium.TestFramework.Utils.DetokenizerClass
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Nested tokens")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utilities_Detokenizer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utilities_Detokenizer")]
+        public virtual void NestedTokens()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Nested tokens", ((string[])(null)));
+#line 151
+ this.ScenarioSetup(scenarioInfo);
+#line 152
+ testRunner.Given("I have a string \"{random;digits;{random;from(2345);1} }\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 153
+ testRunner.When("I process the token to a string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

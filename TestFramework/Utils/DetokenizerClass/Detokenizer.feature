@@ -148,3 +148,6 @@ Feature: Utilities_Detokenizer
 	Then the string matches regular expression "^[a-c]{1}$"
 	And the string is 1 characters from "abc"
 
+	Scenario: Nested tokens
+	Given I have a string "{random;digits;{random;from(2345);1} }"
+	When I process the token to a string
