@@ -8,7 +8,6 @@ using System.Threading;
 
 namespace TeamControlium.TestFramework
 {
-
     public class DatabaseInterface
     {
         public static void EnsureDatabaseExists(string DatabaseLogicalName)
@@ -55,38 +54,15 @@ namespace TeamControlium.TestFramework
                 {
                     string folder;
                     Logger.WriteLine(Logger.LogLevels.TestInformation, $"Database [{databaseName}] does not exist so creating.");
-                    if ((DatabaseLogicalName.ToLower() == "testharness") &&
-                        (Utilities.TestData.TryGetItem<string>(DatabaseLogicalName, "DatabaseFilesLocation", out folder)))
-                    {
-                        //
-                        // For the test Harness, see if the "TestHarness", "DatabaseFilesLocation" option has been set.  In which case we will put the files there...
-                        //
-                        // This is primarily to help the disk-space limitations.  In the regregression environment an E drive was created to store the files.
-                        //
-                        try
-                        {
-                            string dataFile = Path.Combine(folder, $"{DatabaseLogicalName}_data.mdf");
-                            string logFile = Path.Combine(folder, $"{DatabaseLogicalName}_log.ldf");
-                            Logger.WriteLine(Logger.LogLevels.TestDebug, $"{DatabaseLogicalName} database files being located in [{folder}]");
-                            db.Execute($"CREATE DATABASE [{databaseName}] ON PRIMARY (NAME = N'{DatabaseLogicalName}_Data', FILENAME = N'{dataFile}', SIZE = 128MB, MAXSIZE = UNLIMITED, FILEGROWTH = 64MB) LOG ON (NAME = N'TestHarness_Log', FILENAME = N'{logFile}', SIZE = 64MB, MAXSIZE = 4096MB, FILEGROWTH = 16MB)");
-                            db.Execute($"ALTER DATABASE [{databaseName}] SET RECOVERY SIMPLE");
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.WriteLine(Logger.LogLevels.TestInformation, $"Cannot create {DatabaseLogicalName} database.  Does the folder [{folder}] exist and does the database service have write permissions? Error: {ex}");
-                            throw new Exception($"Cannot create {DatabaseLogicalName} database.  Does the folder [{folder}] exist and does the database service have write permissions!?", ex);
-                        }
-                    }
-                    else
-                    {
-                        //
-                        // If not testharness or we dont have the folder set, create database but allow SQL Server to decided where to put files.
-                        //
-                        db.Execute($"CREATE DATABASE [{databaseName}]");
-                        string LogFileLogicalName = db.GetValue<string>("SELECT name FROM sys.master_files WHERE database_id = db_id(@DBName) and type_desc = 'LOG'", new System.Data.SqlClient.SqlParameter("DBName", databaseName));
-                        db.Execute($"ALTER DATABASE [{databaseName}] SET RECOVERY SIMPLE");
-                        db.Execute($"ALTER DATABASE [{databaseName}] MODIFY FILE (NAME = '{LogFileLogicalName}', MAXSIZE = 1024MB)");  // 1GB max size of the log...
-                    }
+
+                    //
+                    // If not testharness or we dont have the folder set, create database but allow SQL Server to decided where to put files.
+                    //
+                    db.Execute($"CREATE DATABASE [{databaseName}]");
+                    string LogFileLogicalName = db.GetValue<string>("SELECT name FROM sys.master_files WHERE database_id = db_id(@DBName) and type_desc = 'LOG'", new System.Data.SqlClient.SqlParameter("DBName", databaseName));
+                    db.Execute($"ALTER DATABASE [{databaseName}] SET RECOVERY SIMPLE");
+                    db.Execute($"ALTER DATABASE [{databaseName}] MODIFY FILE (NAME = '{LogFileLogicalName}', MAXSIZE = 1024MB)");  // 1GB max size of the log...
+
                 }
                 else
                 {
@@ -104,21 +80,27 @@ namespace TeamControlium.TestFramework
         private SqlConnection _connection;
         protected string _DatabaseName { get; set; }
 
+        public DatabaseInterface(string DatabaseName)
+        {
+            if (!Utilities.TestData.HasCategory(DatabaseName))
+            {
+                throw new Exception($"Test Data does not contain any data for database {DatabaseName ?? "null!"}!");
+            }
+            else
+            {
+                _connectionString = Utilities.TestData.GetItem<string>(DatabaseName, "ConnectionString");
+                _DatabaseName = DatabaseName;
+            }
+            Init();
+
+        }
+
         public DatabaseInterface(string DatabaseName, string ConnectionString)
         {
             _connectionString = ConnectionString;
             _DatabaseName = DatabaseName;
-            if (!string.IsNullOrWhiteSpace(_connectionString))
-            {
-                _connection = new SqlConnection(_connectionString);
-            }
-            else
-            {
-                Logger.Write(Logger.LogLevels.TestInformation, $"{_DatabaseName} - no connection being made as connection string blank or invalid ([{_connectionString}])");
-                _connection = null;
-            }
+            Init();
         }
-
         public bool DatabaseExists(string name)
         {
             int count = GetValueOrDefault<int>($"SELECT count(*) FROM sys.databases WHERE Name = '{name}'");
@@ -305,7 +287,7 @@ namespace TeamControlium.TestFramework
                 return result;
             }
             catch (Exception ex) { throw new Exception(string.Format("Error executing query [{0}]", query), ex); }
-            finally { _connection.Close(); }
+            finally { if (_connection != null) _connection.Close(); }
         }
 
         public T GetSingleRecord<T>(string Query, params SqlParameter[] args)
@@ -399,8 +381,50 @@ namespace TeamControlium.TestFramework
                 }
             }
             catch (Exception ex) { throw new Exception(string.Format("Error executing query [{0}]", query), ex); }
-            finally { _connection.Close(); }
+            finally { if (_connection != null) _connection.Close(); }
         }
+
+
+        private void Init()
+        {
+            int timeoutMS;
+            int intervalMS;
+
+            if (Utilities.TestData.TryGetItem<int>("Database", "Timeout", out timeoutMS))
+            {
+                Logger.WriteLine(Logger.LogLevels.FrameworkDebug, $"{timeoutMS} Milliseconds timeout being used for " + _DatabaseName);
+                timeout = TimeSpan.FromMilliseconds(timeoutMS);
+            }
+            else
+            {
+                Logger.WriteLine(Logger.LogLevels.FrameworkDebug, "Default 30 Seconds timeout being used for " + _DatabaseName);
+                timeout = TimeSpan.FromSeconds(30);
+            }
+
+            if (Utilities.TestData.TryGetItem<int>("Database", "PollInterval", out intervalMS))
+            {
+                Logger.WriteLine(Logger.LogLevels.FrameworkDebug, $"{intervalMS} Milliseconds polling being used for " + _DatabaseName);
+                interval = TimeSpan.FromMilliseconds(intervalMS);
+            }
+            else
+            {
+                Logger.WriteLine(Logger.LogLevels.FrameworkDebug, "Default 1000 Milliseconds polling being used for " + _DatabaseName);
+                interval = TimeSpan.FromMilliseconds(1000);
+            }
+
+            if (!string.IsNullOrWhiteSpace(_connectionString))
+            {
+                _connection = new SqlConnection(_connectionString);
+            }
+            else
+            {
+                Logger.Write(Logger.LogLevels.TestInformation, $"{_DatabaseName} - no connection being made as connection string blank or invalid ([{_connectionString}])");
+                _connection = null;
+            }
+        }
+
+        private TimeSpan timeout;
+        private TimeSpan interval;
 
     }
 }

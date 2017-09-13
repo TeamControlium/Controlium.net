@@ -8,7 +8,7 @@ namespace TeamControlium.TestFramework
 {
     public partial class Utilities
     {
-        private static TestDataRepository<dynamic> _testData = new TestDataRepository<dynamic>();
+        private static TestDataRepository<dynamic> dataRepository = new TestDataRepository<dynamic>();
         private static Dictionary<string, Dictionary<string, dynamic>> testData = new Dictionary<string, Dictionary<string, dynamic>>();
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace TeamControlium.TestFramework
         {
             get
             {
-                return _testData;
+                return dataRepository;
             }
         }
 
@@ -44,7 +44,7 @@ namespace TeamControlium.TestFramework
         /// Underlying TestData repository
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public sealed class TestDataRepository<T> : Dictionary<string, Dictionary<string, dynamic>>
+        public sealed class TestDataRepository<T> // : Dictionary<string, Dictionary<string, dynamic>>
         {
             /// <summary>
             /// Returns the last exception were a TryGetRunCategoryOptions returned false
@@ -54,10 +54,15 @@ namespace TeamControlium.TestFramework
             /// <summary>
             /// Clears the Test Data repository of all test data
             /// </summary>
-            public new void Clear()
+            public void Clear()
             {
                 Logger.WriteLine(Logger.LogLevels.FrameworkDebug, "Clearing Test Data repository");
                 testData.Clear();
+            }
+
+            public bool HasCategory(string key)
+            {
+                return testData.ContainsKey(key);
             }
 
             /// <summary>

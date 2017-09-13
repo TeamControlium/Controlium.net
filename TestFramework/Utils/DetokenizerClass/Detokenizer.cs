@@ -216,6 +216,10 @@ namespace TeamControlium.TestFramework
         {
             string[] offsetAndFormat = OffsetAndFormat.Split(new char[] { delimiter }, 2);
 
+            if (offsetAndFormat.Length!=2)
+            {
+                throw new Exception("Date token does not have a format parameter; example: {date" + delimiter + "today" + delimiter + "dd-MM-yyyy}");
+            }
             DateTime dt;
             string verb = offsetAndFormat[0].ToLower().Trim();
             if (verb.StartsWith("random("))
