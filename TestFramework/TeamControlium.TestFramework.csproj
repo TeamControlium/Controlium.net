@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HTTPNonUI\HTTPNonUI.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Logger\LoggerTestSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

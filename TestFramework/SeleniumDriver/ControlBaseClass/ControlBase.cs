@@ -394,6 +394,11 @@ namespace TeamControlium.TestFramework
             return RootElement.FindElement(findLogic);
         }
 
+        public bool WaitUntilStable(int timeoutMilliseconds=5000)
+        {
+            return RootElement.WaitForElementPositionStable(TimeSpan.FromMilliseconds(timeoutMilliseconds));
+        }
+
         private bool IsToken(string PossibleToken)
         {
             // Tokens start and end with & - this is the usual with tools as well....

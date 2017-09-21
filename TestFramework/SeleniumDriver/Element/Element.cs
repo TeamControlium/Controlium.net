@@ -250,16 +250,36 @@ namespace TeamControlium.TestFramework
         /// <summary>Clears field then enters text, using keyboard, into element</summary>
         /// <param name="Text">Text to enter</param>
         /// <seealso cref="seleniumDriver.SetText(IWebElement,string)"/>
-        public void SetText(string Text)
+        public void SetText(string Text,int maxretries=3,TimeSpan? retryInterval=null)
         {
             ThrowIfUnbound();
+
+            int retryIndex = 0;
+            Exception lastException=null;
+            TimeSpan interval = retryInterval ?? TimeSpan.FromMilliseconds(100);
             try
             {
-                seleniumDriver.Clear(this.WebElement);
-                EnterText(Text);
+                while (++retryIndex <= maxretries || maxretries == 0)
+                {
+                    try
+                    {
+                        seleniumDriver.Clear(this.WebElement);
+                        EnterText(Text);
+                        if (retryIndex > 1)
+                            Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "{0} attempts with InvalidElementStateException.  Last attempt good.)", retryIndex);
+                        return;
+                    }
+                    catch (OpenQA.Selenium.InvalidElementStateException ex)
+                    {
+                        Thread.Sleep(interval);
+                        lastException = ex;
+                    }
+                }
+                throw lastException;
             }
             catch (Exception ex)
             {
+                Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "{0} failed attempts to set [{1}] to text [{2}]", retryIndex,this.MappingDetails?.FriendlyName??"???!",Text);
                 throw new SeleniumExceptions.UnableToSetOrGetText(MappingDetails, Text, ex);
             }
         }
@@ -267,15 +287,35 @@ namespace TeamControlium.TestFramework
         /// <summary>Enters text, using keyboard, into element</summary>
         /// <param name="Text">Text to enter</param>
         /// <seealso cref="seleniumDriver.SetText(IWebElement,string)"/>
-        public void EnterText(string Text)
+        public void EnterText(string Text,int maxretries= 3, TimeSpan? retryInterval = null)
         {
             ThrowIfUnbound();
+            int retryIndex = 0;
+            Exception lastException = null;
+            TimeSpan interval = retryInterval ?? TimeSpan.FromMilliseconds(100);
             try
             {
-                seleniumDriver.SetText(this.WebElement, Text ?? string.Empty);
+                while (++retryIndex <= maxretries || maxretries == 0)
+                {
+                    try
+                    {
+                        seleniumDriver.SetText(this.WebElement, Text ?? string.Empty);
+                        if (retryIndex > 1)
+                            Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "{0} attempts with InvalidElementStateException.  Last attempt good.)", retryIndex);
+                        return;
+                    }
+                    catch (OpenQA.Selenium.InvalidElementStateException ex)
+                    {
+                        Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "Attempt {0} failed (InvalidElementStateException)", retryIndex);
+                        Thread.Sleep(interval);
+                        lastException = ex;
+                    }
+                }
+                throw lastException;
             }
             catch (Exception ex)
             {
+                Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "{0} failed attempts to set [{1}] to text [{2}]", retryIndex, this.MappingDetails?.FriendlyName ?? "???!", Text);
                 throw new SeleniumExceptions.UnableToSetOrGetText(MappingDetails, Text, ex);
             }
         }

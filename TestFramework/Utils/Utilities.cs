@@ -1,7 +1,9 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TeamControlium.TestFramework
@@ -43,7 +45,7 @@ namespace TeamControlium.TestFramework
                 Logger.Write(Logger.LogLevels.FrameworkDebug, "Object is a string [{0}]. ", ProcessedString ?? string.Empty);
                 while (!StringToProcess.Equals(ProcessedString))
                 {
-                    StringToProcess = ProcessedString;
+                    StringToProcess = string.Copy(ProcessedString);
                     processor = TokenProcessor;
                     if (processor != null)
                     {
@@ -79,5 +81,74 @@ namespace TeamControlium.TestFramework
                 if (i > 0) return true; else return false;
             return Value.ToLower().StartsWith("t") || Value.ToLower().StartsWith("y") || Value.ToLower().StartsWith("on");
         }
+
+        /// <summary>
+        /// Normalises single and double quotes for XPath use
+        /// </summary>
+        /// <param name="original">String containing single and double quotes</param>
+        /// <returns>String for XPath use</returns>
+        public static string CleanStringForXPath(string original)
+        {
+            if (!original.Contains("'"))
+                return '\'' + original + '\'';
+
+            else if (!original.Contains("\""))
+                return '"' + original + '"';
+
+            else
+                return "concat('" + original.Replace("'", "',\"'\",'") + "')";
+        }
+
+        /// <summary>
+        /// Makes string filename friendly
+        /// </summary>
+        /// <param name="original">Possible unfriendly filename string</param>
+        /// <returns>String that can be used in a filename</returns>
+        public static string CleanStringForFilename(string original)
+        {
+            string invalidChars = Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+            return Regex.Replace(original, invalidRegStr, "_");
+        }
+
+        /// <summary>
+        /// Extracts displayed text from an HTML node and desendants
+        /// </summary>
+        /// <param name="HtmlData">HTML containing text</param>
+        /// <returns>Text with HTML stripped out</returns>
+        public static string GetTextFromHTML(string HtmlData)
+        {
+            if (string.IsNullOrEmpty(HtmlData)) return string.Empty;
+
+            HtmlDocument document = new HtmlDocument();
+            document.LoadHtml(HtmlData);
+
+            String[] acceptableTags = new String[] { "strong", "em", "u" };
+
+            Queue<HtmlNode> nodes = new Queue<HtmlNode>(document.DocumentNode.SelectNodes("./*|./text()"));
+            while (nodes.Count > 0)
+            {
+                HtmlNode node = nodes.Dequeue();
+                HtmlNode parentNode = node.ParentNode;
+
+                if (!acceptableTags.Contains(node.Name) && node.Name != "#text")
+                {
+                    HtmlNodeCollection childNodes = node.SelectNodes("./*|./text()");
+
+                    if (childNodes != null)
+                    {
+                        foreach (var child in childNodes)
+                        {
+                            nodes.Enqueue(child);
+                            parentNode.InsertBefore(child, node);
+                        }
+                    }
+                    parentNode.RemoveChild(node);
+                }
+            }
+
+            return document.DocumentNode.InnerHtml;
+        }
+
     }
 }
