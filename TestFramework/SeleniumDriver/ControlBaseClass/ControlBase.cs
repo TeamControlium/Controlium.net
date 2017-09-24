@@ -399,11 +399,31 @@ namespace TeamControlium.TestFramework
             return RootElement.WaitForElementPositionStable(TimeSpan.FromMilliseconds(timeoutMilliseconds));
         }
 
+        /// <summary>
+        /// Indicates if control's root element is visible.  Will return true even if control is scrolled out
+        /// of view or visually obscured by another element
+        /// </summary>
+        public bool IsVisible
+        {
+            get
+            {
+                if (RootElement!=null && RootElement.WebElement!=null)
+                {
+                    return RootElement.Visible();
+                }
+                else
+                {
+                    throw new Exception(string.Format("Cannot get visibility status of [{0}]as Root Element has not be found!", Mapping.FriendlyName ?? Mapping.FindLogic ?? "find logic null!"));
+                }
+            }
+        }
+
         private bool IsToken(string PossibleToken)
         {
             // Tokens start and end with & - this is the usual with tools as well....
             return (PossibleToken.StartsWith("&") && PossibleToken.EndsWith("&"));
         }
+
     }
 
 }
