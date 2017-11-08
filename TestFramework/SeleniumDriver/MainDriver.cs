@@ -175,62 +175,51 @@ namespace TeamControlium.TestFramework
         /// <remarks>
         /// This assumes webDriver implements ITakesScreen.  Implementation is by SSRemoteWebDriver so webDriver must be an instantation
         /// of that class.  If webDriver does not implement ITakesScreenshot an exception is thrown.</remarks>
-        /// <param name="Suffix">Optional. If populated, is added to screenshot image name</param>
+        /// <param name="fileName">Optional. If populated and Test Data option [Screenshot, Filename] is not set sets the name of the file</param>
         /// <example>Take a screenshot:
         /// <code lang="C#">
-        /// // Take screenshot and save to Results folder /images/MySuffix_TestID.jpg
-        /// SeleniumDriver.TakeScreenshot("MySuffix_");
+        /// // Take screenshot and save to Results folder /images/MyName.jpg or path given by test data ["Screenshot", "Filepath"]
+        /// SeleniumDriver.TakeScreenshot("MyName");
         /// </code></example>
-        public string TakeScreenshot(string Suffix = null)
+        public string TakeScreenshot(string fileName=null)
         {
-            string TestID = "";
-            Regex MakeFilenameFriendly = new Regex(string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()))));
+            string filename = null;
+            string filepath = null;
 
-            string Filename = "NotSet";
             try
             {
                 if (webDriver is ITakesScreenshot)
                 {
-                    Filename = Path.Combine(Environment.CurrentDirectory, "images");
-                    // Try to create the directory.
-                    DirectoryInfo di = Directory.CreateDirectory(Filename);
-                    if ((Utilities.TestData.TryGetItem("Iest", "ID", out TestID)))
+                    try
                     {
-                        TestID = MakeFilenameFriendly.Replace(TestID, "");
-                        int TotalPathLength = Filename.Length + TestID.Length + Suffix?.Length ?? 0 + 5;
-                        Logger.WriteLine(Logger.LogLevels.FrameworkDebug, "TotalPathLength = {0}", TotalPathLength);
-                        if (TotalPathLength > 248)
-                        {
-                            //
-                            // Max path length is 248, so we need to fiddle....
-                            //
-                            if ((TotalPathLength - TestID.Length - 2) > 248)
-                            {
-                                // Ok, we cant do it so bomb out.
-                                Logger.WriteLine(Logger.LogLevels.FrameworkDebug, "TestID length {0} so cannot fix path length by truncating TestID", TestID.Length);
-                                throw new Exception($"Cannot create screenshot.  Full path [{TotalPathLength}] would have been too long (Max 248 chars)");
-                            }
-                            else
-                            {
-                                Logger.WriteLine(Logger.LogLevels.FrameworkDebug, "Reducing path length by truncating TestID (length currently {0})", TestID.Length);
-                                // Ok, we can do it.  Just truncate the TestID the required length...
-                                TestID = TestID.Substring(0, TestID.Length - (TotalPathLength - 248));
-                                Logger.WriteLine(Logger.LogLevels.FrameworkDebug, "Reduced to length {0}", TestID.Length);
-                            }
-                        }
+                        filename = Utilities.TestData["Screenshot", "Filename"];
+                    }
+                    catch { }
+                    try
+                    {
+                        filepath = Utilities.TestData["Screenshot", "Filepath"];
+                    }
+                    catch { }
+
+                    if (filename == null) filename = fileName ?? "Screenshot";
+
+                    //
+                    // Ensure filename friendly
+                    //
+                    //filename = new Regex(string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars())))).Replace(filename, "");
+                    if (filepath == null)
+                    {
+                        filename = Path.Combine(Environment.CurrentDirectory, "images", filename + ".jpg");
                     }
                     else
-                        TestID = "Screenshot";
-                    Filename = Path.Combine(Filename, TestID);
-                    if (!string.IsNullOrEmpty(Suffix))
-                        Filename = string.Format("{0}_{1}", Filename, Suffix);
-                    Filename = string.Format("{0}.jpg", Filename);
-
+                    {
+                        filename = Path.Combine(filepath, filename + ".jpg");
+                    }
                     Screenshot screenshot = ((ITakesScreenshot)webDriver).GetScreenshot();
-                    Logger.WriteLine(Logger.LogLevels.TestInformation, "Screenshot - {0}", Filename);
+                    Logger.WriteLine(Logger.LogLevels.TestInformation, "Screenshot - {0}", filename);
 
-                    screenshot.SaveAsFile(Filename, ImageFormat.Jpeg);
-                    return Filename;
+                    screenshot.SaveAsFile(filename, ScreenshotImageFormat.Jpeg);
+                    return filename;
                 }
                 else
                 {
@@ -239,7 +228,7 @@ namespace TeamControlium.TestFramework
             }
             catch (Exception ex)
             {
-                Logger.WriteLine(Logger.LogLevels.TestInformation, "Exception saving screenshot [{0}]", Filename);
+                Logger.WriteLine(Logger.LogLevels.TestInformation, "Exception saving screenshot [{0}]", filename??"filename null!");
                 Logger.WriteLine(Logger.LogLevels.TestInformation, "> {0}", ex);
             }
             return string.Empty;
