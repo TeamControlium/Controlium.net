@@ -189,42 +189,49 @@ namespace TeamControlium.Controlium
 
             try
             {
-                if (webDriver is ITakesScreenshot)
+                if (webDriver != null)
                 {
-                    try
+                    if (webDriver is ITakesScreenshot)
                     {
-                        filename = TestData.Repository["Screenshot", "Filename"];
-                    }
-                    catch { }
-                    try
-                    {
-                        filepath = TestData.Repository["Screenshot", "Filepath"];
-                    }
-                    catch { }
+                        try
+                        {
+                            filename = TestData.Repository["Screenshot", "Filename"];
+                        }
+                        catch { }
+                        try
+                        {
+                            filepath = TestData.Repository["Screenshot", "Filepath"];
+                        }
+                        catch { }
 
-                    if (filename == null) filename = fileName ?? "Screenshot";
+                        if (filename == null) filename = fileName ?? "Screenshot";
 
-                    //
-                    // Ensure filename friendly
-                    //
-                    //filename = new Regex(string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars())))).Replace(filename, "");
-                    if (filepath == null)
-                    {
-                        filename = Path.Combine(Environment.CurrentDirectory, "images", filename + ".jpg");
+                        //
+                        // Ensure filename friendly
+                        //
+                        //filename = new Regex(string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars())))).Replace(filename, "");
+                        if (filepath == null)
+                        {
+                            filename = Path.Combine(Environment.CurrentDirectory, "images", filename + ".jpg");
+                        }
+                        else
+                        {
+                            filename = Path.Combine(filepath, filename + ".jpg");
+                        }
+                        Screenshot screenshot = ((ITakesScreenshot)webDriver).GetScreenshot();
+                        Logger.WriteLine(Logger.LogLevels.TestInformation, "Screenshot - {0}", filename);
+
+                        screenshot.SaveAsFile(filename, ScreenshotImageFormat.Jpeg);
+                        return filename;
                     }
                     else
                     {
-                        filename = Path.Combine(filepath, filename + ".jpg");
+                        throw new NotImplementedException("webDriver does not implement ITakesScreenshot!  Is it RemoteWebDriver?");
                     }
-                    Screenshot screenshot = ((ITakesScreenshot)webDriver).GetScreenshot();
-                    Logger.WriteLine(Logger.LogLevels.TestInformation, "Screenshot - {0}", filename);
-
-                    screenshot.SaveAsFile(filename, ScreenshotImageFormat.Jpeg);
-                    return filename;
                 }
                 else
                 {
-                    throw new NotImplementedException("webDriver does not implement ITakesScreenshot!  Is it RemoteWebDriver?");
+                    Logger.WriteLine(Logger.LogLevels.TestInformation,"webDriver is null!  Unable to take screenshot.");
                 }
             }
             catch (Exception ex)
@@ -280,7 +287,7 @@ namespace TeamControlium.Controlium
             else
                 Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "Debug.TakeScreenshot = {0} - NOT Taking screenshot...", TakeScreenshotOption);
 
-            webDriver.Quit();
+            if (webDriver!=null) webDriver.Quit();
             webDriver = null;
         }
 
