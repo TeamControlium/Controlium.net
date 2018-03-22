@@ -54,7 +54,7 @@ namespace TeamControlium.Controlium
     /// </remarks>
     public partial class SeleniumDriver
     {
-        // CONSTANT FIELDS
+        // CONSTANT FIELDS (Added text delete)
         private readonly string[] SeleniumServerFolder = { "Selenium", "SeleniumServerFolder" };      // Location of the local Selenium Servers (Only required if running locally
         private readonly string[] ConfigTimeout = { "Selenium", "ElementFindTimeout" };               // Timeout when waiting for Elements to be found (or go invisible) in seconds
         private readonly string[] ConfigPollingInterval = { "Selenium", "PollInterval" };             // When looping on an event wait, this is the loop interval; trade off between keeping wire traffic down and speed of test
