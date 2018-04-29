@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TechTalk.SpecFlow;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TeamControlium.Utilities;
+using TechTalk.SpecFlow;
 
 namespace TeamControlium.Controlium
 {
     [Binding]
     public sealed class ControlBaseTestSteps
     {
-
-
         [Given(@"I am using local browser ""(?i)(.*)""")]
         public void GivenIAmUsingBrowser(string browser)
         {
@@ -30,7 +23,6 @@ namespace TeamControlium.Controlium
             sDriver.GotoURL(urlToBrowseTo);
             ScenarioContext.Current.Add("SeleniumDriver", sDriver);
         }
-
 
         [When(@"I find Textbox control with title ""(.*)""")]
         public void WhenIFindFKTextboxControlWithTitle(string controlTitle)
@@ -58,9 +50,5 @@ namespace TeamControlium.Controlium
             var stringRead = ((Internal.Tester.ControlBaseTester)ScenarioContext.Current["Control"]).Text;
             Assert.AreEqual(stringRead, stringExpected, "String read from control is same as expected");
         }
-
-
-
-
     }
 }

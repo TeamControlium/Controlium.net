@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HtmlAgilityPack;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.IE;
-using OpenQA.Selenium.Edge;
-using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Drawing.Imaging;
-using System.Runtime.Remoting;
-using HtmlAgilityPack;
+using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using TeamControlium.Utilities;
 
 namespace TeamControlium.Controlium
@@ -716,7 +705,7 @@ namespace TeamControlium.Controlium
         /// <code lang="C#">
         /// string text = SeleniumDriver.GetText(myTextBox,true,false);
         /// </code></example>
-        public string GetText(IWebElement WebElement,bool IncludeDescendentsText, bool ScrollIntoViewFirst, bool UseInnerTextAttribute)
+        public string GetText(IWebElement WebElement, bool IncludeDescendentsText, bool ScrollIntoViewFirst, bool UseInnerTextAttribute)
         {
             //
             // This is a bit odd and there are two issues involved but which boil down to a single one.  GetText MUST only return text the user can see (or what
@@ -786,7 +775,7 @@ namespace TeamControlium.Controlium
             int Itterations = 0;
             WebDriverWait actualTimeout = GetPollAndTimeout(elementFindTimings, Timeout, PollInterval);
 
-            if (ElementToWaitFor==null)
+            if (ElementToWaitFor == null)
             {
                 if (RequiredVisibility == Visibility.Hidden) return true;
                 throw new Exception("Element does not exist - it is null!");
@@ -804,7 +793,7 @@ namespace TeamControlium.Controlium
                     {
                         Itterations++;
                         bool isDisplayed = (ElementToWaitFor != null && ElementToWaitFor.IsDisplayed);
-                        Logger.WriteLine(Logger.LogLevels.FrameworkDebug,$"[{timeWaited.ElapsedMilliseconds}mS] Element displayed (exists and isDisplayed true): {isDisplayed}");
+                        Logger.WriteLine(Logger.LogLevels.FrameworkDebug, $"[{timeWaited.ElapsedMilliseconds}mS] Element displayed (exists and isDisplayed true): {isDisplayed}");
                         if (isDisplayed)
                         {
                             if (RequiredVisibility == Visibility.Visible)
@@ -905,16 +894,16 @@ namespace TeamControlium.Controlium
                         // Call the Find Element (driver or element based). Set the timeout to zero as we will deal with polling and time here (we may be looking for element to be NOT there!...)
                         try
                         {
-                            WebElementFound = FindElement(ParentElement, Mapping, TimeSpan.MinValue, TimeSpan.MinValue);
+                            WebElementFound = FindElement(ParentElement, Mapping, false, TimeSpan.MinValue, TimeSpan.MinValue);
                         }
                         catch (FindLogicReturnedNoElements)
                         {
                             WebElementFound = null;
                         }
-                        Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "[{0}mS]: Element {1} ",timeWaited.ElapsedMilliseconds, (WebElementFound==null)?"not found":$"found (Displayed - {WebElementFound.IsDisplayed})");
+                        Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "[{0}mS]: Element {1} ", timeWaited.ElapsedMilliseconds, (WebElementFound == null) ? "not found" : $"found (Displayed - {WebElementFound.IsDisplayed})");
                         Itterations++;
 
-                        if (WebElementFound==null)
+                        if (WebElementFound == null)
                         {
                             // Element was NOT found.  If we wanted the element to be not there or not displayed (same thing) all good.
                             if (RequiredVisibility == Visibility.Hidden) HaveWeSuccess = true;

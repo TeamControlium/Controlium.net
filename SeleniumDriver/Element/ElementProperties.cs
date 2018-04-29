@@ -1,11 +1,7 @@
-﻿using OpenQA.Selenium;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using TeamControlium.Utilities;
 
 namespace TeamControlium.Controlium
@@ -38,7 +34,6 @@ namespace TeamControlium.Controlium
             }
         }
 
-
         /// <summary>
         /// Indicates if Element if visible
         /// </summary>
@@ -52,6 +47,7 @@ namespace TeamControlium.Controlium
         }
 
         public bool IsHeightStable { get { return !AttributeChanging("offsetHeight", TimeSpan.FromMilliseconds(200)); } }
+
         public bool IsWidthStable { get { return !AttributeChanging("offsetWidth", TimeSpan.FromMilliseconds(200)); } }
 
         public bool IsSizeStable { get { return !AttributeChanging(new string[] { "offsetWidth", "offsetHeight" }, TimeSpan.FromMilliseconds(200)); } }
@@ -170,8 +166,9 @@ namespace TeamControlium.Controlium
         }
 
         private bool HasAParent { get { return (ParentOfThisElement != null); } }
-        private bool IsBoundToAWebElement { get { return (WebElement != null); } }
-        private bool HasMappingDetails { get { return (MappingDetails != null); } }
 
+        private bool IsBoundToAWebElement { get { return (WebElement != null); } }
+
+        private bool HasMappingDetails { get { return (MappingDetails != null); } }
     }
 }

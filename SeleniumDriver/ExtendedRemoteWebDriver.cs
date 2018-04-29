@@ -30,7 +30,6 @@ namespace TeamControlium.Controlium
         {
         }
 
-
         /// <summary>
         /// Gets a Screenshot object representing the image of the page on the remote Selenium Server Screen.
         /// </summary>
@@ -46,5 +45,4 @@ namespace TeamControlium.Controlium
             return new Screenshot(base64);
         }
     }
-
 }

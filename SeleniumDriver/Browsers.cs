@@ -1,5 +1,4 @@
-﻿using System;
-using TeamControlium.Utilities;
+﻿using TeamControlium.Utilities;
 
 namespace TeamControlium.Controlium
 {
@@ -325,5 +324,4 @@ namespace TeamControlium.Controlium
             TestBrowserHasBeenSet = true;
         }
     }
-
 }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using TeamControlium.Utilities;
 
 namespace TeamControlium.Controlium
@@ -19,6 +15,7 @@ namespace TeamControlium.Controlium
         /// <example><code language="C#" title="Using XPath"> mappedObject.FindLogic = ".\div[@class='MyClass'];"</code>
         /// </example>
         public ByType FindType { get; private set; }
+
         /// <summary>
         /// Find logic of mapped object
         /// </summary>
@@ -51,18 +48,18 @@ namespace TeamControlium.Controlium
         /// <summary>
         /// If Findlogic has parameters (ResolveParameters method called with parameters resolved) store original FindLogic here for future use).
         /// </summary>
-        private string FindLogicWithParameters { get;set;}
+        private string FindLogicWithParameters { get; set; }
 
         /// <summary>
         /// If FriendlyName has parameters (ResolveParameters method called with parameters resolved) store original FriendlyName here for future use).
         /// </summary>
         private string FriendlyNameWithParameters { get; set; }
 
-
         public ObjectMappingDetails Copy()
         {
             return (ObjectMappingDetails)MemberwiseClone();
         }
+
         /// <summary>
         /// Defines an unspecified object.  Type and Name are empty strings and Logic is null
         /// </summary>
@@ -123,20 +120,20 @@ namespace TeamControlium.Controlium
             string newFriendlyName = null;
             try
             {
-                newFindLogic = string.Format(FindLogicWithParameters??FindLogic, args);
+                newFindLogic = string.Format(FindLogicWithParameters ?? FindLogic, args);
             }
             catch (Exception ex)
             {
-                Logger.WriteLine(Logger.LogLevels.TestInformation, "Error resolving parameters in find logic [{0}]: {1}", FindLogic ?? "<Null!>",ex);
+                Logger.WriteLine(Logger.LogLevels.TestInformation, "Error resolving parameters in find logic [{0}]: {1}", FindLogic ?? "<Null!>", ex);
             }
 
             try
             {
-                newFriendlyName = string.Format(FriendlyNameWithParameters??FriendlyName, args);
+                newFriendlyName = string.Format(FriendlyNameWithParameters ?? FriendlyName, args);
             }
             catch (Exception ex)
             {
-                Logger.WriteLine(Logger.LogLevels.TestInformation, "Error resolving parameters in find logic [{0}]: {1}", FriendlyName ?? "<Null!>",ex);
+                Logger.WriteLine(Logger.LogLevels.TestInformation, "Error resolving parameters in find logic [{0}]: {1}", FriendlyName ?? "<Null!>", ex);
             }
             if (newFindLogic != null)
             {
@@ -155,8 +152,6 @@ namespace TeamControlium.Controlium
             return this;
         }
 
-
-
         private By ProcessFindLogic(string property)
         {
             By returnValue;
@@ -169,7 +164,7 @@ namespace TeamControlium.Controlium
 
             switch (ByValue.Key)
             {
-                case "id": returnValue = By.Id(ByValue.Value); FindType = ByType.Id;  break;
+                case "id": returnValue = By.Id(ByValue.Value); FindType = ByType.Id; break;
                 case "class": returnValue = By.ClassName(ByValue.Value); FindType = ByType.Class; break;
                 case "css": returnValue = By.CssSelector(ByValue.Value); FindType = ByType.Css; break;
                 case "linktext": returnValue = By.LinkText(ByValue.Value); FindType = ByType.LinkText; break;

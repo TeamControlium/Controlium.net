@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TechTalk.SpecFlow;
-using System.Threading;
 using TeamControlium.Utilities;
+using TechTalk.SpecFlow;
 
 namespace TeamControlium.Controlium
 {
     [Binding]
     public sealed class SeleniumDriverTestSteps
     {
- 
         [Given(@"There are no processes running named ""(.*)""")]
         public void GivenThereAreNoProcessesRunningNamed(string processNameToKill)
         {
@@ -46,7 +42,6 @@ namespace TeamControlium.Controlium
         public void WhenIInstantiateSeleniumDriver()
         {
             SeleniumDriver sDriver = new SeleniumDriver();
-            
             ScenarioContext.Current.Add("SeleniumDriver", sDriver);
         }
 
@@ -56,7 +51,6 @@ namespace TeamControlium.Controlium
         {
             ((SeleniumDriver)ScenarioContext.Current["SeleniumDriver"]).GotoURL(urlToBrowseTo);
         }
-
 
         [Then(@"a process exists named ""(.*)""")]
         public void ThenAProcessExistsNamed(string processname)
@@ -87,14 +81,10 @@ namespace TeamControlium.Controlium
             }
         }
 
-
         [Then(@"a valid element is found")]
         public void ThenAValidElementIsFound()
         {
             Assert.IsNotNull(ScenarioContext.Current["FoundElement"], "Found element must not be null");
         }
-
-
-
     }
 }
