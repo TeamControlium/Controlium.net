@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using TeamControlium.Controlium;
 
 namespace Internal.Tester
 {
+    //  This is a dummy Control, used to test the ControlBase class.  This control simply maps to any HTML element.
     public class ControlBaseTester : ControlBase
-    {
-        //
-        //  This is a dummy Control, used to test the ControlBase class.  This control simply maps to any HTML element.
-        //
-        //
-        //
+    {        
         public ControlBaseTester(ObjectMappingDetails mapping)
         {
             SetRootElement(mapping);
@@ -51,13 +42,16 @@ namespace Internal.Tester
             }
         }
 
-
         public class ObjectMap
         {
             public static ObjectMappingDetails Root_ByTitle_CaseSensitive => new ObjectMappingDetails(".//div[./input[@name='q' and @title='{0}']]", "Input Textbox with title [{0}] (Case sensitive)");
+
             public static ObjectMappingDetails TextEntryBox => new ObjectMappingDetails("./input[@name='q']", "Input Textbox text entry box");
+
             public static ObjectMappingDetails Div => new ObjectMappingDetails("./div[@class='gsfi']", "Input Textbox gsfi");
+
             public static ObjectMappingDetails Input1 => new ObjectMappingDetails("./input[@id='gs_taif0']", "Input Textbox taif");
+
             public static ObjectMappingDetails Input2 => new ObjectMappingDetails("./input[@id='gs_htif0']", "Input Textbox htif");
         }
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TeamControlium.Utilities;
+﻿using TeamControlium.Utilities;
 using TechTalk.SpecFlow;
 
 namespace TeamControlium.Controlium
@@ -24,10 +20,9 @@ namespace TeamControlium.Controlium
         {
             try
             {
-                ((SeleniumDriver)ScenarioContext.Current["SeleniumDriver"]).CloseDriver();
+                ScenarioContext.Current.Get<SeleniumDriver>("SeleniumDriver").CloseDriver();
             }
             catch { }
-
         }
     }
 }

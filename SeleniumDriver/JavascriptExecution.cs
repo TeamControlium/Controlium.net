@@ -1,10 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
+﻿using OpenQA.Selenium;
+using System;
 
 namespace TeamControlium.Controlium
 {
@@ -42,7 +37,7 @@ namespace TeamControlium.Controlium
         {
             try
             {
-                result = (string)((IJavaScriptExecutor)webDriver).ExecuteScript(script, args).ToString();
+                result = ((IJavaScriptExecutor)webDriver).ExecuteScript(script, args).ToString();
                 return true;
             }
             catch (Exception ex)
@@ -149,8 +144,6 @@ namespace TeamControlium.Controlium
             }
         }
 
-
-
         /// <summary>Injects and executes Javascript in the currently active Selenium browser with no exception thrown. Javascript has no return object.</summary>
         /// <param name="script">Javascript that will be injected into the DOM and executed. Script must have a return instruction</param>
         /// <param name="args">Any arguments passed in to the Javascript</param>
@@ -217,7 +210,6 @@ namespace TeamControlium.Controlium
         ///     // Oh dear, we have not cleared the store!
         /// }
         /// </code></example>
-
         public string ExecuteJavaScriptReturningString(string script, params object[] args)
         {
             string returnString = null;
@@ -227,6 +219,7 @@ namespace TeamControlium.Controlium
             }
             return returnString;
         }
+
         /// <summary>Injects and executes Javascript in the currently active Selenium browser. If Selenium throws an error, test is aborted.</summary>
         /// <param name="script">Javascript that will be injected into the DOM and executed. Script must have a return instruction</param>
         /// <param name="args">Any arguments passed in to the Javascript</param>
@@ -306,6 +299,5 @@ namespace TeamControlium.Controlium
                 throw new Exception(TryException.Message, TryException);
             }
         }
-
     }
 }
