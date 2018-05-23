@@ -1,9 +1,20 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.UI;
+using System.Text.RegularExpressions;
+using System.IO;
+using System.Drawing.Imaging;
+using System.Runtime.Remoting;
+using System.Windows.Forms;
+using System.Diagnostics;
 using System.Threading;
 using TeamControlium.Utilities;
 
@@ -72,7 +83,8 @@ namespace TeamControlium.Controlium
                 return false;
             }
         }
-        
+
+
         internal List<Element> FindElements(Element ParentElement, ObjectMappingDetails Mapping)
         {
             int index = 0;
@@ -147,6 +159,7 @@ namespace TeamControlium.Controlium
                 returnList.Add(Element);
                 index++;
             });
+
 
             return returnList;
         }

@@ -1,4 +1,11 @@
 ﻿using OpenQA.Selenium;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace TeamControlium.Controlium
 {
@@ -16,7 +23,8 @@ namespace TeamControlium.Controlium
             ParentOfThisElement = null;
             this.MappingDetails = null;
         }
-        
+
+
         /// <summary>
         /// Create an instance of an Element.
         /// </summary>
@@ -29,7 +37,8 @@ namespace TeamControlium.Controlium
             ParentOfThisElement = null;
             MappingDetails = mappingDetails;
         }
-        
+
+
         /// <summary>
         /// Create an instance of an Element. Element will be child of the DOM, and will have no parent element.  It has not yet been bound to a Selenium WebElement
         /// </summary>
@@ -43,6 +52,7 @@ namespace TeamControlium.Controlium
             ParentOfThisElement = seleniumDriver;
             this.MappingDetails = null;
         }
+
 
         /// <summary>
         /// Create an instance of an Element. Element will be child of another element.  It has not yet been bound to a Selenium WebElement
@@ -73,6 +83,7 @@ namespace TeamControlium.Controlium
             this.MappingDetails = MappingDetails;
         }
 
+
         /// <summary>
         /// Create an instance of an Element. Element will be child of another element.  It has not yet been bound to a Selenium WebElement
         /// </summary>
@@ -87,6 +98,7 @@ namespace TeamControlium.Controlium
             ParentOfThisElement = parentElement;
             this.MappingDetails = MappingDetails;
         }
+
 
         /// <summary>
         /// Instatiates a new Element as the top-level element in the DOM. Usually called from within the SeleniumDriver <see cref="seleniumDriver.FindElement(FindBy,string)"/> method.

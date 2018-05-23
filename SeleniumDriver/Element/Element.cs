@@ -1,9 +1,12 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using System.Drawing;
+using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
-using System;
-using System.Diagnostics;
-using System.Threading;
 using TeamControlium.Utilities;
 
 namespace TeamControlium.Controlium
@@ -11,9 +14,7 @@ namespace TeamControlium.Controlium
     public partial class Element
     {
         private ObjectMappingDetails mappingDetails;
-
         private IWebElement webElement; // This is the actual Selenium element.  To use this element, this must be set.... 
-
         private dynamic _ParentOfThisElement; //Parent of this element.  Must be either another element OR SeleniumDriver
 
         /// <summary>
@@ -21,11 +22,13 @@ namespace TeamControlium.Controlium
         /// </summary>
         public IWebElement WebElement { get { return webElement; } set { webElement = value; } }
 
+
         //PROPERTIES
         /// <summary>
         /// Returns find logic used (or to be used) to locate this element either from the top level (See <see cref="Element(SeleniumDriver,IWebElement,string,FindBy)"/>) or from the parent element (See <see cref="Element(Element,IWebElement,string,FindBy)"/>)
         /// </summary>
         public ObjectMappingDetails MappingDetails { get { return mappingDetails; } set { if ((mappingDetails != null) && (WebElement != null)) throw new Exception("Mapping Details cannot be changed after binding to Selenium WebElement"); else mappingDetails = value; } }
+
 
         /// <summary>
         /// Last Exception thrown from a Try method
@@ -97,7 +100,8 @@ namespace TeamControlium.Controlium
             TimeSpan actualTimeout = Timeout ?? seleniumDriver.ElementFindTimeout;
 
             Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "Wait {0}ms for element {1} to become position stable", actualTimeout.TotalMilliseconds, MappingDetails.FriendlyName);
-            
+
+
             Stopwatch timeWaited = Stopwatch.StartNew();
             while (timeWaited.ElapsedMilliseconds < actualTimeout.TotalMilliseconds)
             {
@@ -123,6 +127,7 @@ namespace TeamControlium.Controlium
             Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "Element position stable after {0}ms ({1} itterations)", timeWaited.Elapsed.TotalSeconds.ToString(), Itterations.ToString());
             return didStabilzeBeforeTimeout;
         }
+
 
         /// <summary>
         /// Binds the Element to the WebElement
@@ -180,6 +185,8 @@ namespace TeamControlium.Controlium
             }
         }
 
+
+
         /// <summary>Performs a clear action on the element</summary>
         public Element Clear()
         {
@@ -222,7 +229,6 @@ namespace TeamControlium.Controlium
             ThrowIfUnbound();
             seleniumDriver.Click(WebElement);
         }
-
         /// <summary>Performs a left-mouse-button click in the element.  Any exception is caught and not re-thrown.
         /// </summary>
         /// <returns>False in an exception was thrown.  See <see cref="Element.TryException"/> for actual exception if required.</returns>
@@ -324,6 +330,7 @@ namespace TeamControlium.Controlium
             SetText((Text ?? string.Empty) + Keys.Enter);
         }
 
+
         /// <summary>Clears field then enters text, using keyboard, into element.  No exception is thrown.</summary>
         /// <param name="Text">Text to enter</param>
         /// <returns>False in any exception was thrown</returns>
@@ -365,6 +372,7 @@ namespace TeamControlium.Controlium
             ThrowIfUnbound();
             return ScrollIntoViewAndGetText(true);
         }
+
 
         /// <summary>Scrolls window so that target is in view and then gets visible text from element
         /// </summary>
@@ -427,7 +435,6 @@ namespace TeamControlium.Controlium
                 return false;
             }
         }
-
         /// <summary>Get all text from element (and descendant elements)
         /// </summary>
         /// <remarks>Element is scrolled into view before text is harvested.  See <see cref="seleniumDriver.GetText(IWebElement,bool,bool,bool)"/> for details.</remarks>
@@ -440,7 +447,6 @@ namespace TeamControlium.Controlium
             // sometimes it would return a blank string if not in the viewport....
             return seleniumDriver.GetText(WebElement, true, true, false);
         }
-
         /// <summary>Get all text from element (and descendant elements)
         /// </summary>
         /// <param name="Text">Text from element</param>
@@ -462,7 +468,6 @@ namespace TeamControlium.Controlium
                 return false;
             }
         }
-
         /// <summary>Get attribute text from current element
         /// </summary>
         /// <param name="Attribute">Attribute to get</param>
@@ -475,7 +480,6 @@ namespace TeamControlium.Controlium
             if ((returnValue == null)) throw new AttributeReturnedNull(MappingDetails, Attribute);
             return returnValue;
         }
-
         /// <summary>Get attribute test from current element.  Does not throw exception.
         /// </summary>
         /// <param name="Attribute">Attribute to get</param>
@@ -497,7 +501,6 @@ namespace TeamControlium.Controlium
                 return false;
             }
         }
-
         /// <summary>
         /// Throws exception if Element is not bound to a Selenium IWebElement.
         /// </summary>

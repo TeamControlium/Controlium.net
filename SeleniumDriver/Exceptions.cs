@@ -5,11 +5,12 @@ using System.Runtime.Remoting;
 namespace TeamControlium.Controlium
 {
     /// <summary>Thrown when the Selenium WebDriver throws an error</summary>
-    public sealed class SeleniumFindElementError : Exception
+    public class SeleniumFindElementError : Exception
     {
         static private string LocalFormatMessage(ObjectMappingDetails Mapping, dynamic Parent)
         {
-            return string.Format("Selenium threw an error finding element [{0}] with find logic [{1}]. Parent element [{2}]. See inner exception for details.", Mapping.FriendlyName, Mapping.FindLogic, ((Parent == null) ? "DOM Top Level" : (string.IsNullOrEmpty(Parent.MappingDetails.FriendlyName) ? ("Unknown Parent (" + Parent.MappingDetails.FindLogic + ")") : Parent.MappingDetails.FriendlyName)));
+            string Message = string.Format("Selenium threw an error finding element [{0}] with find logic [{1}]. Parent element [{2}]. See inner exception for details.", Mapping.FriendlyName, Mapping.FindLogic, ((Parent == null) ? "DOM Top Level" : (string.IsNullOrEmpty(Parent.MappingDetails.FriendlyName) ? ("Unknown Parent (" + Parent.MappingDetails.FindLogic + ")") : Parent.MappingDetails.FriendlyName)));
+            return Message;
         }
 
         /// <summary>
@@ -22,15 +23,17 @@ namespace TeamControlium.Controlium
             : base(SeleniumFindElementError.LocalFormatMessage(Mapping, (object)Parent), InnerException)
         {
         }
+
     }
 
     /// <summary>Thrown when error executing Javascript in browser</summary>
-    public sealed class JavascriptExecutionError : Exception
+    public class JavascriptExecutionError : Exception
     {
         static private string FormatMessage(string message)
         {
             string CurrentFolder = Directory.GetCurrentDirectory();
-            return string.Format("Test Automation Error executing Javascript  - {0}", message ?? "See inner exception");
+            string Message = string.Format("Test Automation Error executing Javascript  - {0}", message ?? "See inner exception");
+            return Message;
         }
 
         /// <summary>
@@ -41,7 +44,6 @@ namespace TeamControlium.Controlium
             : base(JavascriptExecutionError.FormatMessage(message))
         {
         }
-
         /// <summary>
         /// Thrown when error executing Javascript in browser
         /// </summary>
@@ -49,7 +51,6 @@ namespace TeamControlium.Controlium
             : base(JavascriptExecutionError.FormatMessage(null))
         {
         }
-
         /// <summary>
         /// Thrown when error executing Javascript in browser
         /// </summary>
@@ -61,12 +62,17 @@ namespace TeamControlium.Controlium
         }
     }
 
+
+
+
+
     /// <summary>Thrown when the named device does not match a device in the test-automation library</summary>
-    public sealed class UnsupportedDevice : Exception
+    public class UnsupportedDevice : Exception
     {
         static private string FormatMessage(string Device)
         {
-            return string.Format("Device unsupported within TeamControlium Test Automation - [{0}]", Device);
+            string Message = string.Format("Device unsupported within TeamControlium Test Automation - [{0}]", Device);
+            return Message;
         }
 
         /// <summary>
@@ -77,14 +83,16 @@ namespace TeamControlium.Controlium
             : base(UnsupportedDevice.FormatMessage(Device))
         {
         }
+
     }
 
     /// <summary>Thrown when the browser does not match a browser in the test-automation library</summary>
-    public sealed class UnsupportedBrowser : Exception
+    public class UnsupportedBrowser : Exception
     {
         static private string FormatMessage(string Browser)
         {
-            return string.Format("Browser unsupported within Test Automation - [{0}]", Browser);
+            string Message = string.Format("Browser unsupported within Test Automation - [{0}]", Browser);
+            return Message;
         }
 
         /// <summary>
@@ -95,15 +103,18 @@ namespace TeamControlium.Controlium
             : base(UnsupportedBrowser.FormatMessage(Browser))
         {
         }
+
     }
 
+
     /// <summary>Thrown when the Selenium server folder does not exist or cannot be accessed</summary>
-    public sealed class SeleniumFolderError : Exception
+    public class SeleniumFolderError : Exception
     {
         static private string FormatMessage(string Path)
         {
             string CurrentFolder = Directory.GetCurrentDirectory();
-            return string.Format("Test Automation cannot locate Selenium Server folder or error accessing - [{0}] in [{1}]", Path, CurrentFolder);
+            string Message = string.Format("Test Automation cannot locate Selenium Server folder or error accessing - [{0}] in [{1}]", Path, CurrentFolder);
+            return Message;
         }
 
         /// <summary>
@@ -114,7 +125,6 @@ namespace TeamControlium.Controlium
             : base(SeleniumFolderError.FormatMessage(Path))
         {
         }
-
         /// <summary>
         /// Thrown when the Selenium server folder does not exist or cannot be accessed
         /// </summary>
@@ -127,13 +137,13 @@ namespace TeamControlium.Controlium
     }
 
     /// <summary>Thrown when the Selenium WebDriver failed to initialise</summary>
-    public sealed class SeleniumWebDriverInitError : Exception
+    public class SeleniumWebDriverInitError : Exception
     {
-        private static string LocalFormatMessage(string Path, string Browser)
+        static private string LocalFormatMessage(string Path, string Browser)
         {
-            return string.Format("Test Automation cannot start WebDriver - Browser [{1}] in [{0}]", Path, Browser);
+            string Message = string.Format("Test Automation cannot start WebDriver - Browser [{1}] in [{0}]", Path, Browser);
+            return Message;
         }
-
         /// <summary>
         /// Thrown when the Selenium WebDriver failed to initialise
         /// </summary>
@@ -143,7 +153,6 @@ namespace TeamControlium.Controlium
             : base(SeleniumWebDriverInitError.LocalFormatMessage(Path, Browser))
         {
         }
-
         /// <summary>
         /// Thrown when the Selenium WebDriver failed to initialise
         /// </summary>
@@ -154,14 +163,17 @@ namespace TeamControlium.Controlium
             : base(SeleniumWebDriverInitError.LocalFormatMessage(Path, Browser), InnerException)
         {
         }
+
     }
+
 
     /// <summary>URI Is not in a valid format</summary>
     public class InvalidHostURI : Exception
     {
-        private static string FormatMessage(string uri)
+        static private string FormatMessage(string uri)
         {
-            return string.Format("Test Automation cannot parse the URI - [{0}]", uri);
+            string Message = string.Format("Test Automation cannot parse the URI - [{0}]", uri);
+            return Message;
         }
 
         /// <summary>Thrown when the Selenium server folder does not exist or cannot be accessed</summary>
@@ -173,11 +185,12 @@ namespace TeamControlium.Controlium
     }
 
     /// <summary>Invalid settings</summary>
-    public sealed class InvalidSettings : Exception
+    public class InvalidSettings : Exception
     {
-        private static string FormatMessage(string settings)
+        static private string FormatMessage(string settings)
         {
-            return string.Format("Invalid settings - [{0}]", settings);
+            string Message = string.Format("Invalid settings - [{0}]", settings);
+            return Message;
         }
 
         /// <summary>
@@ -192,7 +205,7 @@ namespace TeamControlium.Controlium
     }
 
     /// <summary>Tool has no reference to Selelium WEeb Driver and it neeeds it.</summary>
-    public sealed class ToolDoesNotReferenceWebDriver : Exception
+    public class ToolDoesNotReferenceWebDriver : Exception
     {
         /// <summary>
         /// Thrown when the Selenium server folder does not exist or cannot be accessed
@@ -204,7 +217,7 @@ namespace TeamControlium.Controlium
     }
 
     /// <summary>Tool has rejected one or more run options</summary>
-    public sealed class ToolDoesNotSupportRunOptions : Exception
+    public class ToolDoesNotSupportRunOptions : Exception
     {
         /// <summary>
         /// Tool has rejected one or more run options
@@ -218,17 +231,16 @@ namespace TeamControlium.Controlium
     }
 
     /// <summary>Requested run option rejected. Category or Name with that category does not exist</summary>
-    public sealed class RunOptionOrCategoryDoesNotExist : Exception
+    public class RunOptionOrCategoryDoesNotExist : Exception
     {
-        private static string FormatMessage(string Category, string Name)
+        static private string FormatMessage(string Category, string Name)
         {
             if (string.IsNullOrEmpty(Category))
                 return string.Format("Option name [{0}] does not exist (no category)", Name);
             else
                 return string.Format("Option name [{0}] in category [{1}] does not exist", Name, Category);
         }
-
-        private static string FormatMessage(string Category, string Name, string Message)
+        static private string FormatMessage(string Category, string Name, string Message)
         {
             if (string.IsNullOrEmpty(Category))
                 return string.Format("Option name [{0}] does not exist (no category)", Name);
@@ -244,7 +256,6 @@ namespace TeamControlium.Controlium
             : base(RunOptionOrCategoryDoesNotExist.FormatMessage(null, Name))
         {
         }
-
         /// <summary>
         /// Requested run option rejected. Category or Name with that category does not exist
         /// </summary>
@@ -254,7 +265,6 @@ namespace TeamControlium.Controlium
             : base(RunOptionOrCategoryDoesNotExist.FormatMessage(Category, Name))
         {
         }
-
         /// <summary>
         /// Requested run option rejected. Category or Name with that category does not exist
         /// </summary>
@@ -268,7 +278,7 @@ namespace TeamControlium.Controlium
     }
 
     /// <summary>Tool has thrown an unknown and/or unexpected error</summary>
-    public sealed class ToolError : Exception
+    public class ToolError : Exception
     {
         /// <summary>
         /// Thrown when the Selenium server folder does not exist or cannot be accessed
@@ -281,7 +291,7 @@ namespace TeamControlium.Controlium
     }
 
     /// <summary>Cannot perform a logging activity as no tool logging is active (maybe not even supported)</summary>
-    public sealed class NoToolLoggingActive : Exception
+    public class NoToolLoggingActive : Exception
     {
         /// <summary>
         /// Cannot perform a logging activity as no tool logging is active (maybe not even supported)
@@ -294,7 +304,7 @@ namespace TeamControlium.Controlium
     }
 
     /// <summary>Test has tried to perform a Data Driven Testing activity but it is unsupported by the tool</summary>
-    public sealed class DataDrivenTestingUnsupportedOrError : Exception
+    public class DataDrivenTestingUnsupportedOrError : Exception
     {
         /// <summary>
         /// Test has tried to perform a Data Driven Testing activity but it is unsupported by the tool
@@ -307,7 +317,7 @@ namespace TeamControlium.Controlium
     }
 
     /// <summary>Error while attempting to save local test data</summary>
-    public sealed class ToolDataSaveError : Exception
+    public class ToolDataSaveError : Exception
     {
         /// <summary>
         /// Error while attempting to save local test data
@@ -321,7 +331,7 @@ namespace TeamControlium.Controlium
     }
 
     /// <summary>Element trying to be clicked cannot receive the clicks as another element would get them</summary>
-    public sealed class ElementCannotBeClicked : Exception
+    public class ElementCannotBeClicked : Exception
     {
         /// <summary>
         /// Element trying to be clicked cannot receive the clicks as another element would get them
@@ -335,9 +345,9 @@ namespace TeamControlium.Controlium
     }
 
     /// <summary>Multiple elements could found using given find logic</summary>
-    public sealed class FindLogicReturnedMultipleElements : Exception
+    public class FindLogicReturnedMultipleElements : Exception
     {
-        private static string FormatMessage(string ParentName, string RawFindLogic, string FriendlyName, int NumberOfElements)
+        static private string FormatMessage(string ParentName, string RawFindLogic, string FriendlyName, int NumberOfElements)
         {
             return string.Format("Multiple Elements Found Exception: Parent [{0}], Find Logic [{1}] returned {2} elements! Required Element = [{3}]", ParentName, RawFindLogic, NumberOfElements.ToString(), FriendlyName);
         }
@@ -348,7 +358,7 @@ namespace TeamControlium.Controlium
         /// <param name="FriendlyName">Name of element we wanted</param>
         /// <param name="NumberOfElements">Number of elements returned</param>
         public FindLogicReturnedMultipleElements(string ParentName, string RawFindLogic, string FriendlyName, int NumberOfElements)
-            : base(FormatMessage(ParentName, RawFindLogic, FriendlyName, NumberOfElements))
+            : base(FindLogicReturnedMultipleElements.FormatMessage(ParentName, RawFindLogic, FriendlyName, NumberOfElements))
         {
         }
         /// <summary>Multiple Elements returned with find logic</summary>
@@ -357,25 +367,26 @@ namespace TeamControlium.Controlium
         /// <param name="FriendlyName">Name of element we wanted</param>
         /// <param name="NumberOfElements">Number of elements returned</param>
         public FindLogicReturnedMultipleElements(string ParentName, ObjectMappingDetails mappingDetails, int NumberOfElements)
-            : base(FormatMessage(ParentName, mappingDetails?.FindLogicUsed ?? mappingDetails.FindLogic ?? "No Mapping logic!", mappingDetails?.FriendlyName ?? "Logic only. No friendly name set!", NumberOfElements))
+            : base(FindLogicReturnedMultipleElements.FormatMessage(ParentName, mappingDetails?.FindLogicUsed ?? mappingDetails.FindLogic ?? "No Mapping logic!", mappingDetails?.FriendlyName ?? "Logic only. No friendly name set!", NumberOfElements))
         {
         }
     }
 
     /// <summary>No elements could be found using given find logic</summary>
-    public sealed class FindLogicReturnedNoElements : Exception
+    public class FindLogicReturnedNoElements : Exception
     {
-        private static string FormatMessage(string ParentName, string RawFindLogic, string FriendlyName, string TimeoutInSeconds, string PollIntervalInMinilliseconds)
+        static private string FormatMessage(string ParentName, string RawFindLogic, string FriendlyName, string TimeoutInSeconds, string PollIntervalInMinilliseconds)
         {
             return string.Format("No Elements Found Exception: Parent [{0}], Find Logic [{1}], Required Element = [{2}], Timeout = [{3}Secs], Polling every [{4}ms]", ParentName, RawFindLogic, FriendlyName, TimeoutInSeconds, PollIntervalInMinilliseconds);
         }
+
 
         /// <summary>No elements could be found using given find logic</summary>
         /// <param name="ParentName">>Parent element</param>
         /// <param name="RawFindLogic">Find logic applied to parent</param>
         /// <param name="FriendlyName">Name of element we wanted</param>
         public FindLogicReturnedNoElements(string ParentName, string RawFindLogic, string FriendlyName, string TimeoutInSeconds, string PollIntervalInMinilliseconds)
-            : base(FormatMessage(ParentName, RawFindLogic, FriendlyName, TimeoutInSeconds, PollIntervalInMinilliseconds))
+            : base(FindLogicReturnedNoElements.FormatMessage(ParentName, RawFindLogic, FriendlyName, TimeoutInSeconds, PollIntervalInMinilliseconds))
         {
         }
         /// <summary>No elements could be found using given find logic</summary>
@@ -383,7 +394,7 @@ namespace TeamControlium.Controlium
         /// <param name="RawFindLogic">Find logic applied to parent</param>
         /// <param name="FriendlyName">Name of element we wanted</param>
         public FindLogicReturnedNoElements(string ParentName, ObjectMappingDetails mappingDetails, string TimeoutInSeconds, string PollIntervalInMinilliseconds)
-            : base(FormatMessage(ParentName, mappingDetails?.FindLogicUsed ?? mappingDetails.FindLogic ?? "No Mapping logic!", mappingDetails?.FriendlyName ?? "Logic only. No friendly name set!", TimeoutInSeconds, PollIntervalInMinilliseconds))
+            : base(FindLogicReturnedNoElements.FormatMessage(ParentName, mappingDetails?.FindLogicUsed ?? mappingDetails.FindLogic ?? "No Mapping logic!", mappingDetails?.FriendlyName ?? "Logic only. No friendly name set!", TimeoutInSeconds, PollIntervalInMinilliseconds))
         {
         }
         /// <summary>No elements could be found using given find logic</summary>
@@ -391,32 +402,33 @@ namespace TeamControlium.Controlium
         /// <param name="RawFindLogic">Find logic applied to parent</param>
         /// <param name="FriendlyName">Name of element we wanted</param>
         public FindLogicReturnedNoElements(Element parent, ObjectMappingDetails mappingDetails, string TimeoutInSeconds, string PollIntervalInMinilliseconds)
-            : base(FormatMessage(parent?.MappingDetails?.FriendlyName ?? "Parent name cannot be got", mappingDetails?.FindLogicUsed ?? mappingDetails.FindLogic ?? "No Mapping logic!", mappingDetails?.FriendlyName ?? "Logic only. No friendly name set!", TimeoutInSeconds, PollIntervalInMinilliseconds))
+            : base(FindLogicReturnedNoElements.FormatMessage(parent?.MappingDetails?.FriendlyName ?? "Parent name cannot be got", mappingDetails?.FindLogicUsed ?? mappingDetails.FindLogic ?? "No Mapping logic!", mappingDetails?.FriendlyName ?? "Logic only. No friendly name set!", TimeoutInSeconds, PollIntervalInMinilliseconds))
         {
         }
     }
 
     /// <summary>Attribute returned null</summary>
-    public sealed class AttributeReturnedNull : Exception
+    public class AttributeReturnedNull : Exception
     {
-        private static string FormatMessage(ObjectMappingDetails mappingDetails, string Attribute)
+        static private string FormatMessage(ObjectMappingDetails mappingDetails, string Attribute)
         {
             return string.Format("Attribute [{0}] from element [{1}] ([{2}]) returned null.", Attribute, mappingDetails?.FriendlyName ?? mappingDetails?.FindLogic ?? "", mappingDetails?.FindLogicUsed ?? "No find logic!");
         }
+
 
         /// <summary>Attribute returned null</summary>
         /// <param name="ElementName">Element whose attribute was being read</param>
         /// <param name="Attribute">Attribute being read</param>
         public AttributeReturnedNull(ObjectMappingDetails mappingDetails, string Attribute)
-            : base(FormatMessage(mappingDetails, Attribute))
+            : base(AttributeReturnedNull.FormatMessage(mappingDetails, Attribute))
         {
         }
     }
 
     /// <summary>Trying to set/get text caused Selenium to throw an exception</summary>
-    public sealed class UnableToSetOrGetText : Exception
+    public class UnableToSetOrGetText : Exception
     {
-        private static string FormatMessage(ObjectMappingDetails mappingDetails, string Text)
+        static private string FormatMessage(ObjectMappingDetails mappingDetails, string Text)
         {
             return string.Format("Setting or Getting text on element [{0}] ([{1}]) (Text: [{2}]) caused an exception from Selenium! See inner exception", mappingDetails?.FriendlyName ?? mappingDetails?.FindLogic ?? "", mappingDetails?.FindLogicUsed ?? "No find logic!", Text);
         }
@@ -426,15 +438,15 @@ namespace TeamControlium.Controlium
         /// <param name="Text">Text being entered</param>
         /// <param name="ex">Inner Exception</param>
         public UnableToSetOrGetText(ObjectMappingDetails mappingDetails, string Text, Exception ex)
-            : base(FormatMessage(mappingDetails, Text), ex)
+            : base(UnableToSetOrGetText.FormatMessage(mappingDetails, Text), ex)
         {
         }
     }
 
     /// <summary>Timed out waiting for an element</summary>
-    public sealed class TimeoutWaitingForElement : Exception
+    public class TimeoutWaitingForElement : Exception
     {
-        private static string FormatMessage(string ParentElementName, string WaitedForElementName, string FindLogic, string RequiredVisibility, string ElapsedTime)
+        static private string FormatMessage(string ParentElementName, string WaitedForElementName, string FindLogic, string RequiredVisibility, string ElapsedTime)
         {
             return string.Format("Waiting for element [{0} (FindLogic:{1})] (Descendant of [{2}]) caused an exception. Wanted to be {3} (waited {4} Seconds)", WaitedForElementName, FindLogic, ParentElementName, RequiredVisibility, ElapsedTime);
         }
@@ -448,15 +460,15 @@ namespace TeamControlium.Controlium
         /// <param name="RequiredVisibility">What state we were waiting for</param>
         /// <param name="ElapsedTime">How long (in Seconds) we waited</param>
         public TimeoutWaitingForElement(string ParentElementName, string ElementName, string FindLogic, string RequiredVisibility, string ElapsedTime)
-            : base(FormatMessage(ParentElementName, ElementName, FindLogic, RequiredVisibility, ElapsedTime))
+            : base(TimeoutWaitingForElement.FormatMessage(ParentElementName, ElementName, FindLogic, RequiredVisibility, ElapsedTime))
         {
         }
     }
 
     /// <summary>Timeout waiting for a wait element</summary>
-    public sealed class WaitTimeout : Exception
+    public class WaitTimeout : Exception
     {
-        private static string FormatMessage(dynamic Parent, Element ElementBeingWaitedFor, string RequiredVisibility, string ElapsedTime, string PollIntervalInMilliseconds)
+        static private string FormatMessage(dynamic Parent, Element ElementBeingWaitedFor, string RequiredVisibility, string ElapsedTime, string PollIntervalInMilliseconds)
         {
             if (((ObjectHandle)Parent).Unwrap().GetType() == typeof(Element))
             {
@@ -492,7 +504,7 @@ namespace TeamControlium.Controlium
         /// <param name="RequiredVisibility">What state we were waiting for</param>
         /// <param name="ElapsedTime">How long (in Seconds) we waited</param>
         public WaitTimeout(Element Parent, Element element, string RequiredVisibility, string ElapsedTimeInSeconds, string PollIntervalInMilliseconds)
-            : base(FormatMessage(Parent, element, RequiredVisibility, ElapsedTimeInSeconds, PollIntervalInMilliseconds))
+            : base(WaitTimeout.FormatMessage(Parent, element, RequiredVisibility, ElapsedTimeInSeconds, PollIntervalInMilliseconds))
         {
         }
         /// <summary>
@@ -504,15 +516,15 @@ namespace TeamControlium.Controlium
         /// <param name="RequiredVisibility">What state we were waiting for</param>
         /// <param name="ElapsedTime">How long (in Seconds) we waited</param>
         public WaitTimeout(SeleniumDriver Parent, Element element, string RequiredVisibility, string ElapsedTimeInSeconds, string PollIntervalInMilliseconds)
-            : base(FormatMessage(Parent, element, RequiredVisibility, ElapsedTimeInSeconds, PollIntervalInMilliseconds))
+            : base(WaitTimeout.FormatMessage(Parent, element, RequiredVisibility, ElapsedTimeInSeconds, PollIntervalInMilliseconds))
         {
         }
     }
 
     /// <summary>Timed out waiting for an element</summary>
-    public sealed class BasestateError : Exception
+    public class BasestateError : Exception
     {
-        private static string FormatMessage(string Message)
+        static private string FormatMessage(string Message)
         {
             return string.Format("Unable to perform test.  Basestate operation threw error: {0}.", Message);
         }
@@ -526,7 +538,7 @@ namespace TeamControlium.Controlium
         /// <param name="RequiredVisibility">What state we were waiting for</param>
         /// <param name="ElapsedTime">How long (in Seconds) we waited</param>
         public BasestateError(string Message, Exception ex)
-            : base(FormatMessage(Message), ex)
+            : base(BasestateError.FormatMessage(Message), ex)
         {
         }
     }

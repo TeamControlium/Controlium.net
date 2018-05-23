@@ -1,13 +1,19 @@
-﻿using Internal.Tester;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TeamControlium.Utilities;
 using TechTalk.SpecFlow;
+using TeamControlium.Utilities;
 
 namespace TeamControlium.Controlium
 {
     [Binding]
     public sealed class ControlBaseTestSteps
     {
+
+
         [Given(@"I am using local browser ""(?i)(.*)""")]
         public void GivenIAmUsingBrowser(string browser)
         {
@@ -20,35 +26,41 @@ namespace TeamControlium.Controlium
         [Given(@"I instantiate SeleniumDriver and browse to ""(.*)""")]
         public void WhenIInstantiateSeleniumDriver(string urlToBrowseTo)
         {
-            var driver = new SeleniumDriver();
-            driver.GotoURL(urlToBrowseTo);
-            ScenarioContext.Current.Add("SeleniumDriver", driver);
+            SeleniumDriver sDriver = new SeleniumDriver();
+            sDriver.GotoURL(urlToBrowseTo);
+            ScenarioContext.Current.Add("SeleniumDriver", sDriver);
         }
+
 
         [When(@"I find Textbox control with title ""(.*)""")]
         public void WhenIFindFKTextboxControlWithTitle(string controlTitle)
         {
-            var driver = ScenarioContext.Current.Get<SeleniumDriver>("SeleniumDriver");
-            var control = driver.SetControl(new ControlBaseTester(controlTitle));
+            SeleniumDriver sDriver = (SeleniumDriver)ScenarioContext.Current["SeleniumDriver"];
+            Internal.Tester.ControlBaseTester control = sDriver.SetControl(new Internal.Tester.ControlBaseTester(controlTitle));
             ScenarioContext.Current.Add("Control", control);
         }
 
         [When(@"enter text ""(.*)""")]
         public void WhenEnterText(string textToEnter)
         {
-            ScenarioContext.Current.Get<ControlBaseTester>("Control").Text = textToEnter;
+            ((Internal.Tester.ControlBaseTester)ScenarioContext.Current["Control"]).Text = textToEnter;
         }
 
         [Then(@"Control is found")]
         public void ThenControlIsFound()
         {
-            Assert.IsNotNull(ScenarioContext.Current.Get<ControlBaseTester>("Control"));
+            Assert.IsNotNull(ScenarioContext.Current["Control"], "Verify Control type is not null");
         }
 
         [Then(@"I can read the text ""(.*)""")]
         public void ThenICanReadTheText(string stringExpected)
         {
-            Assert.AreEqual(ScenarioContext.Current.Get<ControlBaseTester>("Control").Text, stringExpected);
+            var stringRead = ((Internal.Tester.ControlBaseTester)ScenarioContext.Current["Control"]).Text;
+            Assert.AreEqual(stringRead, stringExpected, "String read from control is same as expected");
         }
+
+
+
+
     }
 }

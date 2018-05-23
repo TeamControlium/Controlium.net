@@ -1,14 +1,16 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Text;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
-using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
+using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 namespace TeamControlium.Controlium
 {
+
     /// <summary>
     /// Displays a dialog box and prompts the user for login credentials.
     /// </summary>
@@ -218,12 +220,19 @@ namespace TeamControlium.Controlium
         /// <summary>
         /// Indicates if Save checkbox has been ticked ot not (See UserCredentialsDialogFlags)
         /// </summary>
-        public bool SaveChecked { get; set; }
-
+        public bool SaveChecked
+        {
+            get { return saveChecked; }
+            set { saveChecked = value; }
+        }
         /// <summary>
         /// Flags for use when dialog is shown (See UserCredentialsDialogFlags)
         /// </summary>
-        public UserCredentialsDialogFlags Flags { get; set; }
+        public UserCredentialsDialogFlags Flags
+        {
+            get { return flags; }
+            set { flags = value; }
+        }
 
         /// <summary>
         /// Store user credentials in the Credential Manager.
@@ -273,7 +282,7 @@ namespace TeamControlium.Controlium
                 passwordIn = value;
             }
         }
-
+ 
         /// <summary>
         /// Set all properties to it's default values.
         /// </summary>
@@ -348,7 +357,7 @@ namespace TeamControlium.Controlium
 
             }
         }
-
+ 
         /// <summary>
         /// Do not use
         /// </summary>
@@ -493,4 +502,5 @@ namespace TeamControlium.Controlium
             }
         }
     }
+
 }

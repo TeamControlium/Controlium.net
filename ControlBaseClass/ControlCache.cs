@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TeamControlium.Controlium
 {
@@ -16,7 +19,6 @@ namespace TeamControlium.Controlium
     public static class ControlCache
     {
         private static Collection<ControlBase> controls = new Collection<ControlBase>();
-
         public enum ControlCacheStates { CachingDisabled, CacheHit, CacheMiss, CachedControlWasStale };
 
         /// <summary>Setup caching defaults
@@ -49,14 +51,13 @@ namespace TeamControlium.Controlium
             if (DisableControlCaching) return false;
             foreach (ControlBase collectionControl in controls)
             {
-                if (ControlMatch(NewControl, collectionControl))
+                if (ControlMatch(NewControl, collectionControl) == true)
                 {
                     return true;
                 }
             }
             return false;
         }
-
         /// <summary>Adds a new Control to the library
         /// <para/><para/>Tests should not have to call this method directly as Core Controls used &amp; reference the cache during control root element identification.
         /// </summary>
@@ -65,7 +66,6 @@ namespace TeamControlium.Controlium
         public static void Add(ControlBase NewControl)
         {
             if (DisableControlCaching) return;
-
             // Its assumed we are only calling Add if we have checked the control doesnt exist.  But, lets make sure......
             if (!Exists(NewControl))
             {
@@ -76,7 +76,6 @@ namespace TeamControlium.Controlium
                 throw new Exception("FATAL - Control [" + NewControl.Mapping?.FriendlyName ?? NewControl.Mapping?.FindLogic ?? "Unknown!!  No find login or friendly name" + "] already exists - why did we not reuse it (on invalidate if stale?)?!");
             }
         }
-
         /// <summary>Get control from Cache library
         /// </summary>
         /// <param name="FoundControlToGet">Control to get</param>
@@ -85,13 +84,10 @@ namespace TeamControlium.Controlium
         {
             // If we are not caching, just return the passed control....
             if (DisableControlCaching) return FoundControlToGet;
-
             foreach (ControlBase collectionControl in controls)
             {
-                if (ControlMatch(FoundControlToGet, collectionControl))
-                    return collectionControl;
+                if (ControlMatch(FoundControlToGet, collectionControl) == true) return collectionControl;
             }
-
             throw new Exception("CoreLib_Control:ControlCollection - cannot locate control: " + FoundControlToGet.Mapping?.FriendlyName ?? FoundControlToGet.Mapping?.FindLogic ?? "Unknown!!  No find login or friendly name");
         }
 
@@ -104,13 +100,13 @@ namespace TeamControlium.Controlium
         public static ControlCacheStates Check<T>(ref T ControlToCheck) where T : ControlBase
         {
             return ControlCacheStates.CachingDisabled; // We have a problem...
-                                                       //
-                                                       // Scenario - we set a control and then a bunch of children from it.
-                                                       //            If 1 child is stalethe whole cache - parent and siblings are flushed!!!
-                                                       //
+            //
+            // Scenario - we set a control and then a bunch of children from it.
+            //            If 1 child is stalethe whole cache - parent and siblings are flushed!!!
+            //
+
 
             if (DisableControlCaching) return ControlCacheStates.CachingDisabled;
-
             if (Exists(ControlToCheck))
             {
                 ControlBase CachedControl = Get(ControlToCheck);
@@ -138,6 +134,7 @@ namespace TeamControlium.Controlium
             }
         }
 
+
         public static void ClearCache()
         {
             controls.Clear();
@@ -150,7 +147,6 @@ namespace TeamControlium.Controlium
             if (string.IsNullOrEmpty(A) && string.IsNullOrEmpty(B)) return true;
             return A.Equals(B);
         }
-
         private static bool ControlMatch(ControlBase Control1, ControlBase Control2)
         {
             ControlBase _control1;
@@ -188,10 +184,13 @@ namespace TeamControlium.Controlium
                 {
                     return false;  // Control1 (or an ancestor) is null, or we wouldnt be here, so if Control2 (or an ancestor on the same level) is NOT null we dont have a match... 
                 }
-                return true;
+                else
+                {
+                    return true;
+                }
             }
-
-            return false;
+            else
+                return false;
         }
     }
 }
