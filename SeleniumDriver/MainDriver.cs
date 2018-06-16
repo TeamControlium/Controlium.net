@@ -47,7 +47,7 @@ namespace TeamControlium.Controlium
     /// </item>
     /// </list>
     /// </remarks>
-    public partial class SeleniumDriver
+    public partial class SeleniumDriver : IDisposable
     {
         // CONSTANT FIELDS (Added text delete)
         private readonly string[] SeleniumServerFolder = { "Selenium", "SeleniumServerFolder" };      // Location of the local Selenium Servers (Only required if running locally
@@ -65,9 +65,6 @@ namespace TeamControlium.Controlium
 
         private readonly int defaultTimeout = 60000; // 1 Minute
         private readonly int defaultPollInterval = 500; // 500mS
-
-        // FIELDS
-        private IWebDriver webDriver;
         private WebDriverWait elementFindTimings;
         private TimeSpan pollInterval;
         private TimeSpan pageLoadTimeout;
@@ -78,6 +75,12 @@ namespace TeamControlium.Controlium
         public SeleniumDriver()
         {
             ConfigureRun();
+        }
+
+        public void Dispose()
+        {
+            if (WebDriver != null) WebDriver.Close();
+            WebDriver = null;
         }
 
         // ENUMS
@@ -133,13 +136,14 @@ namespace TeamControlium.Controlium
             set
             {
                 pageLoadTimeout = value;
-                if (webDriver != null)
+                if (WebDriver != null)
                 {
                     Logger.WriteLine(Logger.LogLevels.FrameworkDebug, $"Setting Page Load timeout to {pageLoadTimeout.TotalMilliseconds}mS");
-                    webDriver.Manage().Timeouts().PageLoad = pageLoadTimeout;
+                    WebDriver.Manage().Timeouts().PageLoad = pageLoadTimeout;
                 }
             }
         }
+
         public ObjectMappingDetails MappingDetails
         {
             get
@@ -151,13 +155,7 @@ namespace TeamControlium.Controlium
         /// <summary>
         /// Retruns the Selenium WebDriver instance we are using.
         /// </summary>
-        public IWebDriver WebDriver
-        {
-            get
-            {
-                return webDriver;
-            }
-        }
+        public IWebDriver WebDriver { get; private set; }
 
         // METHODS
         /// <summary>If Selenium Webdriver has the capabilty (either built in or with our SSRemoteWebdriver class)
@@ -179,9 +177,9 @@ namespace TeamControlium.Controlium
 
             try
             {
-                if (webDriver != null)
+                if (WebDriver != null)
                 {
-                    if (webDriver is ITakesScreenshot)
+                    if (WebDriver is ITakesScreenshot)
                     {
                         try
                         {
@@ -208,7 +206,7 @@ namespace TeamControlium.Controlium
                         {
                             filename = Path.Combine(filepath, filename + ".jpg");
                         }
-                        Screenshot screenshot = ((ITakesScreenshot)webDriver).GetScreenshot();
+                        Screenshot screenshot = ((ITakesScreenshot)WebDriver).GetScreenshot();
                         Logger.WriteLine(Logger.LogLevels.TestInformation, "Screenshot - {0}", filename);
 
                         screenshot.SaveAsFile(filename, ScreenshotImageFormat.Jpeg);
@@ -277,8 +275,8 @@ namespace TeamControlium.Controlium
             else
                 Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "Debug.TakeScreenshot = {0} - NOT Taking screenshot...", TakeScreenshotOption);
 
-            if (webDriver != null) webDriver.Quit();
-            webDriver = null;
+            if (WebDriver != null) WebDriver.Quit();
+            WebDriver = null;
         }
 
         public virtual T SetControl<T>(T NewControl) where T : ControlBase
@@ -295,7 +293,7 @@ namespace TeamControlium.Controlium
             {
                 try
                 {
-                    return webDriver.Title ?? string.Empty;
+                    return WebDriver.Title ?? string.Empty;
                 }
                 catch (Exception ex)
                 {
@@ -340,7 +338,7 @@ namespace TeamControlium.Controlium
 
         private WebDriverWait GetPollAndTimeout(WebDriverWait Original, TimeSpan? TimeoutOverride, TimeSpan? PollingIntervalOverride)
         {
-            WebDriverWait newWDW = new WebDriverWait(webDriver, Original.Timeout);
+            WebDriverWait newWDW = new WebDriverWait(WebDriver, Original.Timeout);
             if (TimeoutOverride != null) newWDW.Timeout = (TimeSpan)TimeoutOverride;
             newWDW.PollingInterval = PollingIntervalOverride == null ? Original.PollingInterval : (TimeSpan)PollingIntervalOverride;
             return newWDW;
@@ -394,13 +392,14 @@ namespace TeamControlium.Controlium
             try
             {
                 // And go (We use our own webdriver, inherited from RemoteWebDriver so that we can implement any extra stuff (IE. Screen snapshot)
-                webDriver = new ExtendedRemoteWebDriver(uri, requiredCapabilities, connectionTimeout);
+                WebDriver = new ExtendedRemoteWebDriver(uri, requiredCapabilities, connectionTimeout);
             }
             catch (Exception ex)
             {
                 throw new SeleniumWebDriverInitError(uri.AbsoluteUri, requiredCapabilities.ToString(), ex);
             }
         }
+
         private bool IsLocalRun
         {
             get
@@ -415,6 +414,8 @@ namespace TeamControlium.Controlium
             }
         }
 
+        public TimeSpan PollInterval1 { get => pollInterval; set => pollInterval = value; }
+
         private string CheckAndPreparSeleniumLogFile(string SeleniumDebugFile)
         {
             string seleniumDebugFile = SeleniumDebugFile;
@@ -423,9 +424,7 @@ namespace TeamControlium.Controlium
                 return null;
             else
             {
-                //
                 // If path is relative, make it absolute..
-                //
                 string seleniumDebugFileFolder = (seleniumDebugFile.StartsWith(".")) ?
                     Path.GetDirectoryName(Path.GetFullPath(Path.GetDirectoryName(seleniumDebugFile))) :
                     Path.GetDirectoryName(seleniumDebugFile);
@@ -439,6 +438,7 @@ namespace TeamControlium.Controlium
 
                 if (string.IsNullOrWhiteSpace(seleniumDebugFileFolder))
                     seleniumDebugFileFolder = Environment.CurrentDirectory;
+
                 string PathAndFile = "";
                 try
                 {
@@ -517,7 +517,7 @@ namespace TeamControlium.Controlium
                     // IEO.EnableNativeEvents = false;
                     IEO.AddAdditionalCapability("INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS", (bool)true);  // Enabling this as part of #ITSD1-1126 - If any issues come back to request
                     Logger.WriteLine(Logger.LogLevels.TestInformation, "IE Browser being used.  Setting INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS active. #ITSD1-1126");
-                    webDriver = new InternetExplorerDriver(service, IEO);
+                    WebDriver = new InternetExplorerDriver(service, IEO);
                 }
 
                 if (IsEdge)
@@ -539,7 +539,7 @@ namespace TeamControlium.Controlium
 
 
                     EO.PageLoadStrategy = (PageLoadStrategy)EdgePageLoadStrategy.Eager;
-                    webDriver = new EdgeDriver(seleniumFolder, EO);
+                    WebDriver = new EdgeDriver(seleniumFolder, EO);
 
                 }
 
@@ -556,10 +556,10 @@ namespace TeamControlium.Controlium
                     }
                     else
                         Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "Writing Selenium Server Output to console");
-                    webDriver = new ChromeDriver(service, options);
+                    WebDriver = new ChromeDriver(service, options);
                 }
 
-                if (webDriver == null) throw new SeleniumWebDriverInitError(seleniumFolder, IsInternetExplorer ? "Internet Explorer" : IsChrome ? "Chrome" : IsEdge ? "Edge" : "Undefined!!");
+                if (WebDriver == null) throw new SeleniumWebDriverInitError(seleniumFolder, IsInternetExplorer ? "Internet Explorer" : IsChrome ? "Chrome" : IsEdge ? "Edge" : "Undefined!!");
 
             }
             catch (Exception ex)
@@ -567,11 +567,12 @@ namespace TeamControlium.Controlium
                 throw new SeleniumWebDriverInitError(seleniumFolder, IsInternetExplorer ? "Internet Explorer" : IsChrome ? "Chrome" : IsEdge ? "Edge" : "Undefined!!", ex);
             }
         }
+
         private void SetTimeouts()
         {
             int dummy;
 
-            elementFindTimings = new WebDriverWait(webDriver, TimeSpan.FromMilliseconds((TestData.Repository.TryGetItem(ConfigTimeout[0], ConfigTimeout[1], out dummy)) ? dummy : defaultTimeout));
+            elementFindTimings = new WebDriverWait(WebDriver, TimeSpan.FromMilliseconds((TestData.Repository.TryGetItem(ConfigTimeout[0], ConfigTimeout[1], out dummy)) ? dummy : defaultTimeout));
             elementFindTimings.PollingInterval = TimeSpan.FromMilliseconds((TestData.Repository.TryGetItem(ConfigPollingInterval[0], ConfigPollingInterval[1], out dummy)) ? dummy : defaultPollInterval);
 
             if (TestData.Repository.TryGetItem(ConfigPageLoadTimeout[0], ConfigPageLoadTimeout[1], out dummy))
@@ -584,6 +585,7 @@ namespace TeamControlium.Controlium
                 PageLoadTimeout = TimeSpan.FromMilliseconds(30000);
             }
         }
+
         private void ConfigureRun()
         {
             // Set browser if it has not already been done
@@ -591,16 +593,12 @@ namespace TeamControlium.Controlium
 
             if (IsLocalRun)
             {
-                //
                 // Setup test run based on being local 
-                //
                 SetupLocalRun();
             }
             else
             {
-                //
                 // It is a remote run
-                //
                 SetupRemoteRun();
             }
 
@@ -610,12 +608,11 @@ namespace TeamControlium.Controlium
 
         public static void ResetSettings()
         {
-            SeleniumDriver.IsChrome = false;
-            SeleniumDriver.IsEdge = false;
-            SeleniumDriver.IsInternetExplorer = false;
-            SeleniumDriver.IsSafari = false;
-            SeleniumDriver.TestBrowserHasBeenSet = false;
+            IsChrome = false;
+            IsEdge = false;
+            IsInternetExplorer = false;
+            IsSafari = false;
+            TestBrowserHasBeenSet = false;
         }
     }
 }
-

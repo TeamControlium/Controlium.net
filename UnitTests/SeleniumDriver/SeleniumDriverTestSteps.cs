@@ -13,21 +13,18 @@ namespace TeamControlium.Controlium
         [Given(@"There are no processes running named ""(.*)""")]
         public void GivenThereAreNoProcessesRunningNamed(string processNameToKill)
         {
-            Process[] processes = Process.GetProcessesByName(processNameToKill);
-            if (processes.Count() > 1)
+            var processes = Process.GetProcessesByName(processNameToKill);
+            foreach (var process in processes)
             {
-                foreach (var process in processes)
+                try
                 {
-                    try
+                    process.Kill();
+                    if (!process.WaitForExit(10000))
                     {
-                        process.Kill();
-                        if (!process.WaitForExit(10000))
-                        {
-                            Assert.Inconclusive($"Killing {processNameToKill}] (ID = {process.Id}) did not work within 10 seconds");
-                        }
+                        Assert.Inconclusive($"Killing {processNameToKill}] (ID = {process.Id}) did not work within 10 seconds");
                     }
-                    catch (Exception ex) { }
                 }
+                catch { }
             }
         }
 
@@ -41,15 +38,14 @@ namespace TeamControlium.Controlium
         [When(@"I instantiate SeleniumDriver")]
         public void WhenIInstantiateSeleniumDriver()
         {
-            SeleniumDriver sDriver = new SeleniumDriver();
-            ScenarioContext.Current.Add("SeleniumDriver", sDriver);
+            ScenarioContext.Current.Add("SeleniumDriver", new SeleniumDriver());
         }
 
         [Given(@"I browse to ""(.*)""")]
         [When(@"I browse to ""(.*)""")]
         public void WhenIBrowseTo(string urlToBrowseTo)
         {
-            ((SeleniumDriver)ScenarioContext.Current["SeleniumDriver"]).GotoURL(urlToBrowseTo);
+            ScenarioContext.Current.Get<SeleniumDriver>("SeleniumDriver").GotoURL(urlToBrowseTo);
         }
 
         [Then(@"a process exists named ""(.*)""")]
@@ -61,8 +57,7 @@ namespace TeamControlium.Controlium
         [Then(@"I can read the page title ""(.*)""")]
         public void ThenICanReadThePageTitle(string expectedPageTitle)
         {
-            string pageTitle = ((SeleniumDriver)ScenarioContext.Current["SeleniumDriver"]).PageTitle;
-            Assert.AreEqual(expectedPageTitle, pageTitle);
+            Assert.AreEqual(expectedPageTitle, ScenarioContext.Current.Get<SeleniumDriver>("SeleniumDriver").PageTitle);
         }
 
         [Given(@"I use FindElement to locate an element using XPath ""(.*)""")]
@@ -72,7 +67,7 @@ namespace TeamControlium.Controlium
             Element foundElement;
             try
             {
-                foundElement = ((SeleniumDriver)ScenarioContext.Current["SeleniumDriver"]).FindElement(new ObjectMappingDetails(xPath, "The XPath"));
+                foundElement = ScenarioContext.Current.Get<SeleniumDriver>("SeleniumDriver").FindElement(new ObjectMappingDetails(xPath, "The XPath"));
                 ScenarioContext.Current.Add("FoundElement", foundElement);
             }
             catch (Exception ex)

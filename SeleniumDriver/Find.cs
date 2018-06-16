@@ -125,7 +125,7 @@ namespace TeamControlium.Controlium
             Logger.Write(Logger.LogLevels.FrameworkInformation, "Find Elements: {0}", SeleniumFindBy.ToString());
             try
             {
-                FoundElements = webDriver.FindElements(SeleniumFindBy).ToList();
+                FoundElements = WebDriver.FindElements(SeleniumFindBy).ToList();
             }
             catch (Exception ex)
             {

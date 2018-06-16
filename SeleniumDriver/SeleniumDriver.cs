@@ -408,12 +408,11 @@ namespace TeamControlium.Controlium
         ///   // Oooops
         /// }
         /// </code></example>
-
         public bool TryGotoURL(string FullURLPath)
         {
             try
             {
-                webDriver.Navigate().GoToUrl(FullURLPath);
+                WebDriver.Navigate().GoToUrl(FullURLPath);
                 return true;
             }
             catch (Exception ex)
@@ -422,6 +421,7 @@ namespace TeamControlium.Controlium
                 return false;
             }
         }
+
         /// <summary>Instructs Selenium to browse to the URL passed.  If Selenium throws an error, test is aborted.</summary>
         /// <remarks>Executes the Selenium WebDriver .Navigate().GoToURL(FullPath) command.  If there is any exception the underlying tool is
         /// instructed to abort the test.
@@ -449,7 +449,6 @@ namespace TeamControlium.Controlium
                 throw new InvalidHostURI(TryException.Message);
             //   Alert alert = wait.until(ExpectedConditions.alertIsPresent());
             //   alert.authenticateUsing(new UserAndPassword("USERNAME", "PASSWORD"));
-
         }
 
         /// <summary>
@@ -459,7 +458,7 @@ namespace TeamControlium.Controlium
         public void ClearBrowser()
         {
             ExecuteJavaScriptNoReturnData("window.localStorage.clear();");
-            webDriver.Manage().Cookies.DeleteAllCookies();
+            WebDriver.Manage().Cookies.DeleteAllCookies();
         }
 
         /// <summary>
@@ -495,8 +494,6 @@ namespace TeamControlium.Controlium
             }
         }
 
-
-
         /// <summary>Tests if element is currently visible to the user.</summary>
         /// <param name="Element">Element to test</param>
         /// <returns>True if visible, false if not (or if element is null)</returns>
@@ -506,7 +503,6 @@ namespace TeamControlium.Controlium
         public bool IsElementVisible(Element Element)
         {
             return IsElementVisible(Element, false);
-
         }
 
         /// <summary>Tests if element is currently visible to the user.</summary>
@@ -552,9 +548,6 @@ namespace TeamControlium.Controlium
             return result;
         }
 
-
-
-
         /// <summary>Tests is element is enabled (and so will accept text and/or click events)
         /// </summary>
         /// <param name="Element">Element to test</param>
@@ -569,7 +562,6 @@ namespace TeamControlium.Controlium
                 return false;
             }
         }
-
 
         public bool Enabled(IWebElement webElement)
         {
@@ -612,7 +604,6 @@ namespace TeamControlium.Controlium
             Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "Is Element Selected = {0}", result ? "TRUE" : "FALSE");
             return result;
         }
-
 
         /// <summary>Wraps Click event to enable us to make Clicking more clever if needed (IE. If Element may have an overlay)</summary>
         /// <param name="WebElement">IWebElement to click</param>
@@ -766,9 +757,7 @@ namespace TeamControlium.Controlium
             Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "Scrolling element in to view (JavaScript inject - [Element].scrollIntoView()");
             ExecuteJavaScriptNoReturnData("arguments[0].scrollIntoView();", WebElement);
         }
-
-
-
+        
         public bool WaitForElement(Element ElementToWaitFor, Visibility RequiredVisibility, TimeSpan? Timeout = null, TimeSpan? PollInterval = null)
         {
             bool DidReachRequiredVisibilityBeforeTimeout = false;
@@ -854,7 +843,6 @@ namespace TeamControlium.Controlium
         {
             return WaitForElement(ParentElement, objectDetails, RequiredVisibility, true, Timeout, PollInterval);
         }
-
 
         /// <summary>Waits specific time for IWebElement to be visible or hidden.  Throws Execption if timed out
         /// </summary>

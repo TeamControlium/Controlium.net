@@ -37,7 +37,7 @@ namespace TeamControlium.Controlium
         {
             try
             {
-                result = ((IJavaScriptExecutor)webDriver).ExecuteScript(script, args).ToString();
+                result = ((IJavaScriptExecutor)WebDriver).ExecuteScript(script, args).ToString();
                 return true;
             }
             catch (Exception ex)
@@ -92,7 +92,7 @@ namespace TeamControlium.Controlium
         {
             try
             {
-                result = (IWebElement)((IJavaScriptExecutor)webDriver).ExecuteScript(script, args);
+                result = (IWebElement)((IJavaScriptExecutor)WebDriver).ExecuteScript(script, args);
                 return true;
             }
             catch (Exception ex)
@@ -120,7 +120,7 @@ namespace TeamControlium.Controlium
         {
             try
             {
-                result = (T)((IJavaScriptExecutor)webDriver).ExecuteScript(script, args);
+                result = (T)((IJavaScriptExecutor)WebDriver).ExecuteScript(script, args);
                 return true;
             }
             catch (Exception ex)
@@ -168,7 +168,7 @@ namespace TeamControlium.Controlium
         {
             try
             {
-                ((IJavaScriptExecutor)webDriver).ExecuteScript(script, args);
+                ((IJavaScriptExecutor)WebDriver).ExecuteScript(script, args);
                 return true;
             }
             catch (Exception ex)
