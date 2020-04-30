@@ -6,8 +6,6 @@ namespace TeamControlium.Controlium
     [Binding]
     public sealed class SpecflowHooks
     {
-        // For additional details on SpecFlow hooks see http://go.specflow.org/doc-hooks
-
         [BeforeScenario]
         public void BeforeScenario()
         {

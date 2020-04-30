@@ -55,8 +55,11 @@ namespace TeamControlium.Controlium.UnitTests.SeleniumDriver
                 var driver = new Controlium.SeleniumDriver();
 
                 // Assert 
-                Assert.IsTrue(Process.GetProcessesByName(browser.ServerProcessName).Count() > 0, $"There must be one or more processes named ({browser.ServerProcessName})");
-                Assert.IsTrue(Process.GetProcessesByName(browser.ProcessName).Count() > 0, $"There must be one or more processes named ({browser.ProcessName})");
+                var serverProcName = Process.GetProcessesByName(browser.ServerProcessName);
+                Assert.IsTrue(serverProcName.Length > 0, $"There must be more than one process named ({browser.ServerProcessName})");
+
+                var procName = Process.GetProcessesByName(browser.ProcessName);
+                Assert.IsTrue(procName.Length > 0, $"There must be more than one process named ({browser.ProcessName})");
 
                 // Antiseptic
                 driver.CloseDriver();

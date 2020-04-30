@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HtmlAgilityPack;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.IE;
-using OpenQA.Selenium.Edge;
-using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Drawing.Imaging;
-using System.Runtime.Remoting;
-using HtmlAgilityPack;
+using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using TeamControlium.Utilities;
 
 namespace TeamControlium.Controlium
@@ -419,12 +408,11 @@ namespace TeamControlium.Controlium
         ///   // Oooops
         /// }
         /// </code></example>
-
         public bool TryGotoURL(string FullURLPath)
         {
             try
             {
-                webDriver.Navigate().GoToUrl(FullURLPath);
+                WebDriver.Navigate().GoToUrl(FullURLPath);
                 return true;
             }
             catch (Exception ex)
@@ -433,6 +421,7 @@ namespace TeamControlium.Controlium
                 return false;
             }
         }
+
         /// <summary>Instructs Selenium to browse to the URL passed.  If Selenium throws an error, test is aborted.</summary>
         /// <remarks>Executes the Selenium WebDriver .Navigate().GoToURL(FullPath) command.  If there is any exception the underlying tool is
         /// instructed to abort the test.
@@ -460,7 +449,6 @@ namespace TeamControlium.Controlium
                 throw new InvalidHostURI(TryException.Message);
             //   Alert alert = wait.until(ExpectedConditions.alertIsPresent());
             //   alert.authenticateUsing(new UserAndPassword("USERNAME", "PASSWORD"));
-
         }
 
         /// <summary>
@@ -470,7 +458,7 @@ namespace TeamControlium.Controlium
         public void ClearBrowser()
         {
             ExecuteJavaScriptNoReturnData("window.localStorage.clear();");
-            webDriver.Manage().Cookies.DeleteAllCookies();
+            WebDriver.Manage().Cookies.DeleteAllCookies();
         }
 
         /// <summary>
@@ -506,8 +494,6 @@ namespace TeamControlium.Controlium
             }
         }
 
-
-
         /// <summary>Tests if element is currently visible to the user.</summary>
         /// <param name="Element">Element to test</param>
         /// <returns>True if visible, false if not (or if element is null)</returns>
@@ -517,7 +503,6 @@ namespace TeamControlium.Controlium
         public bool IsElementVisible(Element Element)
         {
             return IsElementVisible(Element, false);
-
         }
 
         /// <summary>Tests if element is currently visible to the user.</summary>
@@ -563,9 +548,6 @@ namespace TeamControlium.Controlium
             return result;
         }
 
-
-
-
         /// <summary>Tests is element is enabled (and so will accept text and/or click events)
         /// </summary>
         /// <param name="Element">Element to test</param>
@@ -580,7 +562,6 @@ namespace TeamControlium.Controlium
                 return false;
             }
         }
-
 
         public bool Enabled(IWebElement webElement)
         {
@@ -623,7 +604,6 @@ namespace TeamControlium.Controlium
             Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "Is Element Selected = {0}", result ? "TRUE" : "FALSE");
             return result;
         }
-
 
         /// <summary>Wraps Click event to enable us to make Clicking more clever if needed (IE. If Element may have an overlay)</summary>
         /// <param name="WebElement">IWebElement to click</param>
@@ -716,7 +696,7 @@ namespace TeamControlium.Controlium
         /// <code lang="C#">
         /// string text = SeleniumDriver.GetText(myTextBox,true,false);
         /// </code></example>
-        public string GetText(IWebElement WebElement,bool IncludeDescendentsText, bool ScrollIntoViewFirst, bool UseInnerTextAttribute)
+        public string GetText(IWebElement WebElement, bool IncludeDescendentsText, bool ScrollIntoViewFirst, bool UseInnerTextAttribute)
         {
             //
             // This is a bit odd and there are two issues involved but which boil down to a single one.  GetText MUST only return text the user can see (or what
@@ -777,16 +757,14 @@ namespace TeamControlium.Controlium
             Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "Scrolling element in to view (JavaScript inject - [Element].scrollIntoView()");
             ExecuteJavaScriptNoReturnData("arguments[0].scrollIntoView();", WebElement);
         }
-
-
-
+        
         public bool WaitForElement(Element ElementToWaitFor, Visibility RequiredVisibility, TimeSpan? Timeout = null, TimeSpan? PollInterval = null)
         {
             bool DidReachRequiredVisibilityBeforeTimeout = false;
             int Itterations = 0;
             WebDriverWait actualTimeout = GetPollAndTimeout(elementFindTimings, Timeout, PollInterval);
 
-            if (ElementToWaitFor==null)
+            if (ElementToWaitFor == null)
             {
                 if (RequiredVisibility == Visibility.Hidden) return true;
                 throw new Exception("Element does not exist - it is null!");
@@ -804,7 +782,7 @@ namespace TeamControlium.Controlium
                     {
                         Itterations++;
                         bool isDisplayed = (ElementToWaitFor != null && ElementToWaitFor.IsDisplayed);
-                        Logger.WriteLine(Logger.LogLevels.FrameworkDebug,$"[{timeWaited.ElapsedMilliseconds}mS] Element displayed (exists and isDisplayed true): {isDisplayed}");
+                        Logger.WriteLine(Logger.LogLevels.FrameworkDebug, $"[{timeWaited.ElapsedMilliseconds}mS] Element displayed (exists and isDisplayed true): {isDisplayed}");
                         if (isDisplayed)
                         {
                             if (RequiredVisibility == Visibility.Visible)
@@ -866,7 +844,6 @@ namespace TeamControlium.Controlium
             return WaitForElement(ParentElement, objectDetails, RequiredVisibility, true, Timeout, PollInterval);
         }
 
-
         /// <summary>Waits specific time for IWebElement to be visible or hidden.  Throws Execption if timed out
         /// </summary>
         /// <param name="ParentElement">Element to find element under (if null find is from DOM level)</param>
@@ -905,16 +882,16 @@ namespace TeamControlium.Controlium
                         // Call the Find Element (driver or element based). Set the timeout to zero as we will deal with polling and time here (we may be looking for element to be NOT there!...)
                         try
                         {
-                            WebElementFound = FindElement(ParentElement, Mapping, TimeSpan.MinValue, TimeSpan.MinValue);
+                            WebElementFound = FindElement(ParentElement, Mapping, false, TimeSpan.MinValue, TimeSpan.MinValue);
                         }
                         catch (FindLogicReturnedNoElements)
                         {
                             WebElementFound = null;
                         }
-                        Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "[{0}mS]: Element {1} ",timeWaited.ElapsedMilliseconds, (WebElementFound==null)?"not found":$"found (Displayed - {WebElementFound.IsDisplayed})");
+                        Logger.WriteLine(Logger.LogLevels.FrameworkInformation, "[{0}mS]: Element {1} ", timeWaited.ElapsedMilliseconds, (WebElementFound == null) ? "not found" : $"found (Displayed - {WebElementFound.IsDisplayed})");
                         Itterations++;
 
-                        if (WebElementFound==null)
+                        if (WebElementFound == null)
                         {
                             // Element was NOT found.  If we wanted the element to be not there or not displayed (same thing) all good.
                             if (RequiredVisibility == Visibility.Hidden) HaveWeSuccess = true;

@@ -13,7 +13,7 @@ namespace TeamControlium.Controlium
         [Given(@"There are no processes running named ""(.*)""")]
         public void GivenThereAreNoProcessesRunningNamed(string processNameToKill)
         {
-            Process[] processes = Process.GetProcessesByName(processNameToKill);
+            var processes = Process.GetProcessesByName(processNameToKill);
             foreach (var process in processes)
             {
                 try
