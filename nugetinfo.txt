@@ -1,6 +1,0 @@
-//
-// Edit .nuspec to set version
-//
-nuget pack Controlium.net.nuspec
-nuget setApiKey xxxx-xxx-xx-xx-xx-xxxxxx-xxxxx
-nuget push TeamControlium.Controlium.x.x.x.nupkg - Source https://api.nuget.org/v3/index.json
