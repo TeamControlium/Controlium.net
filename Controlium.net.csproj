@@ -101,7 +101,6 @@
     </Compile>
     <Compile Include="UnitTests\ControlBase\ControlBaseTester\ControlBaseTester.cs" />
     <Compile Include="UnitTests\ControlBase\ControlBaseTestSteps.cs" />
-    <Compile Include="UnitTests\SeleniumDriver\DriverTests.cs" />
     <Compile Include="UnitTests\SeleniumDriver\SeleniumDriver1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

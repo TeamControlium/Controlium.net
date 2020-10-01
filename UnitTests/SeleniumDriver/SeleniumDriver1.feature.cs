@@ -86,17 +86,19 @@ namespace TeamControlium.Controlium.UnitTests.SeleniumDriver
         {
 #line 3
 #line 4
-    testRunner.Given("There are no processes running named <Server process name>", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("There are no processes running named \"IEDriverServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 5
-    testRunner.And("There are no processes running named <Process name>", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("There are no processes running named \"iexplore\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 6
-    testRunner.And("setting Category \"Selenium\", Option \"Browser\" is <Browser>", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("There are no processes running named \"chromedriver\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 7
-    testRunner.And("setting Category \"Selenium\", Option \"Host\" is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("There are no processes running named \"chrome\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 8
+    testRunner.And("setting Category \"Selenium\", Option \"Host\" is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 9
     testRunner.And("setting Category \"Selenium\", Option \"SeleniumServerFolder\" is \".//..//..//TestSel" +
                     "eniumServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 9
+#line 10
     testRunner.And("setting Category \"Selenium\", Option \"DebugMode\" is \"off\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
@@ -104,15 +106,17 @@ namespace TeamControlium.Controlium.UnitTests.SeleniumDriver
         public virtual void SeleniumCanBeLaunchedWithMandatorySettingsSet(string browser, string processName, string serverProcessName, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Selenium can be launched with mandatory settings set", exampleTags);
-#line 11
+#line 12
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 12
-    testRunner.When("I instantiate SeleniumDriver", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
-    testRunner.Then(string.Format("a process exists named {0}", serverProcessName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Given(string.Format("setting Category \"Selenium\", Option \"Browser\" is {0}", browser), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
+    testRunner.When("I instantiate SeleniumDriver", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
+    testRunner.Then(string.Format("a process exists named {0}", serverProcessName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 16
     testRunner.And(string.Format("a process exists named {0}", processName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -127,7 +131,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Server process name", "\"IEDriverServer\"")]
         public virtual void SeleniumCanBeLaunchedWithMandatorySettingsSet_IE11()
         {
-#line 11
+#line 12
 this.SeleniumCanBeLaunchedWithMandatorySettingsSet("\"IE11\"", "\"iexplore\"", "\"IEDriverServer\"", ((string[])(null)));
 #line hidden
         }
@@ -141,24 +145,26 @@ this.SeleniumCanBeLaunchedWithMandatorySettingsSet("\"IE11\"", "\"iexplore\"", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Server process name", "\"chromedriver\"")]
         public virtual void SeleniumCanBeLaunchedWithMandatorySettingsSet_Chrome()
         {
-#line 11
+#line 12
 this.SeleniumCanBeLaunchedWithMandatorySettingsSet("\"Chrome\"", "\"chrome\"", "\"chromedriver\"", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void WhenIUseSeleniumDriverToBrowseToGoogleSearchIGetTheCorrectPageTitle(string browser, string processName, string serverProcessName, string[] exampleTags)
+        public virtual void WhenIUseSeleniumDriverToBrowseToGoogleSearchIGetTheCorrectPageTitle(string browser, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("When I use SeleniumDriver to browse to Google Search I get the correct page title" +
                     "", exampleTags);
-#line 21
+#line 23
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 22
-    testRunner.And("I instantiate SeleniumDriver", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
-    testRunner.When("I browse to \"http://www.google.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
+    testRunner.Given(string.Format("Setting Category \"Selenium\", Option \"Browser\" is {0}", browser), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 25
+    testRunner.And("I instantiate SeleniumDriver", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+    testRunner.When("I browse to \"http://www.google.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
     testRunner.Then("I can read the page title \"Google\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -170,12 +176,10 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SeleniumDriverTests")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "\"IE11\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Browser", "\"IE11\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Process name", "\"iexplore\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Server process name", "\"IEDriverServer\"")]
         public virtual void WhenIUseSeleniumDriverToBrowseToGoogleSearchIGetTheCorrectPageTitle_IE11()
         {
-#line 21
-this.WhenIUseSeleniumDriverToBrowseToGoogleSearchIGetTheCorrectPageTitle("\"IE11\"", "\"iexplore\"", "\"IEDriverServer\"", ((string[])(null)));
+#line 23
+this.WhenIUseSeleniumDriverToBrowseToGoogleSearchIGetTheCorrectPageTitle("\"IE11\"", ((string[])(null)));
 #line hidden
         }
         
@@ -185,29 +189,29 @@ this.WhenIUseSeleniumDriverToBrowseToGoogleSearchIGetTheCorrectPageTitle("\"IE11
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SeleniumDriverTests")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "\"Chrome\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Browser", "\"Chrome\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Process name", "\"chrome\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Server process name", "\"chromedriver\"")]
         public virtual void WhenIUseSeleniumDriverToBrowseToGoogleSearchIGetTheCorrectPageTitle_Chrome()
         {
-#line 21
-this.WhenIUseSeleniumDriverToBrowseToGoogleSearchIGetTheCorrectPageTitle("\"Chrome\"", "\"chrome\"", "\"chromedriver\"", ((string[])(null)));
+#line 23
+this.WhenIUseSeleniumDriverToBrowseToGoogleSearchIGetTheCorrectPageTitle("\"Chrome\"", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void ICanFindAnElementOnThePageFromTheTopLevel(string browser, string processName, string serverProcessName, string[] exampleTags)
+        public virtual void ICanFindAnElementOnThePageFromTheTopLevel(string browser, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can find an element on the page from the top level", exampleTags);
-#line 31
+#line 34
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 32
-    testRunner.And("I instantiate SeleniumDriver", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
-    testRunner.And("I browse to \"http://www.google.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
-    testRunner.When("I use FindElement to locate an element using XPath \"//input[@name=\'q\']\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 35
+    testRunner.Given(string.Format("setting Category \"Selenium\", Option \"Browser\" is {0}", browser), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 36
+    testRunner.And("I instantiate SeleniumDriver", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+    testRunner.And("I browse to \"http://www.google.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 38
+    testRunner.When("I use FindElement to locate an element using XPath \"//input[@name=\'q\']\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 39
     testRunner.Then("a valid element is found", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -218,12 +222,10 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SeleniumDriverTests")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "\"IE11\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Browser", "\"IE11\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Process name", "\"iexplore\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Server process name", "\"IEDriverServer\"")]
         public virtual void ICanFindAnElementOnThePageFromTheTopLevel_IE11()
         {
-#line 31
-this.ICanFindAnElementOnThePageFromTheTopLevel("\"IE11\"", "\"iexplore\"", "\"IEDriverServer\"", ((string[])(null)));
+#line 34
+this.ICanFindAnElementOnThePageFromTheTopLevel("\"IE11\"", ((string[])(null)));
 #line hidden
         }
         
@@ -232,15 +234,14 @@ this.ICanFindAnElementOnThePageFromTheTopLevel("\"IE11\"", "\"iexplore\"", "\"IE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SeleniumDriverTests")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "\"Chrome\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Browser", "\"Chrome\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Process name", "\"chrome\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Server process name", "\"chromedriver\"")]
         public virtual void ICanFindAnElementOnThePageFromTheTopLevel_Chrome()
         {
-#line 31
-this.ICanFindAnElementOnThePageFromTheTopLevel("\"Chrome\"", "\"chrome\"", "\"chromedriver\"", ((string[])(null)));
+#line 34
+this.ICanFindAnElementOnThePageFromTheTopLevel("\"Chrome\"", ((string[])(null)));
 #line hidden
         }
     }
 }
 #pragma warning restore
 #endregion
+

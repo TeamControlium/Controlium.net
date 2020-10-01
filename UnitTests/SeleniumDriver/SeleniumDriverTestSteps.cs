@@ -28,7 +28,7 @@ namespace TeamControlium.Controlium
             }
         }
 
-        [Given(@"setting Category ""(.*)"", Option ""(.*)"" is ""(.*)""")]
+        [Given(@"(?:s|S)etting Category ""(.*)"", Option ""(.*)"" is ""(.*)""")]
         public void GivenSettingCategoryOptionIs(string category, string option, dynamic value)
         {
             TestData.Repository[category, option] = value;
@@ -38,14 +38,42 @@ namespace TeamControlium.Controlium
         [When(@"I instantiate SeleniumDriver")]
         public void WhenIInstantiateSeleniumDriver()
         {
-            ScenarioContext.Current.Add("SeleniumDriver", new SeleniumDriver());
+            try
+            {
+                ScenarioContext.Current.Add("SeleniumDriver", new SeleniumDriver());
+            }
+            catch(Exception ex)
+            {
+                Exception exCurrentLevel = ex;
+                string message = exCurrentLevel.Message;
+                while (exCurrentLevel.InnerException != null)
+                {
+                    message += " -> " + exCurrentLevel.InnerException.Message;
+                    exCurrentLevel = exCurrentLevel.InnerException;
+                }
+                Assert.Fail($"Failed to instantiate Selenium Driver: {message}");
+            }
         }
 
         [Given(@"I browse to ""(.*)""")]
         [When(@"I browse to ""(.*)""")]
         public void WhenIBrowseTo(string urlToBrowseTo)
-        {
-            ScenarioContext.Current.Get<SeleniumDriver>("SeleniumDriver").GotoURL(urlToBrowseTo);
+        { 
+            try
+            {
+                ScenarioContext.Current.Get<SeleniumDriver>("SeleniumDriver").GotoURL(urlToBrowseTo);
+            }
+            catch (Exception ex)
+            {
+                Exception exCurrentLevel = ex;
+                string message = exCurrentLevel.Message;
+                while (exCurrentLevel.InnerException != null)
+                {
+                    message += " -> " + exCurrentLevel.InnerException.Message;
+                    exCurrentLevel = exCurrentLevel.InnerException;
+                }
+                Assert.Fail($"Failed to browse to [{urlToBrowseTo}]: {message}");
+            }
         }
 
         [Then(@"a process exists named ""(.*)""")]
@@ -67,7 +95,9 @@ namespace TeamControlium.Controlium
             Element foundElement;
             try
             {
-                foundElement = ScenarioContext.Current.Get<SeleniumDriver>("SeleniumDriver").FindElement(new ObjectMappingDetails(xPath, "The XPath"));
+                //foundElement = ScenarioContext.Current.Get<SeleniumDriver>("SeleniumDriver").FindElement(new ObjectMappingDetails(xPath, "The XPath"));
+                dynamic xx = ScenarioContext.Current.Get<SeleniumDriver>("SeleniumDriver");
+                foundElement = xx.FindElement(new ObjectMappingDetails(xPath, "The XPath"));
                 ScenarioContext.Current.Add("FoundElement", foundElement);
             }
             catch (Exception ex)
