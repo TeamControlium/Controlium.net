@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <AssemblyName>TeamControlium.Controlium</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.0.0</Version>
+    <Authors>TeamControlium Contributors</Authors>
+    <Company>TeamControlium Contributors</Company>
+    <Product>Team Controlium Controlium.net</Product>
+    <Description>Software test automation framework for Selenium using a Control based mapping approach to enable test engineers to build readable, highly extensible and sustainable automation test suites.</Description>
+    <Copyright>Copyright 2018 - Mat Walker and the Team Controlium contributors</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/TeamControlium/Controlium.net</PackageProjectUrl>
+    <PackageIcon>TeamControliumIcon.jpg</PackageIcon>
+    <RepositoryUrl>https://github.com/TeamControlium/Controlium.net.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>TeamControlium testautomation functional library</PackageTags>
+    <PackageReleaseNotes>Updated to .NET5.0</PackageReleaseNotes>
+    <NeutralLanguage>en-AU</NeutralLanguage>
+    <RootNamespace>TeamControlium.Controlium</RootNamespace>
+	<UseWPF>true</UseWPF>
+	<UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\TeamControliumIcon.jpg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Selenium.Support" Version="3.141.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+    <PackageReference Include="TeamControlium.Utilities" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Source\SeleniumDriver\Element\" />
+  </ItemGroup>
+
+</Project>
