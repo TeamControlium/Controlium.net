@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Remoting;
-using System.Windows.Forms;
 using TeamControlium.Utilities;
 
 namespace TeamControlium.Controlium
@@ -303,38 +302,6 @@ namespace TeamControlium.Controlium
             }
         }
 
-        /// <summary>
-        /// Displays a dialog requesting credentials from the person executing the automated test.
-        /// </summary>
-        /// <param name="Title">Title of dialog</param>
-        /// <returns>Plain text credentials</returns>
-        static public Credentials GetCredentials(string Title = null)
-        {
-            string defaultTitle = "Site";
-            string message = "{0} requires authentication.  Enter valid username and password.";
-
-            using (UserCredentialsDialog dialog = new UserCredentialsDialog())
-            {
-                string Message = string.Format(message, Title ?? defaultTitle);
-                Message = string.IsNullOrEmpty(Message) ? Message : Message.Length <= 100 ? Message : Message.Substring(0, 100);
-                dialog.Caption = Title ?? defaultTitle;
-                dialog.Message = Message;
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    // validate credentials against an authentication authority
-                    // ...
-                    // If credentials are valid
-                    // and the user checked the "remember my password" option
-                    if (dialog.SaveChecked)
-                    {
-                        dialog.ConfirmCredentials(true);
-                    }
-                    return new Credentials(dialog.User, dialog.PasswordAsString);
-                }
-                else
-                    return new Credentials(string.Empty, string.Empty);
-            }
-        }
 
         private WebDriverWait GetPollAndTimeout(WebDriverWait Original, TimeSpan? TimeoutOverride, TimeSpan? PollingIntervalOverride)
         {
