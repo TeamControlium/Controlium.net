@@ -455,6 +455,7 @@ namespace TeamControlium.Controlium
             // Running selenium locally.
             string seleniumFolder = Repository.GetItemGlobalOrDefault(SeleniumServerFolder[0], SeleniumServerFolder[1],null) ?? ".";
             bool seleniumDebugMode = General.IsValueTrue(Repository.GetItemGlobalOrDefault(SeleniumDebugMode[0], SeleniumDebugMode[1],"false"));
+            string[] seleniumArguments = Repository.GetItemGlobalOrDefault<string[]>("Selenium", "Arguments", default(string[]));
             string seleniumDebugFile;
             Repository.TryGetItemGlobal(SeleniumLogFilename[0], SeleniumLogFilename[1], out seleniumDebugFile);
 
@@ -518,6 +519,7 @@ namespace TeamControlium.Controlium
                     ChromeOptions options = new ChromeOptions();
                     ChromeDriverService service = ChromeDriverService.CreateDefaultService(seleniumFolder);
                     service.EnableVerboseLogging = seleniumDebugMode;
+                    if (seleniumArguments!=default(string[])) options.AddArguments(seleniumArguments);
                     string ActualDebugFile = CheckAndPreparSeleniumLogFile(seleniumDebugFile);
                     if (!string.IsNullOrWhiteSpace(ActualDebugFile))
                     {
