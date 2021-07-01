@@ -492,6 +492,7 @@ namespace TeamControlium.Controlium
             Repository.TryGetItemGlobal(SeleniumLogFilename[0], SeleniumLogFilename[1], out seleniumDebugFile);
 
             // Check the folder exists and chuck a wobbly if it doesnt...
+            string[] asdf = Directory.GetFiles(".");
             if (!Directory.Exists(seleniumFolder)) throw new SeleniumFolderError(seleniumFolder);
 
             try
@@ -524,7 +525,7 @@ namespace TeamControlium.Controlium
 
                 if (IsEdge)
                 {
-                    throw new NotImplementedException("Edge has not yet been implemented.  Implement it then....");
+                    //throw new NotImplementedException("Edge has not yet been implemented.  Implement it then....");
                     EdgeOptions EO = new EdgeOptions();
                     EdgeDriverService service = EdgeDriverService.CreateDefaultService(seleniumFolder);
                     service.UseVerboseLogging = seleniumDebugMode;
@@ -541,7 +542,7 @@ namespace TeamControlium.Controlium
 
 
                     EO.PageLoadStrategy = (PageLoadStrategy)EdgePageLoadStrategy.Eager;
-                    WebDriver = new EdgeDriver(seleniumFolder, EO);
+                    WebDriver = new EdgeDriver(seleniumFolder,EO);
 
                 }
 
