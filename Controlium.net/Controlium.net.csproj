@@ -5,6 +5,7 @@
     <AssemblyName>TeamControlium.Controlium</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>2.0.2</Version>
+
     <Authors>TeamControlium Contributors</Authors>
     <Company>TeamControlium Contributors</Company>
     <Product>Team Controlium Controlium.net</Product>
