@@ -2,9 +2,11 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using TeamControlium.Utilities;
 
 namespace TeamControlium.Controlium
@@ -462,6 +464,101 @@ namespace TeamControlium.Controlium
         }
 
         /// <summary>
+        /// Switch to browser window with matching handle or that contains an object matching the object details given
+        /// </summary>
+        /// <param name="windowHandle">Handle of window to focus of</param>
+        /// <returns>Handle of original window, or null if no matching window found.  Handle can be used to return to original window</returns>
+        /// <exception cref="NoSuchWindowException">Throws exception if window not found or unable to return to main window</exception>
+        public string SwitchTo(string windowHandle)
+        {
+            try
+            {
+                string originalHandle = WebDriver.CurrentWindowHandle;
+                WebDriver.SwitchTo().Window(windowHandle);
+                return originalHandle;
+            }
+            catch (Exception ex)
+            {
+                Log.LogWriteLine(Log.LogLevels.Error, $"Exception thrown switching to window [{windowHandle}]! Error:", ex.Message);
+                throw new NoSuchWindowException($"Exception thrown switching to window [{windowHandle}]! Error:", ex);
+            }
+
+        }
+
+
+        /// <summary>
+        /// Switch to browser window with matching handle or that contains an object matching the object details given
+        /// </summary>
+        /// <param name="matchingObject">Object to search for browser windows</param>
+        /// <param name="timeoutOverride">If set, maximum time to wait for a matching window</param>
+        /// <param name="pollOverride">If set, polling time looking for a matching window</param>
+        /// <returns>Handle of original window, or null if no matching window found.  Handle can be used to return to original window</returns>
+        /// <exception cref="NoSuchWindowException">Throws exception if window not found or unable to return to main window</exception>
+        public string SwitchTo(ObjectMappingDetails matchingObject, TimeSpan? timeoutOverride,TimeSpan? pollOverride)
+        {
+            TimeSpan timeout = timeoutOverride ?? popupWindowTimings.Timeout;
+            TimeSpan pollInterval = pollOverride ?? popupWindowTimings.PollingInterval;
+            TimeSpan elementTimeout = (elementFindTimings.Timeout > (timeout / 3)) ? (timeout / 3) : elementFindTimings.Timeout;  //Ensure element find timeout we use allows popups to be polled at least twice.
+            TimeSpan elementPollInterval = (elementFindTimings.PollingInterval > (pollInterval / 3)) ? (pollInterval / 3) : elementFindTimings.PollingInterval;  //Ensure element find timeout we use allows popups to be polled at least twice.
+
+            IReadOnlyCollection<string> windowHandles;
+            Element foundElement;
+            string currentWindowHandle = WebDriver.CurrentWindowHandle;
+            DateTime startTime = DateTime.Now;
+
+            Log.LogWriteLine(Log.LogLevels.TestDebug, $"Waiting [{timeout.TotalMilliseconds}mS] (Poll Interval {pollInterval}ms) for popup window with object {matchingObject.FriendlyName} ({matchingObject.FindLogic})");
+
+            do
+            {
+                windowHandles = WebDriver.WindowHandles;
+                if (windowHandles.Count>1)
+                {
+                    foreach (string wHandle in windowHandles)
+                    {
+                        if (wHandle != currentWindowHandle)
+                        {
+                            try
+                            {
+                                WebDriver.SwitchTo().Window(wHandle);
+
+                                try
+                                {
+                                    if (TryFindElement(null, matchingObject, true, elementTimeout, elementPollInterval, false, out foundElement))
+                                    {
+                                        Log.LogWriteLine(Log.LogLevels.TestDebug, $"Object/s found in window [{wHandle}] after [{(DateTime.Now - startTime).TotalMilliseconds}mS].");
+                                        return currentWindowHandle;
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Log.LogWriteLine(Log.LogLevels.FrameworkDebug, $"Exception thrown try-finding [{matchingObject.FriendlyName}].  Ignoring...");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.LogWriteLine(Log.LogLevels.FrameworkDebug, $"Exception thrown switching to popup [{wHandle}].  Ignoring...");
+                            }
+                        }
+                    }
+                }
+                Thread.Sleep(pollInterval);
+            }
+            while ((DateTime.Now - startTime) <= timeout);
+
+            try
+            {
+                SwitchTo(currentWindowHandle);
+            }
+            catch (Exception ex)
+            {
+                Log.LogWriteLine(Log.LogLevels.Error, $"Exception thrown switching back to main window after waiting [{(DateTime.Now - startTime).TotalMilliseconds}mS] for object match! Error:", ex.Message);
+                throw;
+            }
+            return null;
+        }
+
+
+        /// <summary>
         /// Set browser size to full screen or defined X Y
         /// </summary>
         /// <param name="browserSize">Full or X,Y</param>
@@ -823,6 +920,28 @@ namespace TeamControlium.Controlium
             return DidReachRequiredVisibilityBeforeTimeout;
         }
 
+
+        /// <summary>Waits specific time for IWebElement to be visible or hidden.  Throws Execption if timed out
+        /// </summary>
+        /// <param name="objectDetails">Find logic and Friendly name for element to be waited for</param>
+        /// <param name="RequiredVisibility">True if wait until visible, False if wait until hidden</param>
+        /// <param name="Timeout">Optional (Default: Selenium Timeout from config - 60 Seconds if not defined) - Timeout</param>
+        /// <param name="PollInterval">Optional (Default: Selenium PollInterval from config - 500mS if not defined) - Polling interval while waiting</param>
+        /// <remarks>
+        /// Built-in waits (duration spinner, overlay etc...) should be used for standard C2 busy indicators.
+        /// </remarks>
+        /// <returns>True if success before timeout, or false if timedout</returns>
+        /// <example>Wait for spinner to go away:
+        /// <code lang="C#">
+        /// if (!WaitForElement(mySpinner,"My very own spinner",true)) Messagebox.Show("Spinner did not go away!");</code>
+        /// </example>
+        /// <exception cref="Exceptions.WaitTimeout">Thrown if timeout occurs</exception>
+        public bool WaitForElement(ObjectMappingDetails objectDetails, Visibility RequiredVisibility, TimeSpan? Timeout = null, TimeSpan? PollInterval = null)
+        {
+            return WaitForElement(null, objectDetails, RequiredVisibility, true, Timeout, PollInterval);
+        }
+
+
         /// <summary>Waits specific time for IWebElement to be visible or hidden.  Throws Execption if timed out
         /// </summary>
         /// <param name="ParentElement">Element to find element under (if null find is from DOM level)</param>
@@ -842,6 +961,27 @@ namespace TeamControlium.Controlium
         public bool WaitForElement(Element ParentElement, ObjectMappingDetails objectDetails, Visibility RequiredVisibility, TimeSpan? Timeout = null, TimeSpan? PollInterval = null)
         {
             return WaitForElement(ParentElement, objectDetails, RequiredVisibility, true, Timeout, PollInterval);
+        }
+
+        /// <summary>Waits specific time for IWebElement to be visible or hidden.  Throws Execption if timed out
+        /// </summary>
+        /// <param name="Mapping">Find logic and Friendly name for element to be waited for</param>
+        /// <param name="RequiredVisibility">True if wait until visible, False if wait until hidden</param>
+        /// <param name="CheckIsDisplayedStatus">If False, only the presence of the element is checked, <see cref="IsDisplayed"></see> status is not checked</param>
+        /// <param name="Timeout">Optional (Default: Selenium Timeout from config - 60 Seconds if not defined) - Timeout</param>
+        /// <param name="PollInterval">Optional (Default: Selenium PollInterval from config - 500mS if not defined) - Polling interval while waiting</param>
+        /// <remarks>
+        /// Built-in waits (duration spinner, overlay etc...) should be used for standard C2 busy indicators.
+        /// </remarks>
+        /// <returns>True if success before timeout, or false if timedout</returns>
+        /// <example>Wait for spinner to go away:
+        /// <code lang="C#">
+        /// if (!WaitForElement(mySpinner,"My very own spinner",true)) Messagebox.Show("Spinner did not go away!");</code>
+        /// </example>
+        /// <exception cref="Exceptions.WaitTimeout">Thrown if timeout occurs</exception>
+        public bool WaitForElement(ObjectMappingDetails Mapping, Visibility RequiredVisibility, bool CheckIsDisplayedStatus, TimeSpan? Timeout = null, TimeSpan? PollInterval = null)
+        {
+            return WaitForElement(null, Mapping, RequiredVisibility, CheckIsDisplayedStatus, Timeout, PollInterval);
         }
 
         /// <summary>Waits specific time for IWebElement to be visible or hidden.  Throws Execption if timed out

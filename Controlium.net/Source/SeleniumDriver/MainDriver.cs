@@ -49,22 +49,29 @@ namespace TeamControlium.Controlium
     public partial class SeleniumDriver : IDisposable
     {
         // CONSTANT FIELDS (Added text delete)
-        private readonly string[] SeleniumServerFolder = { "Selenium", "SeleniumServerFolder" };      // Location of the local Selenium Servers (Only required if running locally
-        private readonly string[] ConfigTimeout = { "Selenium", "ElementFindTimeout" };               // Timeout when waiting for Elements to be found (or go invisible) in seconds
-        private readonly string[] ConfigPollingInterval = { "Selenium", "PollInterval" };             // When looping on an event wait, this is the loop interval; trade off between keeping wire traffic down and speed of test
-        private readonly string[] ConfigPageLoadTimeout = { "Selenium", "PageLoadTimeout" };          // Timeout waiting for a page to load
-        private static readonly string[] ConfigBrowser = { "Selenium", "Browser" };                   // Browser used for the UI endpoint we are testing with.
+        private readonly string[] SeleniumServerFolder = { "Selenium", "SeleniumServerFolder" };          // Location of the local Selenium Servers (Only required if running locally
+        private readonly string[] ConfigTimeout = { "Selenium", "ElementFindTimeout" };                   // Timeout when waiting for Elements to be found (or go invisible) in seconds
+        private readonly string[] ConfigPollingInterval = { "Selenium", "PollInterval" };                 // When looping on an event wait, this is the loop interval; trade off between keeping wire traffic down and speed of test
+        private readonly string[] ConfigPageLoadTimeout = { "Selenium", "PageLoadTimeout" };              // Timeout waiting for a page to load
+        private readonly string[] ConfigPopupWindowTimeout = { "Selenium", "PopupWindowTimeout" };        // Timeout waiting for a popup window to show and render
+        private readonly string[] ConfigPopupWindowsInterval = { "Selenium", "PopupWindowPollInterval" }; // When waiting for a popup window to show and render this is the loop interval in polling
+        private static readonly string[] ConfigBrowser = { "Selenium", "Browser" };                       // Browser used for the UI endpoint we are testing with.
 
-        private readonly string[] ConfigDevice = { "Selenium", "Device" };                            // Device hosting the UI endpoint we are testing with (If Local, usually Win7)
-        private readonly string[] ConfigHost = { "Selenium", "Host" };                               // Who is hosting the selenium server.  Either localhost (or 127.0.0.1) for locally hosted.  Or a named Cloud provider (IE. BrowserStack or SauceLabs) or Custom.
-        private readonly string[] ConfigHostURI = { "Selenium", "HostURI" };                         // If not locally hosted, this is the full URL or IPaddress:Port to access the Selenium Server
-        private readonly string[] ConfigConnectionTimeout = { "Selenium", "ConnectionTimeout" };     // Timeout when waiting for a response from the Selenium Server (when remote)
-        private readonly string[] SeleniumDebugMode = { "Selenium", "DebugMode" };                   // If yes, Selenium is started in debug mode...
-        private readonly string[] SeleniumLogFilename = { "Selenium", "LogFile" };                // Path and file for Selenium Log file.  Default is the console window
+        private readonly string[] ConfigDevice = { "Selenium", "Device" };                                // Device hosting the UI endpoint we are testing with (If Local, usually Win7)
+        private readonly string[] ConfigHost = { "Selenium", "Host" };                                    // Who is hosting the selenium server.  Either localhost (or 127.0.0.1) for locally hosted.  Or a named Cloud provider (IE. BrowserStack or SauceLabs) or Custom.
+        private readonly string[] ConfigHostURI = { "Selenium", "HostURI" };                              // If not locally hosted, this is the full URL or IPaddress:Port to access the Selenium Server
+        private readonly string[] ConfigConnectionTimeout = { "Selenium", "ConnectionTimeout" };          // Timeout when waiting for a response from the Selenium Server (when remote)
+        private readonly string[] SeleniumDebugMode = { "Selenium", "DebugMode" };                        // If yes, Selenium is started in debug mode...
+        private readonly string[] SeleniumLogFilename = { "Selenium", "LogFile" };                        // Path and file for Selenium Log file.  Default is the console window
 
-        private readonly int defaultTimeout = 60000; // 1 Minute
-        private readonly int defaultPollInterval = 500; // 500mS
+        private readonly double defaultTimeout = 60000; // 1 Minute
+        private readonly double defaultPollInterval = 500; // 500mS
+        private readonly double defaultPageLoadTimeout = 60000; // 1 Minutes
+        private readonly double defaultPopupWindowTimeout = 60000; // 1 Minutes
+        private readonly double defaultPopupWindowInterval = 500; // 500mS
+
         private WebDriverWait elementFindTimings;
+        private WebDriverWait popupWindowTimings;
         private TimeSpan pollInterval;
         private TimeSpan pageLoadTimeout;
         private ObjectMappingDetails dummyMapping = new ObjectMappingDetails(@"//", "Top Level of DOM");
@@ -455,6 +462,7 @@ namespace TeamControlium.Controlium
             // Running selenium locally.
             string seleniumFolder = Repository.GetItemGlobalOrDefault(SeleniumServerFolder[0], SeleniumServerFolder[1],null) ?? ".";
             bool seleniumDebugMode = General.IsValueTrue(Repository.GetItemGlobalOrDefault(SeleniumDebugMode[0], SeleniumDebugMode[1],"false"));
+            string[] seleniumArguments = Repository.GetItemGlobalOrDefault<string[]>("Selenium", "Arguments", default(string[]));
             string seleniumDebugFile;
             Repository.TryGetItemGlobal(SeleniumLogFilename[0], SeleniumLogFilename[1], out seleniumDebugFile);
 
@@ -518,6 +526,7 @@ namespace TeamControlium.Controlium
                     ChromeOptions options = new ChromeOptions();
                     ChromeDriverService service = ChromeDriverService.CreateDefaultService(seleniumFolder);
                     service.EnableVerboseLogging = seleniumDebugMode;
+                    if (seleniumArguments!=default(string[])) options.AddArguments(seleniumArguments);
                     string ActualDebugFile = CheckAndPreparSeleniumLogFile(seleniumDebugFile);
                     if (!string.IsNullOrWhiteSpace(ActualDebugFile))
                     {
@@ -540,20 +549,13 @@ namespace TeamControlium.Controlium
 
         private void SetTimeouts()
         {
-            int dummy;
+            elementFindTimings = new WebDriverWait(WebDriver, TimeSpan.FromMilliseconds(Repository.GetItemGlobalOrDefault<double>(ConfigTimeout[0], ConfigTimeout[1], defaultTimeout)));
+            elementFindTimings.PollingInterval = TimeSpan.FromMilliseconds(Repository.GetItemGlobalOrDefault(ConfigPollingInterval[0], ConfigPollingInterval[1], defaultPollInterval));
 
-            elementFindTimings = new WebDriverWait(WebDriver, TimeSpan.FromMilliseconds((Repository.TryGetItemGlobal(ConfigTimeout[0], ConfigTimeout[1], out dummy)) ? dummy : defaultTimeout));
-            elementFindTimings.PollingInterval = TimeSpan.FromMilliseconds((Repository.TryGetItemGlobal(ConfigPollingInterval[0], ConfigPollingInterval[1], out dummy)) ? dummy : defaultPollInterval);
+            popupWindowTimings = new WebDriverWait(WebDriver, TimeSpan.FromMilliseconds(Repository.GetItemGlobalOrDefault<double>(ConfigPopupWindowTimeout[0], ConfigPopupWindowTimeout[1], defaultPopupWindowTimeout)));
+            popupWindowTimings.PollingInterval = TimeSpan.FromMilliseconds(Repository.GetItemGlobalOrDefault(ConfigPopupWindowsInterval[0], ConfigPopupWindowsInterval[1], defaultPopupWindowInterval));
 
-            if (Repository.TryGetItemGlobal(ConfigPageLoadTimeout[0], ConfigPageLoadTimeout[1], out dummy))
-            {
-                PageLoadTimeout = TimeSpan.FromMilliseconds(dummy);
-            }
-            else
-            {
-                // Default page load timeout 30 Seconds
-                PageLoadTimeout = TimeSpan.FromMilliseconds(30000);
-            }
+            PageLoadTimeout = TimeSpan.FromMilliseconds(Repository.GetItemGlobalOrDefault<double>(ConfigPageLoadTimeout[0], ConfigPageLoadTimeout[1], defaultPageLoadTimeout));
         }
 
         private void ConfigureRun()
