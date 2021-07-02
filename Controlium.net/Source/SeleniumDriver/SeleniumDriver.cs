@@ -873,7 +873,7 @@ namespace TeamControlium.Controlium
                 if (RequiredVisibility == Visibility.Hidden) return true;
                 throw new Exception("Element does not exist - it is null!");
             }
-            Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Wait {0}ms for element {1} to become {2}. Poll interval = {3}ms", actualTimeout.Timeout.TotalMilliseconds, ElementToWaitFor.MappingDetails.FriendlyName, RequiredVisibility.ToString(), actualTimeout.PollingInterval.TotalMilliseconds);
+            Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Wait {0}ms for element {1} to become {2}. Poll interval = {3}ms", actualTimeout.Timeout.TotalMilliseconds, ElementToWaitFor.Mapping.FriendlyName, RequiredVisibility.ToString(), actualTimeout.PollingInterval.TotalMilliseconds);
 
             // Stopwatch is only used so that we can log the time to the console....
             Stopwatch timeWaited = Stopwatch.StartNew();

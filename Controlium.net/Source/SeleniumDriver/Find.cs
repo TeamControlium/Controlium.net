@@ -36,7 +36,7 @@ namespace TeamControlium.Controlium
             if (clauseResults.Count > 1 && !AllowMultipleMatches)
             {
                 Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Found {0} matching elements in {1} mS. Do not allow multiple matches.", clauseResults.Count.ToString(), timer.ElapsedMilliseconds.ToString());
-                TryException = new FindLogicReturnedMultipleElements(((ParentElement == null) ? "DOM Top Level" : (string.IsNullOrEmpty(ParentElement.MappingDetails.FriendlyName) ? ("Unknown Parent (" + ParentElement.MappingDetails.FindLogic + ")") : ParentElement.MappingDetails.FriendlyName)), Mapping, clauseResults.Count);
+                TryException = new FindLogicReturnedMultipleElements(((ParentElement == null) ? "DOM Top Level" : (string.IsNullOrEmpty(ParentElement.Mapping.FriendlyName) ? ("Unknown Parent (" + ParentElement.Mapping.FindLogic + ")") : ParentElement.Mapping.FriendlyName)), Mapping, clauseResults.Count);
                 element = null;
                 return false;
             }
@@ -67,7 +67,7 @@ namespace TeamControlium.Controlium
             else
             {
                 Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Found no matching elements in {0} mS", timer.ElapsedMilliseconds.ToString());
-                TryException = new FindLogicReturnedNoElements(ParentElement?.MappingDetails?.FriendlyName??"No parent (searched from top level of DOM)", Mapping, webDriverWait.Timeout.TotalSeconds.ToString(), webDriverWait.PollingInterval.TotalMilliseconds.ToString());
+                TryException = new FindLogicReturnedNoElements(ParentElement?.Mapping?.FriendlyName??"No parent (searched from top level of DOM)", Mapping, webDriverWait.Timeout.TotalSeconds.ToString(), webDriverWait.PollingInterval.TotalMilliseconds.ToString());
                 element = null;
                 return false;
             }

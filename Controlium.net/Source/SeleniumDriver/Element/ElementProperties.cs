@@ -169,6 +169,6 @@ namespace TeamControlium.Controlium
 
         private bool IsBoundToAWebElement { get { return (WebElement != null); } }
 
-        private bool HasMappingDetails { get { return (MappingDetails != null); } }
+        private bool HasMappingDetails { get { return (Mapping != null); } }
     }
 }

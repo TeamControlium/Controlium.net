@@ -17,7 +17,7 @@ namespace TeamControlium.Controlium
         protected Element _RootElement { get; set; }
 
         /// <summary>Find logic used to locate this control from the root or Parent control</summary>
-        public ObjectMappingDetails Mapping { get { return _RootElement.MappingDetails; } }
+        public ObjectMappingDetails Mapping {get { return _RootElement.Mapping; } }
 
         /// <summary>
         /// Tests is controls root element is stale
@@ -199,7 +199,7 @@ namespace TeamControlium.Controlium
         /// </summary>
         public virtual void Click()
         {
-            Log.LogWriteLine(Log.LogLevels.TestDebug, "Clicking element [{0}]", RootElement?.MappingDetails?.FriendlyName ?? RootElement?.MappingDetails?.FindLogic ?? "Dunno!");
+            Log.LogWriteLine(Log.LogLevels.TestDebug, "Clicking element [{0}]", RootElement?.Mapping?.FriendlyName ?? RootElement?.Mapping?.FindLogic ?? "Dunno!");
             RootElement.Click();
         }
 
@@ -316,7 +316,7 @@ namespace TeamControlium.Controlium
         {
             try
             {
-                RootElement.FindElement(new ObjectMappingDetails(string.Format(".[@{0}]", $"Attribute [{attributeName}] of {RootElement.MappingDetails.FriendlyName ?? RootElement.MappingDetails.FindLogic}")));
+                RootElement.FindElement(new ObjectMappingDetails(string.Format(".[@{0}]", $"Attribute [{attributeName}] of {RootElement.Mapping.FriendlyName ?? RootElement.Mapping.FindLogic}")));
                 return true;
             }
             catch
@@ -379,6 +379,23 @@ namespace TeamControlium.Controlium
         {
             return RootElement.FindElement(findLogic);
         }
+
+        public bool Exists(ObjectMappingDetails mapping)
+        {
+            return (RootElement.FindAllElements(mapping).Count > 0);
+        }
+
+        public bool Exists(ControlBase control)
+        {
+            return Exists(control.Mapping);
+        }
+
+        public bool Exists(Element element)
+        {
+            return Exists(element.Mapping);
+        }
+
+
 
         public bool WaitUntilStable(int timeoutMilliseconds = 5000)
         {

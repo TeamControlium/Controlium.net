@@ -26,7 +26,7 @@ namespace Internal.Tester
                 }
                 catch (Exception ex)
                 {
-                    throw new UnableToSetOrGetText(ObjectMap.TextEntryBox, $"Error finding, clearing or setting text [{value}] in [{RootElement.MappingDetails.FriendlyName}]", ex);
+                    throw new UnableToSetOrGetText(ObjectMap.TextEntryBox, $"Error finding, clearing or setting text [{value}] in [{RootElement.Mapping.FriendlyName}]", ex);
                 }
             }
             get
@@ -37,7 +37,7 @@ namespace Internal.Tester
                 }
                 catch (Exception ex)
                 {
-                    throw new UnableToSetOrGetText(ObjectMap.TextEntryBox, $"Error finding or getting text from textbox in [{RootElement.MappingDetails.FriendlyName}]", ex);
+                    throw new UnableToSetOrGetText(ObjectMap.TextEntryBox, $"Error finding or getting text from textbox in [{RootElement.Mapping.FriendlyName}]", ex);
                 }
             }
         }

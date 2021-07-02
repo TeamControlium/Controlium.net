@@ -391,7 +391,7 @@ namespace TeamControlium.Controlium
         /// <param name="RawFindLogic">Find logic applied to parent</param>
         /// <param name="FriendlyName">Name of element we wanted</param>
         public FindLogicReturnedNoElements(Element parent, ObjectMappingDetails mappingDetails, string TimeoutInSeconds, string PollIntervalInMinilliseconds)
-            : base(FormatMessage(parent?.MappingDetails?.FriendlyName ?? "Parent name cannot be got", mappingDetails?.FindLogicUsed ?? mappingDetails.FindLogic ?? "No Mapping logic!", mappingDetails?.FriendlyName ?? "Logic only. No friendly name set!", TimeoutInSeconds, PollIntervalInMinilliseconds))
+            : base(FormatMessage(parent?.Mapping?.FriendlyName ?? "Parent name cannot be got", mappingDetails?.FindLogicUsed ?? mappingDetails.FindLogic ?? "No Mapping logic!", mappingDetails?.FriendlyName ?? "Logic only. No friendly name set!", TimeoutInSeconds, PollIntervalInMinilliseconds))
         {
         }
     }
@@ -462,8 +462,8 @@ namespace TeamControlium.Controlium
             {
                 return string.Format("Wait timed out after {0} Seconds waiting for element {1} ({2}) under {3} to be {4} (Poll Interval = {5}mS",
                                                            ElapsedTime,
-                                                           ElementBeingWaitedFor?.MappingDetails?.FriendlyName ?? "No name",
-                                                           ElementBeingWaitedFor?.MappingDetails?.FindLogicUsed ?? ElementBeingWaitedFor?.MappingDetails?.FindLogic ?? "No find logic (!!)",
+                                                           ElementBeingWaitedFor?.Mapping?.FriendlyName ?? "No name",
+                                                           ElementBeingWaitedFor?.Mapping?.FindLogicUsed ?? ElementBeingWaitedFor?.Mapping?.FindLogic ?? "No find logic (!!)",
                                                            Parent?.MappingDetails?.FriendlyName ?? Parent?.MappingDetails?.FindLogicUsed ?? Parent?.MappingDetails?.FindLogic ?? "No find logic (!!)",
                                                            RequiredVisibility,
                                                            PollIntervalInMilliseconds);
@@ -472,8 +472,8 @@ namespace TeamControlium.Controlium
             {
                 return string.Format("Wait timed out after {0} Seconds waiting for element {1} ({2}) to be {3} (Poll Interval = {4}mS",
                                                            ElapsedTime,
-                                                           ElementBeingWaitedFor?.MappingDetails?.FriendlyName ?? "No name",
-                                                           ElementBeingWaitedFor?.MappingDetails?.FindLogicUsed ?? ElementBeingWaitedFor?.MappingDetails?.FindLogic ?? "No find logic (!!)",
+                                                           ElementBeingWaitedFor?.Mapping?.FriendlyName ?? "No name",
+                                                           ElementBeingWaitedFor?.Mapping?.FindLogicUsed ?? ElementBeingWaitedFor?.Mapping?.FindLogic ?? "No find logic (!!)",
                                                            RequiredVisibility,
                                                            PollIntervalInMilliseconds);
             }
