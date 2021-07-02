@@ -574,21 +574,28 @@ namespace TeamControlium.Controlium
                 else
                 {
                     string[] sizeXY = browserSize.Split(',');
-                    if (sizeXY.Length != 2) throw new Exception($"TestBrowserSize environment variable incorrect format [{browserSize ?? "<Null!>"}]. Expect X,Y.");
-                    WebDriver.Manage().Window.Size = new Size(int.Parse(sizeXY[0]), int.Parse(sizeXY[1]));
-                    Log.LogWriteLine(Log.LogLevels.TestInformation, $"Browser size (Set by Environment variable [TestBrowserSize]): {browserSize}");
+                    if (sizeXY.Length != 2) throw new Exception($"TestBrowserSize incorrect format [{browserSize ?? "<Null!>"}]. Expect X,Y.");
+                    SetBrowserSize(new Size(int.Parse(sizeXY[0]), int.Parse(sizeXY[1])));
                 }
-            }
-            catch (NullReferenceException)
-            {
-                Log.LogWriteLine(Log.LogLevels.TestInformation, $"Cannot get TestBrowserSize environment variable (EG. TestBrowserSize [800,600] or [full]). Browser size defaulted to Full Screen.");
-                WebDriver.Manage().Window.Maximize();
             }
             catch (Exception ex)
             {
-                Log.LogWriteLine(Log.LogLevels.TestInformation, $"Cannot get TestBrowserSize environment variable (EG. TestBrowserSize [800,600] or [full]). Browser size defaulted to Full Screen: {ex}");
-                WebDriver.Manage().Window.Maximize();
+                Log.LogWriteLine(Log.LogLevels.TestInformation, $"Error setting browser size: {ex.Message}");
+                throw;
             }
+        }
+
+
+        public void SetBrowserSize(Size size)
+        {
+            WebDriver.Manage().Window.Size = size;
+            Log.LogWriteLine(Log.LogLevels.TestInformation, $"Browser size: {size}");
+
+        }
+
+        public Size GetBrowserSize()
+        {
+            return WebDriver.Manage().Window.Size;
         }
 
         /// <summary>Tests if element is currently visible to the user.</summary>
