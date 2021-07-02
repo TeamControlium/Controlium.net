@@ -460,7 +460,7 @@ namespace TeamControlium.Controlium
         {
             Log.LogWriteLine(Log.LogLevels.FrameworkDebug, "Running Selenium locally");
             // Running selenium locally.
-            string seleniumFolder = Repository.GetItemGlobalOrDefault(SeleniumServerFolder[0], SeleniumServerFolder[1],null) ?? ".";
+            string seleniumFolder = Repository.GetItemGlobalOrDefault(SeleniumServerFolder[0], SeleniumServerFolder[1],".");
             bool seleniumDebugMode = General.IsValueTrue(Repository.GetItemGlobalOrDefault(SeleniumDebugMode[0], SeleniumDebugMode[1],"false"));
             string[] seleniumArguments = Repository.GetItemGlobalOrDefault<string[]>("Selenium", "Arguments", default(string[]));
             string seleniumDebugFile;

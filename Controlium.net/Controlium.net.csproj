@@ -17,7 +17,7 @@
     <RepositoryUrl>https://github.com/TeamControlium/Controlium.net.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>TeamControlium testautomation functional library</PackageTags>
-    <PackageReleaseNotes>Removed code to deal with Credential Dialogs.  This messes with .NET5.0 so consumer apps need .NET5.0-Windows-7 which is bad.  Will work out way to incorporate later.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added SwitchTo functionality to enable tests to switch to another browser window based on presence of an object</PackageReleaseNotes>
     <NeutralLanguage>en-AU</NeutralLanguage>
     <RootNamespace>TeamControlium.Controlium</RootNamespace>
   </PropertyGroup>
