@@ -371,7 +371,7 @@ namespace TeamControlium.Controlium
         /// <param name="IncludeDesendants">If true all text is returned. If false only text from current element is returned.</param>
         /// <remarks>Element is scrolled into view before text is harvested.  See <see cref="seleniumDriver.GetText(IWebElement,bool,bool,bool)"/> for details.</remarks>
         /// <returns>Text from element</returns>
-        public string ScrollIntoViewAndGetText(bool IncludeDesendants)
+        public string ScrollIntoViewAndGetText(bool IncludeDesendants,bool IncludePseudoElements=false)
         {
             ThrowIfUnbound();
             //
@@ -379,20 +379,20 @@ namespace TeamControlium.Controlium
             //
             if (SeleniumDriver.TestBrowser == SeleniumDriver.Browsers.IE8)
                 Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Not scrolling into view as Browser IE8!");
-            return seleniumDriver.GetText(this.WebElement, IncludeDesendants, (SeleniumDriver.TestBrowser != SeleniumDriver.Browsers.IE8), false);
+            return seleniumDriver.GetText(this.WebElement, IncludeDesendants, (SeleniumDriver.TestBrowser != SeleniumDriver.Browsers.IE8), false,IncludePseudoElements);
         }
 
         /// <summary>Gets visible text from element
         /// </summary>
         /// <remarks>Element is scrolled into view before text is harvested.  See <see cref="seleniumDriver.GetText(IWebElement,bool,bool)"/> for details.</remarks>
         /// <returns>Text from element</returns>
-        public string GetText(bool IncludeDesendants=true,bool ScrollIntoViewFirst=false,bool UseInnerTextAttribute=false)
+        public string GetText(bool IncludeDesendants=true,bool ScrollIntoViewFirst=false,bool UseInnerTextAttribute=false,bool IncludePseudoElements=false)
         {
             ThrowIfUnbound();
             //
             // Only get the visible text - ensure what IS visible by scrolling into view (NOT if using IE)...
             //
-            return seleniumDriver.GetText(WebElement, IncludeDesendants, ScrollIntoViewFirst, UseInnerTextAttribute);
+            return seleniumDriver.GetText(WebElement, IncludeDesendants, ScrollIntoViewFirst, UseInnerTextAttribute, IncludePseudoElements);
         }
 
         /// <summary>Gets visible text from element</summary>
@@ -432,7 +432,7 @@ namespace TeamControlium.Controlium
 
             // Just do the simple Text attribute thing.  Stuff if the user cant see the text!  However, still scroll into view as Selenium has an issue with that and
             // sometimes it would return a blank string if not in the viewport....
-            return seleniumDriver.GetText(WebElement, true, true, false);
+            return seleniumDriver.GetText(WebElement, true, true, false,true);
         }
 
         /// <summary>Get all text from element (and descendant elements)

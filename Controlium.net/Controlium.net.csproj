@@ -17,7 +17,10 @@
     <RepositoryUrl>https://github.com/TeamControlium/Controlium.net.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>TeamControlium testautomation functional library</PackageTags>
-    <PackageReleaseNotes>Added SwitchTo functionality to enable tests to switch to another browser window based on presence of an object</PackageReleaseNotes>
+    <PackageReleaseNotes>Added SwitchTo functionality to enable tests to switch to another browser window based on presence of an object.
+Added ability to create Selenium commandline arguments in Repository.
+
+</PackageReleaseNotes>
     <NeutralLanguage>en-AU</NeutralLanguage>
     <RootNamespace>TeamControlium.Controlium</RootNamespace>
   </PropertyGroup>
