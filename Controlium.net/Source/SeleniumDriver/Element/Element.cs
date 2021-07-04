@@ -386,19 +386,13 @@ namespace TeamControlium.Controlium
         /// </summary>
         /// <remarks>Element is scrolled into view before text is harvested.  See <see cref="seleniumDriver.GetText(IWebElement,bool,bool)"/> for details.</remarks>
         /// <returns>Text from element</returns>
-        public string GetText()
-        {
-            ThrowIfUnbound();
-            return GetText(true);
-        }
-
-        public string GetText(bool IncludeDesendants)
+        public string GetText(bool IncludeDesendants=true,bool ScrollIntoViewFirst=false,bool UseInnerTextAttribute=false)
         {
             ThrowIfUnbound();
             //
             // Only get the visible text - ensure what IS visible by scrolling into view (NOT if using IE)...
             //
-            return seleniumDriver.GetText(WebElement, IncludeDesendants, false, false);
+            return seleniumDriver.GetText(WebElement, IncludeDesendants, ScrollIntoViewFirst, UseInnerTextAttribute);
         }
 
         /// <summary>Gets visible text from element</summary>

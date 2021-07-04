@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using TeamControlium.Utilities;
 
 namespace TeamControlium.Controlium
@@ -13,11 +15,11 @@ namespace TeamControlium.Controlium
         // DELEGATES
         private delegate Element ControlFindElement(ObjectMappingDetails findLogic);
 
-        /// <summary>Custom Parent element of this control</summary>
+        /// <summary>Actual top level element of this control</summary>
         protected Element _RootElement { get; set; }
 
         /// <summary>Find logic used to locate this control from the root or Parent control</summary>
-        public ObjectMappingDetails Mapping {get { return _RootElement.Mapping; } }
+        public ObjectMappingDetails Mapping { get { return _RootElement.Mapping; } }
 
         /// <summary>
         /// Tests is controls root element is stale
@@ -41,6 +43,35 @@ namespace TeamControlium.Controlium
                 }
             }
         }
+
+
+        /// <summary>
+        /// Refreshes current control to clear Stale elements (all way to DOM) if needed.
+        /// </summary>
+        /// <remarks>
+        /// Only the control's RootElement is updated.  Complex/dynamic find-logics may break the refresh system....
+        /// 
+        /// In a Control an example may be:-
+        /// 
+        /// if (IsStale)
+        /// {
+        ///   Refresh();
+        /// }
+        /// 
+        /// Note. Do not use ALL the time, only when required as network overhead in Selenese is high and will slow tests....
+        /// </remarks>
+        public void Refresh()
+        {
+            if ((this.ParentControl != null) && this.ParentControl.IsStale)
+            {
+                Log.LogWriteLine(Log.LogLevels.TestInformation, "Parent control is stale. Refreshing");
+                ParentControl.RootElement.WebElement = null;
+                ControlBase RefreshedParentControl = ControlBase.SetControl(ParentControl.SeleniumDriver, ParentControl.ParentControl, ParentControl);
+                ParentControl = RefreshedParentControl;
+            }
+            RootElement = FindControlRootElement(FindToUse(SeleniumDriver, ParentControl), this.Mapping);
+        }
+
 
         // PROPERTIES
         /// <summary>This controls Parent.  If a root control this is null</summary>
@@ -88,12 +119,12 @@ namespace TeamControlium.Controlium
             Stopwatch stopWatch = Stopwatch.StartNew();
             try
             {
-                Log.LogWriteLine(Log.LogLevels.TestInformation, "Setting on control [{0}] from parent [{1}]", NewControl == null ? "<No control>" : NewControl.Mapping?.FriendlyName ?? NewControl.Mapping?.FindLogic ?? "No find logic!!", (ParentControl == null) ? "<No parent - so top level>" : ParentControl.Mapping?.FriendlyName ?? ParentControl.Mapping?.FindLogic ?? "Paraent has no find logic!!");
+                //Log.LogWriteLine(Log.LogLevels.TestInformation, "Setting on control [{0}] from parent [{1}]", NewControl == null ? "<No control>" : NewControl.Mapping?.FriendlyName ?? NewControl.Mapping?.FindLogic ?? "No find logic!!", (ParentControl == null) ? "<No parent - so top level>" : ParentControl.Mapping?.FriendlyName ?? ParentControl.Mapping?.FindLogic ?? "Paraent has no find logic!!");
                 // Find the element - we can assume it will be good as any issue will have chucked an exception
                 if ((ParentControl != null) && ParentControl.IsStale)
                 {
                     Log.LogWriteLine(Log.LogLevels.TestInformation, "Parent control is stale. Refreshing");
-                    ParentControl.RootElement = null;
+                    ParentControl.RootElement.WebElement = null;
                     ControlBase RefreshedParentControl = ControlBase.SetControl(ParentControl.SeleniumDriver, ParentControl.ParentControl, ParentControl);
                     ParentControl = RefreshedParentControl;
                 }
@@ -102,7 +133,7 @@ namespace TeamControlium.Controlium
                 // We may just be wrapping an Element in a Control that has already been found.  In which case, dont bother
                 // to do a find for it....
                 //
-                if (NewControl?._RootElement.WebElement == null)
+                if (NewControl?._RootElement?.WebElement == null)
                 {
                     Log.LogWriteLine(Log.LogLevels.TestDebug, $"New control Root is null (It has not yet been found), so finding (Find logic: [{NewControl?.Mapping?.FindLogic ?? "Null!!!"}]");
                     ControlFindElement finder = FindToUse(SeleniumDriver, ParentControl);
@@ -287,9 +318,9 @@ namespace TeamControlium.Controlium
         /// <summary>Gets the text from root element of control.
         /// </summary>
         /// <returns>text in control root element (uses Element.GetText)</returns>
-        public string GetText()
+        public string GetText(bool IncludeDesendants = true, bool ScrollIntoViewFirst = false, bool UseInnerTextAttribute = false)
         {
-            return RootElement.GetText();
+            return RootElement.GetText(IncludeDesendants,ScrollIntoViewFirst,UseInnerTextAttribute);
         }
 
         /// <summary>Returns true if element has defined attribute and false if not.  If element does not exist an exception is thrown
@@ -380,19 +411,44 @@ namespace TeamControlium.Controlium
             return RootElement.FindElement(findLogic);
         }
 
-        public bool Exists(ObjectMappingDetails mapping)
+
+        public bool Exists(ObjectMappingDetails mapping, bool checkIfVisible=false)
         {
-            return (RootElement.FindAllElements(mapping).Count > 0);
+            var elements = RootElement.FindAllElements(mapping);
+            bool nonVisibleElementFound = false;
+            if (elements.Count > 0)
+            {
+                if (checkIfVisible)
+                {
+                    foreach (Element element in elements)
+                    {
+                        if (!element.IsDisplayed)
+                        {
+                            Log.LogWriteLine(Log.LogLevels.TestInformation,$"Element [{element.Mapping.FriendlyName}] ({element.Mapping.FindLogicUsed}) exists but not visible");
+                            nonVisibleElementFound = true;
+                        }
+                    }
+                    return !nonVisibleElementFound;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public bool Exists(ControlBase control)
+        public bool Exists(ControlBase control, bool checkIfVisible=false)
         {
-            return Exists(control.Mapping);
+            return Exists(control.Mapping, checkIfVisible);
         }
 
-        public bool Exists(Element element)
+        public bool Exists(Element element, bool checkIfVisible=false)
         {
-            return Exists(element.Mapping);
+            return Exists(element.Mapping, checkIfVisible);
         }
 
 
@@ -416,7 +472,7 @@ namespace TeamControlium.Controlium
                 }
                 else
                 {
-                    throw new Exception(string.Format("Cannot get visibility status of [{0}]as Root Element has not be found!", Mapping.FriendlyName ?? Mapping.FindLogic ?? "find logic null!"));
+                    throw new Exception(string.Format("Cannot get visibility status of [{0}] as Root Element has not be found!", Mapping.FriendlyName ?? Mapping.FindLogic ?? "find logic null!"));
                 }
             }
         }
