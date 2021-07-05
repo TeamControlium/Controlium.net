@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>TeamControlium.Controlium</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.0.2</Version>
+    <Version>2.0.3</Version>
 
     <Authors>TeamControlium Contributors</Authors>
     <Company>TeamControlium Contributors</Company>
@@ -19,8 +19,10 @@
     <PackageTags>TeamControlium testautomation functional library</PackageTags>
     <PackageReleaseNotes>Added SwitchTo functionality to enable tests to switch to another browser window based on presence of an object.
 Added ability to create Selenium commandline arguments in Repository.
-
-</PackageReleaseNotes>
+Added ability to Refresh a Controlium Element and all ancestors to remove Selenium element stalinity.
+Extended Control Exists functionality
+Added to text getting functionality to enable automatical inclusion of Pseudo element content if it exists.
+Fixed minor issues reported by users</PackageReleaseNotes>
     <NeutralLanguage>en-AU</NeutralLanguage>
     <RootNamespace>TeamControlium.Controlium</RootNamespace>
   </PropertyGroup>
