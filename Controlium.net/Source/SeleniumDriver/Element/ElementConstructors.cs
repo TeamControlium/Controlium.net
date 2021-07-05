@@ -14,7 +14,7 @@ namespace TeamControlium.Controlium
         {
             WebElement = null;
             ParentOfThisElement = null;
-            this.MappingDetails = null;
+            this.Mapping = null;
         }
         
         /// <summary>
@@ -27,7 +27,7 @@ namespace TeamControlium.Controlium
         {
             WebElement = null;
             ParentOfThisElement = null;
-            MappingDetails = mappingDetails;
+            Mapping = mappingDetails;
         }
         
         /// <summary>
@@ -41,7 +41,7 @@ namespace TeamControlium.Controlium
         {
             WebElement = null;
             ParentOfThisElement = seleniumDriver;
-            this.MappingDetails = null;
+            this.Mapping = null;
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace TeamControlium.Controlium
         {
             WebElement = null;
             ParentOfThisElement = parentElement;
-            this.MappingDetails = null;
+            this.Mapping = null;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace TeamControlium.Controlium
         {
             WebElement = null;
             ParentOfThisElement = seleniumDriver;
-            this.MappingDetails = MappingDetails;
+            this.Mapping = MappingDetails;
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace TeamControlium.Controlium
         {
             WebElement = null;
             ParentOfThisElement = parentElement;
-            this.MappingDetails = MappingDetails;
+            this.Mapping = MappingDetails;
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace TeamControlium.Controlium
         {
             WebElement = iWebElement;
             ParentOfThisElement = SeleniumDriver;
-            this.MappingDetails = MappingDetails;
+            this.Mapping = MappingDetails;
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace TeamControlium.Controlium
         {
             WebElement = iWebElement;
             ParentOfThisElement = Parent;
-            this.MappingDetails = MappingDetails;
+            this.Mapping = MappingDetails;
         }
     }
 }

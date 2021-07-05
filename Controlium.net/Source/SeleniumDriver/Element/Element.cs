@@ -25,7 +25,7 @@ namespace TeamControlium.Controlium
         /// <summary>
         /// Returns find logic used (or to be used) to locate this element either from the top level (See <see cref="Element(SeleniumDriver,IWebElement,string,FindBy)"/>) or from the parent element (See <see cref="Element(Element,IWebElement,string,FindBy)"/>)
         /// </summary>
-        public ObjectMappingDetails MappingDetails { get { return mappingDetails; } set { if ((mappingDetails != null) && (WebElement != null)) throw new Exception("Mapping Details cannot be changed after binding to Selenium WebElement"); else mappingDetails = value; } }
+        public ObjectMappingDetails Mapping { get { return mappingDetails; } set { if ((mappingDetails != null) && (WebElement != null)) throw new Exception("Mapping Details cannot be changed after binding to Selenium WebElement"); else mappingDetails = value; } }
 
         /// <summary>
         /// Last Exception thrown from a Try method
@@ -61,7 +61,7 @@ namespace TeamControlium.Controlium
             int Itterations = 0;
             TimeSpan actualTimeout = Timeout ?? seleniumDriver.ElementFindTimeout;
 
-            Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Wait {0}ms for element {1} to become height stable", actualTimeout.TotalMilliseconds, MappingDetails.FriendlyName);
+            Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Wait {0}ms for element {1} to become height stable", actualTimeout.TotalMilliseconds, Mapping.FriendlyName);
 
             Stopwatch timeWaited = Stopwatch.StartNew();
             while (timeWaited.ElapsedMilliseconds < actualTimeout.TotalMilliseconds)
@@ -81,7 +81,7 @@ namespace TeamControlium.Controlium
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"Cannot determine if element [{MappingDetails.FriendlyName}] is height-stable: {ex}");
+                    throw new Exception($"Cannot determine if element [{Mapping.FriendlyName}] is height-stable: {ex}");
                 }
             }
 
@@ -96,7 +96,7 @@ namespace TeamControlium.Controlium
             int Itterations = 0;
             TimeSpan actualTimeout = Timeout ?? seleniumDriver.ElementFindTimeout;
 
-            Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Wait {0}ms for element {1} to become position stable", actualTimeout.TotalMilliseconds, MappingDetails.FriendlyName);
+            Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Wait {0}ms for element {1} to become position stable", actualTimeout.TotalMilliseconds, Mapping.FriendlyName);
             
             Stopwatch timeWaited = Stopwatch.StartNew();
             while (timeWaited.ElapsedMilliseconds < actualTimeout.TotalMilliseconds)
@@ -116,7 +116,7 @@ namespace TeamControlium.Controlium
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"Cannot determine if element [{MappingDetails.FriendlyName}] is position-stable: {ex}");
+                    throw new Exception($"Cannot determine if element [{Mapping.FriendlyName}] is position-stable: {ex}");
                 }
             }
 
@@ -143,19 +143,19 @@ namespace TeamControlium.Controlium
             {
                 if (ParentOfThisElement.GetType() == typeof(SeleniumDriver))
                 {
-                    foundElement = ((SeleniumDriver)ParentOfThisElement).FindElement(MappingDetails);
+                    foundElement = ((SeleniumDriver)ParentOfThisElement).FindElement(Mapping);
                 }
                 else
                 {
-                    foundElement = ((Element)ParentOfThisElement).FindElement(MappingDetails);
+                    foundElement = ((Element)ParentOfThisElement).FindElement(Mapping);
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format("Unable to bind to element {0} (Find Logic ({1}): [{2}])", MappingDetails.FriendlyName, MappingDetails.FindType.ToString(), MappingDetails.FindLogic), ex);
+                throw new Exception(string.Format("Unable to bind to element {0} (Find Logic ({1}): [{2}])", Mapping.FriendlyName, Mapping.FindType.ToString(), Mapping.FindLogic), ex);
             }
             WebElement = foundElement.WebElement;
-            MappingDetails = foundElement.MappingDetails;
+            Mapping = foundElement.Mapping;
             return this;
         }
 
@@ -274,8 +274,8 @@ namespace TeamControlium.Controlium
             }
             catch (Exception ex)
             {
-                Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "{0} failed attempts to set [{1}] to text [{2}]", retryIndex,this.MappingDetails?.FriendlyName??"???!",Text);
-                throw new UnableToSetOrGetText(MappingDetails, Text, ex);
+                Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "{0} failed attempts to set [{1}] to text [{2}]", retryIndex,this.Mapping?.FriendlyName??"???!",Text);
+                throw new UnableToSetOrGetText(Mapping, Text, ex);
             }
         }
 
@@ -310,8 +310,8 @@ namespace TeamControlium.Controlium
             }
             catch (Exception ex)
             {
-                Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "{0} failed attempts to set [{1}] to text [{2}]", retryIndex, this.MappingDetails?.FriendlyName ?? "???!", Text);
-                throw new UnableToSetOrGetText(MappingDetails, Text, ex);
+                Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "{0} failed attempts to set [{1}] to text [{2}]", retryIndex, this.Mapping?.FriendlyName ?? "???!", Text);
+                throw new UnableToSetOrGetText(Mapping, Text, ex);
             }
         }
 
@@ -352,7 +352,7 @@ namespace TeamControlium.Controlium
         public void ScrollIntoView()
         {
             ThrowIfUnbound();
-            Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Scrolling [{0}] element into view", MappingDetails.FriendlyName);
+            Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Scrolling [{0}] element into view", Mapping.FriendlyName);
             seleniumDriver.ScrollIntoView(WebElement);
         }
 
@@ -371,7 +371,7 @@ namespace TeamControlium.Controlium
         /// <param name="IncludeDesendants">If true all text is returned. If false only text from current element is returned.</param>
         /// <remarks>Element is scrolled into view before text is harvested.  See <see cref="seleniumDriver.GetText(IWebElement,bool,bool,bool)"/> for details.</remarks>
         /// <returns>Text from element</returns>
-        public string ScrollIntoViewAndGetText(bool IncludeDesendants)
+        public string ScrollIntoViewAndGetText(bool IncludeDesendants,bool IncludePseudoElements=false)
         {
             ThrowIfUnbound();
             //
@@ -379,26 +379,20 @@ namespace TeamControlium.Controlium
             //
             if (SeleniumDriver.TestBrowser == SeleniumDriver.Browsers.IE8)
                 Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Not scrolling into view as Browser IE8!");
-            return seleniumDriver.GetText(this.WebElement, IncludeDesendants, (SeleniumDriver.TestBrowser != SeleniumDriver.Browsers.IE8), false);
+            return seleniumDriver.GetText(this.WebElement, IncludeDesendants, (SeleniumDriver.TestBrowser != SeleniumDriver.Browsers.IE8), false,IncludePseudoElements);
         }
 
         /// <summary>Gets visible text from element
         /// </summary>
         /// <remarks>Element is scrolled into view before text is harvested.  See <see cref="seleniumDriver.GetText(IWebElement,bool,bool)"/> for details.</remarks>
         /// <returns>Text from element</returns>
-        public string GetText()
-        {
-            ThrowIfUnbound();
-            return GetText(true);
-        }
-
-        public string GetText(bool IncludeDesendants)
+        public string GetText(bool IncludeDesendants=true,bool ScrollIntoViewFirst=false,bool UseInnerTextAttribute=false,bool IncludePseudoElements=false)
         {
             ThrowIfUnbound();
             //
             // Only get the visible text - ensure what IS visible by scrolling into view (NOT if using IE)...
             //
-            return seleniumDriver.GetText(WebElement, IncludeDesendants, false, false);
+            return seleniumDriver.GetText(WebElement, IncludeDesendants, ScrollIntoViewFirst, UseInnerTextAttribute, IncludePseudoElements);
         }
 
         /// <summary>Gets visible text from element</summary>
@@ -438,7 +432,7 @@ namespace TeamControlium.Controlium
 
             // Just do the simple Text attribute thing.  Stuff if the user cant see the text!  However, still scroll into view as Selenium has an issue with that and
             // sometimes it would return a blank string if not in the viewport....
-            return seleniumDriver.GetText(WebElement, true, true, false);
+            return seleniumDriver.GetText(WebElement, true, true, false,true);
         }
 
         /// <summary>Get all text from element (and descendant elements)
@@ -472,7 +466,7 @@ namespace TeamControlium.Controlium
             ThrowIfUnbound();
 
             string returnValue = WebElement.GetAttribute(Attribute);
-            if ((returnValue == null)) throw new AttributeReturnedNull(MappingDetails, Attribute);
+            if ((returnValue == null)) throw new AttributeReturnedNull(Mapping, Attribute);
             return returnValue;
         }
 

@@ -574,21 +574,28 @@ namespace TeamControlium.Controlium
                 else
                 {
                     string[] sizeXY = browserSize.Split(',');
-                    if (sizeXY.Length != 2) throw new Exception($"TestBrowserSize environment variable incorrect format [{browserSize ?? "<Null!>"}]. Expect X,Y.");
-                    WebDriver.Manage().Window.Size = new Size(int.Parse(sizeXY[0]), int.Parse(sizeXY[1]));
-                    Log.LogWriteLine(Log.LogLevels.TestInformation, $"Browser size (Set by Environment variable [TestBrowserSize]): {browserSize}");
+                    if (sizeXY.Length != 2) throw new Exception($"TestBrowserSize incorrect format [{browserSize ?? "<Null!>"}]. Expect X,Y.");
+                    SetBrowserSize(new Size(int.Parse(sizeXY[0]), int.Parse(sizeXY[1])));
                 }
-            }
-            catch (NullReferenceException)
-            {
-                Log.LogWriteLine(Log.LogLevels.TestInformation, $"Cannot get TestBrowserSize environment variable (EG. TestBrowserSize [800,600] or [full]). Browser size defaulted to Full Screen.");
-                WebDriver.Manage().Window.Maximize();
             }
             catch (Exception ex)
             {
-                Log.LogWriteLine(Log.LogLevels.TestInformation, $"Cannot get TestBrowserSize environment variable (EG. TestBrowserSize [800,600] or [full]). Browser size defaulted to Full Screen: {ex}");
-                WebDriver.Manage().Window.Maximize();
+                Log.LogWriteLine(Log.LogLevels.TestInformation, $"Error setting browser size: {ex.Message}");
+                throw;
             }
+        }
+
+
+        public void SetBrowserSize(Size size)
+        {
+            WebDriver.Manage().Window.Size = size;
+            Log.LogWriteLine(Log.LogLevels.TestInformation, $"Browser size: {size}");
+
+        }
+
+        public Size GetBrowserSize()
+        {
+            return WebDriver.Manage().Window.Size;
         }
 
         /// <summary>Tests if element is currently visible to the user.</summary>
@@ -793,8 +800,9 @@ namespace TeamControlium.Controlium
         /// <code lang="C#">
         /// string text = SeleniumDriver.GetText(myTextBox,true,false);
         /// </code></example>
-        public string GetText(IWebElement WebElement, bool IncludeDescendentsText, bool ScrollIntoViewFirst, bool UseInnerTextAttribute)
+        public string GetText(IWebElement WebElement, bool IncludeDescendentsText=false, bool ScrollIntoViewFirst=false, bool UseInnerTextAttribute=false,bool IncludePseudoElements=false)
         {
+            string pseudoElementText;
             //
             // This is a bit odd and there are two issues involved but which boil down to a single one.  GetText MUST only return text the user can see (or what
             // is the point of what we are trying to achive...).  So we must ensure we can see the text we are returning.  Note that there is one point being
@@ -837,8 +845,63 @@ namespace TeamControlium.Controlium
                 text = string.Join("", a.Select(o => o.InnerText));
                 Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Get element text without descendants: [{0}]", text);
             }
+            if (IncludePseudoElements)
+            {
+                try
+                {
+                    pseudoElementText = GetPseudoElementProperty(WebElement, "before", "content");
+                    if (pseudoElementText.StartsWith('\"') && pseudoElementText.EndsWith('\"'))
+                    {
+                        pseudoElementText = pseudoElementText.Substring(1, pseudoElementText.Length - 2);
+                    }
+                    else
+                    {
+                        Log.LogWriteLine(Log.LogLevels.FrameworkInformation, $"Pseudo element [::before] content returned [{pseudoElementText}]. Ignoring...");
+                        pseudoElementText = "";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.LogWriteLine(Log.LogLevels.FrameworkInformation, $"Error getting pseudo element [::before] content. Ignoring...");
+                    pseudoElementText = "";
+                }
+                text = pseudoElementText + text;
+                try
+                {
+                    pseudoElementText = GetPseudoElementProperty(WebElement, "after", "content");
+                    if (pseudoElementText.StartsWith('\"') && pseudoElementText.EndsWith('\"'))
+                    {
+                        pseudoElementText = pseudoElementText.Substring(1, pseudoElementText.Length - 2);
+                    }
+                    else
+                    {
+                        Log.LogWriteLine(Log.LogLevels.FrameworkInformation, $"Pseudo element [::after] content returned [{pseudoElementText}]. Ignoring...");
+                        pseudoElementText = "";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.LogWriteLine(Log.LogLevels.FrameworkInformation, $"Error getting pseudo element [::after] content. Ignoring...");
+                    pseudoElementText = "";
+                }
+                text += pseudoElementText;
+            }
             return text;
         }
+
+        public string GetPseudoElementProperty(IWebElement WebElement, string PseudoElementName, string PropertyName)
+        {
+            string text = (string)((IJavaScriptExecutor)WebDriver).ExecuteScript("return window.getComputedStyle(arguments[0],':'+arguments[1]).getPropertyValue(arguments[2]);", WebElement, PseudoElementName.Trim(':').ToLower(), PropertyName);
+            return text;
+        }
+
+
+        public string GetPseudoElementProperty(Element Element,string PseudoElementName,string PropertyName)
+        {
+            return GetPseudoElementProperty(Element.WebElement, PseudoElementName, PropertyName);
+        }
+
+
 
         /// <summary>Applies Javascript to scroll element into view.
         /// </summary>
@@ -866,7 +929,7 @@ namespace TeamControlium.Controlium
                 if (RequiredVisibility == Visibility.Hidden) return true;
                 throw new Exception("Element does not exist - it is null!");
             }
-            Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Wait {0}ms for element {1} to become {2}. Poll interval = {3}ms", actualTimeout.Timeout.TotalMilliseconds, ElementToWaitFor.MappingDetails.FriendlyName, RequiredVisibility.ToString(), actualTimeout.PollingInterval.TotalMilliseconds);
+            Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Wait {0}ms for element {1} to become {2}. Poll interval = {3}ms", actualTimeout.Timeout.TotalMilliseconds, ElementToWaitFor.Mapping.FriendlyName, RequiredVisibility.ToString(), actualTimeout.PollingInterval.TotalMilliseconds);
 
             // Stopwatch is only used so that we can log the time to the console....
             Stopwatch timeWaited = Stopwatch.StartNew();
