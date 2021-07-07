@@ -321,7 +321,6 @@ namespace TeamControlium.Controlium
         private string DoRunConfigTokenSubstitution(string tokenisedString)
         {
             string returnString = tokenisedString;
-            returnString = returnString.Replace("%Device%", TestDevice.ToString());
             returnString = returnString.Replace("%Browser%", TestBrowser.ToString());
             return returnString;
         }
@@ -349,9 +348,6 @@ namespace TeamControlium.Controlium
         private void SetupRemoteRun()
         {
             Log.LogWriteLine(Log.LogLevels.FrameworkDebug, "Running Selenium remotely");
-
-            // Set target Device
-            SetTestDevice();
 
             // Do desired capabilities first
             string seleniumHost = Repository.GetItemGlobal(ConfigHost[0], ConfigHost[1]);
@@ -576,15 +572,6 @@ namespace TeamControlium.Controlium
 
             // Set the timeouts
             SetTimeouts();
-        }
-
-        public static void ResetSettings()
-        {
-            IsChrome = false;
-            IsEdge = false;
-            IsInternetExplorer = false;
-            IsSafari = false;
-            TestBrowserHasBeenSet = false;
         }
     }
 }

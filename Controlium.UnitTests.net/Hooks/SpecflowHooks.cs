@@ -10,7 +10,6 @@ namespace TeamControlium.Controlium
         public void BeforeScenario()
         {
             Repository.ClearRepositoryAll();
-            SeleniumDriver.ResetSettings();
         }
 
         [AfterScenario]

@@ -377,9 +377,9 @@ namespace TeamControlium.Controlium
             //
             // Only get the visible text - ensure what IS visible by scrolling into view (but NOT if using IE8 as IE8 has an issue with scrolling if there is overflow into the x-axis)...
             //
-            if (SeleniumDriver.TestBrowser == SeleniumDriver.Browsers.IE8)
+            if (SeleniumDriver.TestBrowser == "ie8")
                 Log.LogWriteLine(Log.LogLevels.FrameworkInformation, "Not scrolling into view as Browser IE8!");
-            return seleniumDriver.GetText(this.WebElement, IncludeDesendants, (SeleniumDriver.TestBrowser != SeleniumDriver.Browsers.IE8), false,IncludePseudoElements);
+            return seleniumDriver.GetText(this.WebElement, IncludeDesendants, (SeleniumDriver.TestBrowser != "ie8"), false,IncludePseudoElements);
         }
 
         /// <summary>Gets visible text from element
