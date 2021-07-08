@@ -196,7 +196,7 @@ namespace TeamControlium.Controlium
                         catch { }
                         try
                         {
-                            filepath = Repository.GetItemGlobalOrDefault("Screenshot", "Filename", default(string));
+                            filepath = Repository.GetItemGlobalOrDefault("Screenshot", "FilePath", default(string));
                         }
                         catch { }
 
