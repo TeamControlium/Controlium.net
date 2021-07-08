@@ -186,7 +186,11 @@ namespace TeamControlium.Controlium
         /// <param name="settings">Settings string</param>
         /// <param name="ex">Exception thrown by tool when rejecting the settings</param>
         public InvalidSettings(string settings, Exception ex)
-            : base(InvalidSettings.FormatMessage(settings), ex)
+            : base(FormatMessage(settings), ex)
+        {
+        }
+        public InvalidSettings(string settings)
+            : base(FormatMessage(settings))
         {
         }
     }

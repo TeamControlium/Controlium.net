@@ -6,6 +6,8 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.Remoting;
 using TeamControlium.Utilities;
@@ -189,7 +191,7 @@ namespace TeamControlium.Controlium
                     {
                         try
                         {
-                            filename = Repository.GetItemGlobalOrDefault("Screenshot", "Filename",default(string));
+                            filename = Utilities.Detokeniser.Detokenize(Repository.GetItemGlobalOrDefault("Screenshot", "Filename",default(string)));
                         }
                         catch { }
                         try
@@ -215,7 +217,16 @@ namespace TeamControlium.Controlium
                         Screenshot screenshot = ((ITakesScreenshot)WebDriver).GetScreenshot();
                         Log.LogWriteLine(Log.LogLevels.TestInformation, "Screenshot - {0}", filename);
 
-                        screenshot.SaveAsFile(filename, ScreenshotImageFormat.Jpeg);
+                        using (MemoryStream imageStream = new MemoryStream(screenshot.AsByteArray))
+                        {
+                            using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
+                            {
+                                using (Image screenshotImage = Image.FromStream(imageStream))
+                                {
+                                    screenshotImage.Save(fileStream, ImageFormat.Jpeg);
+                                }
+                            }
+                        }
                         return filename;
                     }
                     else
@@ -332,7 +343,7 @@ namespace TeamControlium.Controlium
 
             foreach (KeyValuePair<string, dynamic> capability in Repository.GetCategoryGlobal(HostName))
             {
-                Type capabilityType = ((ObjectHandle)capability.Value).Unwrap().GetType();
+                Type capabilityType = capability.Value.GetType();
                 if (capabilityType == typeof(string))
                 {
                     string capValue = DoRunConfigTokenSubstitution(capability.Value);
@@ -463,7 +474,6 @@ namespace TeamControlium.Controlium
             Repository.TryGetItemGlobal(SeleniumLogFilename[0], SeleniumLogFilename[1], out seleniumDebugFile);
 
             // Check the folder exists and chuck a wobbly if it doesnt...
-            string[] asdf = Directory.GetFiles(".");
             if (!Directory.Exists(seleniumFolder)) throw new SeleniumFolderError(seleniumFolder);
 
             try
