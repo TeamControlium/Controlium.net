@@ -180,7 +180,7 @@ namespace TeamControlium.Controlium
         /// </code></example>
         public string TakeScreenshot(string fileName = null)
         {
-            string filename = default(string);
+            string filenameUsed = default(string);
             string filepath = default(string);
 
             try
@@ -191,35 +191,33 @@ namespace TeamControlium.Controlium
                     {
                         try
                         {
-                            filename = Utilities.Detokeniser.Detokenize(Repository.GetItemGlobalOrDefault("Screenshot", "Filename",default(string)));
+                            filenameUsed = Utilities.Detokeniser.Detokenize(Repository.GetItemGlobalOrDefault("Screenshot", "Filename", null));
                         }
                         catch { }
                         try
                         {
-                            filepath = Repository.GetItemGlobalOrDefault("Screenshot", "FilePath", default(string));
+                            filepath = Repository.GetItemGlobalOrDefault("Screenshot", "FilePath", null);
                         }
                         catch { }
 
-                        if (filename == default(string)) filename = fileName ?? "Screenshot";
+                        filenameUsed = fileName ?? filenameUsed ?? "Screenshot";
+
 
                         //
-                        // Ensure filename friendly
+                        // Ensure filename friendly.  Use passed in filename.  If none passed in use name from settings.  If no settings use string 'Screenshot'
                         //
-                        //filename = new Regex(string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars())))).Replace(filename, "");
-                        if (filepath == null)
-                        {
-                            filename = Path.Combine(Environment.CurrentDirectory, "images", filename + ".jpg");
-                        }
-                        else
-                        {
-                            filename = Path.Combine(filepath, filename + ".jpg");
-                        }
+                        filenameUsed = Utilities.General.CleanStringForFilename(fileName ?? filenameUsed ?? "Screenshot") + ".jpg";
+
+                        // Build fully qualified filename.  Use 
+                        filenameUsed =  filepath!=null? Path.Combine(filepath, filenameUsed): Path.Combine(Environment.CurrentDirectory, "Screenshots", filenameUsed);
+
+ 
                         Screenshot screenshot = ((ITakesScreenshot)WebDriver).GetScreenshot();
-                        Log.LogWriteLine(Log.LogLevels.TestInformation, "Screenshot - {0}", filename);
+                        Log.LogWriteLine(Log.LogLevels.TestInformation, "Screenshot - {0}", filenameUsed);
 
                         using (MemoryStream imageStream = new MemoryStream(screenshot.AsByteArray))
                         {
-                            using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
+                            using (FileStream fileStream = new FileStream(filenameUsed, FileMode.Create))
                             {
                                 using (Image screenshotImage = Image.FromStream(imageStream))
                                 {
@@ -227,7 +225,7 @@ namespace TeamControlium.Controlium
                                 }
                             }
                         }
-                        return filename;
+                        return filenameUsed;
                     }
                     else
                     {
@@ -241,7 +239,7 @@ namespace TeamControlium.Controlium
             }
             catch (Exception ex)
             {
-                Log.LogWriteLine(Log.LogLevels.TestInformation, "Exception saving screenshot [{0}]", filename ?? "filename null!");
+                Log.LogWriteLine(Log.LogLevels.TestInformation, "Exception saving screenshot [{0}]", filenameUsed ?? "filename null!");
                 Log.LogWriteLine(Log.LogLevels.TestInformation, "> {0}", ex);
             }
             return string.Empty;
