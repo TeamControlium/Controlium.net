@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>TeamControlium.Controlium</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.1.0</Version>
+    <Version>2.1.1</Version>
 
     <Authors>TeamControlium Contributors</Authors>
     <Company>TeamControlium Contributors</Company>
@@ -17,12 +17,15 @@
     <RepositoryUrl>https://github.com/TeamControlium/Controlium.net.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>TeamControlium testautomation functional library</PackageTags>
-    <PackageReleaseNotes>Removed Devices class and references in SeleniumBrowser contructor.  Was not adding any functionality and will impede future change to update WebDriver capabilities changes.
-Updated Browsers and SetBrowser to handle any versions (if used by client test suite).  Also added Firefox handling.</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated Browsers to handle any versions of Safari, Edge, Chrome or Firefox (Crontrolium just passes version thru to Selenium anyway)
+Debug cleanup
+Typo fix
+Screenshot tidy up
+Reset Test Browser when SeleniumDriver closed.</PackageReleaseNotes>
     <NeutralLanguage>en-AU</NeutralLanguage>
     <RootNamespace>TeamControlium.Controlium</RootNamespace>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
+    <AssemblyVersion>2.1.1.0</AssemblyVersion>
+    <FileVersion>2.1.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
