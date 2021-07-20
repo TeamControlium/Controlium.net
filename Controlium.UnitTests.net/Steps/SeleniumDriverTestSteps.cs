@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using TeamControlium.Utilities;
 using TechTalk.SpecFlow;
 
@@ -94,7 +95,17 @@ namespace TeamControlium.Controlium
         [Then(@"a process exists named ""(.*)""")]
         public void ThenAProcessExistsNamed(string processname)
         {
-            Assert.IsTrue(Process.GetProcessesByName(processname).Count() > 0, $"There must be more than one process named ({processname})");
+            Thread.Sleep(1000);
+            int count = Process.GetProcessesByName(processname).Count();
+            try
+            {
+                Assert.IsTrue(count > 0, $"There must be one or more processes named ({processname})");
+            }
+            catch (Exception ex)
+            {
+                var a = Process.GetProcesses();
+                int g = 9;
+            }
         }
 
         [Then(@"I can read the page title ""(.*)""")]

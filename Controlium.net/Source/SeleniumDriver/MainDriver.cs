@@ -211,6 +211,7 @@ namespace TeamControlium.Controlium
                         // Build fully qualified filename.  Use 
                         filenameUsed =  filepath!=null? Path.Combine(filepath, filenameUsed): Path.Combine(Environment.CurrentDirectory, "Screenshots", filenameUsed);
 
+                        Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(filenameUsed)));
  
                         Screenshot screenshot = ((ITakesScreenshot)WebDriver).GetScreenshot();
                         Log.LogWriteLine(Log.LogLevels.TestInformation, "Screenshot - {0}", filenameUsed);
@@ -292,6 +293,8 @@ namespace TeamControlium.Controlium
 
             if (WebDriver != null) WebDriver.Quit();
             WebDriver = null;
+
+            TestBrowser = String.Empty;
         }
 
         public virtual T SetControl<T>(T NewControl) where T : ControlBase
@@ -522,6 +525,7 @@ namespace TeamControlium.Controlium
 
                     EO.PageLoadStrategy = (PageLoadStrategy)EdgePageLoadStrategy.Eager;
                     WebDriver = new EdgeDriver(seleniumFolder,EO);
+                    
 
                 }
 
